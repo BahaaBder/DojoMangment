@@ -4,11 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'mobx-react'
+import ScheduleInventory from './store/ScheduleInventory'
 
 
+const ScheduleStore=new ScheduleInventory()
+const store={
+  ScheduleStore
 
+}
 ReactDOM.render(
-   <App />
+  <Provider {...store}> <App /></Provider>
  ,
   document.getElementById('root')
 );
