@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { observer, inject } from 'mobx-react';
 import Coach from "./Coach"
+import "./style/Coach.css"
 
 export default class Coachs extends Component {
     constructor(){
@@ -9,7 +10,7 @@ export default class Coachs extends Component {
         this.state={coachs:[
             {
                 id: 0,
-                name: "Tiger",
+                name: "Wolf",
                 type: "Boxing",
                 img: "https://i.pinimg.com/originals/2f/52/22/2f5222ae1b29f92873e17c8753bda5fe.jpg",
                 year: 1998,
@@ -36,7 +37,7 @@ export default class Coachs extends Component {
             },
             {
               id: 3,
-              name: "The Monkey",
+              name: "Monkey",
               type: "MMA",
               year: 1963,
               img: "https://i.pinimg.com/236x/15/c8/25/15c825b1868d7a780c7122e600c94d48.jpg",
@@ -57,7 +58,7 @@ export default class Coachs extends Component {
 
     render(){
       return (
-        <div>
+        <div class="allCoaches">
             {this.state.coachs.map((coach) => {
               return (
                 <span className="coach-item">

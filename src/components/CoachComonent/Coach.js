@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Button,Modal } from 'react-bootstrap';
+import "./style/Coach.css"
+
 export default class Coach extends Component {
   constructor() {
     super();
@@ -13,28 +15,39 @@ export default class Coach extends Component {
     let coach = this.props.coach
     return (
       <div>
-        <div class="coachImg" onClick={this.handleShow}>
-            <img src={coach.img} />
+        <div className="coachMain" onClick={this.handleShow}>          
+            <span>
+                <img className="coachImg" src={coach.img} />
+            </span>
+            <span className="displayName">
+                <div >
+                    {coach.name} 
+                </div>
+                <div >
+                    {coach.type}
+                </div>
+            </span> 
         </div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal className="modal" show={this.state.show} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title className="coach-info">about {coach.name}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-            <div className="coach-info">
+        <Modal.Body className="bodyModal">
+            <div class="onlyImg" >
+                <img className="coachImg" src={coach.img} />
+            </div>
+            <div className="info">
                 <div>
-                    {coach.name} ({coach.year})
+                    {coach.name} - {coach.type} ({coach.year})
                 </div>
-                <div>
-                    <img src={coach.img} />
-                </div>
+                
                 <div>
                     <p>{coach.descrShort}</p>
                 </div>
             </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleClose}>
+          <Button className="btn" variant="secondary" onClick={this.handleClose}>
             Close
           </Button>
 
