@@ -8,21 +8,45 @@ import { useState, useRef } from 'react';
 import onClickListener from '../config/helper'
 import ModalCustom from './ModalCustom';
 import { observer, inject } from 'mobx-react'
+import axios from 'axios'
 
 //ScheduleStore
+const serverApi = "http://localhost:8080"
 
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"]
 const Schedule = inject("ScheduleStore")(observer((props) => {
     const [showModal, setShowModal] = useState(false);
     const [event, setEvent] = useState(null);
+    const [list, setList] = useState([])
     const toggle = (e) => { setShowModal(!e); console.log(showModal) }
     // const []
-    useEffect(() => {
-        props.ScheduleStore.getSchedule()
-        console.log("use effect",props.ScheduleStore.listSchedule)
+    useEffect(async () => {
+        await props.ScheduleStore.getSchedule()
+        //  console.log( " tmp proxy ",props.ScheduleStore.tempProxy)
+
+        // await getSchedule()
+        // console.log("000",list)
+        // await getSchedule()
+        // console.log("use effect", list)
 
     }, [])
- 
+
+    const handle = (e) => {
+        setList(e)
+    }
+    const getSchedule = async () => {
+        axios.get(`${serverApi}/schedules`).
+            then((response) => {
+
+                handle(response.data)
+                console.log("8888", response.data)
+                //console.log("000",list)
+            }).catch(function (error) {
+                console.log(error)
+            })
+
+    }
+
 
     var calendar = new Calendar('#calendar', {
         bgColor: "red",
@@ -83,10 +107,39 @@ const Schedule = inject("ScheduleStore")(observer((props) => {
 
 
 
-
+    console.log("000000000000000000000000000000000000")
     console.log("----------------------", eventSchedule)
+    console.log("----------------------", JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule))))
 
-    calendar.createSchedules(eventSchedule);
+    const arr = [
+        {
+            "calenderId": "1",
+            category: "time",
+            duDateClass: "",
+            end: "2021-07-29T21:30:00+01:00",
+            id: "3",
+            start: "2021-07-29T19:30:00+01:00",
+            title: "MMA Mixed Martil art "
+        },
+        {
+            calenderId: "1",
+            category: "time",
+            duDateClass: "",
+            end: "2021-07-25T19:30:00+01:00",
+            id: "1",
+            start: "2021-07-25T19:30:00+01:00",
+            title: "MMA Mixed Martil art "
+        }
+    ]
+    const temparr = JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule)))
+    const arrnew=[...temparr]
+    console.log(" temparr ", temparr)
+
+    console.log( arrnew)
+
+    calendar.createSchedules(arrnew);
+
+    // calendar.createSchedules(JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule))));
 
     /////=======================update by draging ============
     calendar.on('beforeUpdateSchedule', function (event) {

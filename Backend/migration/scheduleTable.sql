@@ -32,6 +32,9 @@ INSERT INTO schedule VALUES (null,2,"Classic boxing","time","",'2021-07-26T16:30
 INSERT INTO schedule VALUES (null,2,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T19:30:00+01:00')
 INSERT INTO schedule VALUES (null,1,"Classic boxing","time","",'2021-07-25T19:30:00+01:00','2021-07-25T19:30:00+01:00')
 
+
+INSERT INTO schedule VALUES (null,2,"Classic boxing","time","",'2021-07-25T19:30:00+01:00','2021-07-25T19:30:00+01:00');
+
     -- {
     --     id: '5',
     --     calendarId: '2',
