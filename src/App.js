@@ -1,19 +1,17 @@
-
-import { observer, inject } from 'mobx-react'
-
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { useEffect } from 'react';
+import { observer, inject } from "mobx-react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useEffect } from "react";
+import Register from "./components/Register";
 //CustomerStore
-import React from 'react'
+import React from "react";
 
 function App() {
   return (
     <div>
-      <h1>test</h1>
+      <Register />
     </div>
-  )
+  );
 }
 
-export default App
-
+export default App;
