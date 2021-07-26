@@ -12,15 +12,17 @@ import { observer, inject } from 'mobx-react'
 //ScheduleStore
 
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"]
-const Schedule =inject("ScheduleStore")(observer((props) => {
+const Schedule = inject("ScheduleStore")(observer((props) => {
     const [showModal, setShowModal] = useState(false);
     const [event, setEvent] = useState(null);
-    const toggle = (e) => {setShowModal(!e); console.log(showModal)}
+    const toggle = (e) => { setShowModal(!e); console.log(showModal) }
+    // const []
+    useEffect(() => {
+        props.ScheduleStore.getSchedule()
+        console.log("use effect",props.ScheduleStore.listSchedule)
 
-useEffect(()=>{
-
-},[])
-
+    }, [])
+ 
 
     var calendar = new Calendar('#calendar', {
         bgColor: "red",
@@ -82,7 +84,7 @@ useEffect(()=>{
 
 
 
-
+    console.log("----------------------", eventSchedule)
 
     calendar.createSchedules(eventSchedule);
 
@@ -120,6 +122,7 @@ useEffect(()=>{
             };
 
             calendar.createSchedules([schedule]);
+            props.ScheduleStore.handleAlertModalChange()
 
             /* step3. clear guide element */
             e.guide.clearGuideElement();
@@ -162,7 +165,7 @@ useEffect(()=>{
             {
 
                 // <ModalCustom></ModalCustom>
-           <ModalCustom ></ModalCustom>
+                <ModalCustom ></ModalCustom>
             }
         </div>
 

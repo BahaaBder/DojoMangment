@@ -19,4 +19,47 @@ router.get('/test', function (req, res) {
 })
 
 
+
+router.get('/schedules',function(req,res){
+    sequelize.query(`
+    SELECT * 
+    FROM 
+    schedule
+    `).then(function ([schedules, metadata]) {
+        res.send(schedules);
+    });
+
+
+
+})
+
+router.post('/schedules', (req, res) => {
+    const newsSchedule = req.body
+    console.log(newsSchedule)
+
+    try {
+        console.log(" inserting ")
+        sequelize.query(`
+        INSERT INTO schedule
+         VALUES(
+            ${newsSchedule.id},
+            ${newsSchedule.calenderId},
+            '${newsSchedule.title}',
+            '${newsSchedule.category}',
+            '${newSchedule.duDateClass}',
+            '${newSchedule.start}',
+            '${newSchedule.end}',
+            )
+        `). then(function ([results, metadata]) {
+
+            res.send("added ok ")
+        })
+        
+    } catch (error) {
+
+    }
+}
+)
+
+
 module.exports = router
