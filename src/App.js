@@ -9,7 +9,8 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import React from "react";
 
 import Schedule from "./components/Schedule";
-import Coachs from "./components/CoachComonent/Coachs";
+import Coachs from "./components/CoachComponent/Coachs";
+import AddCoach from "./components/CoachComponent/AddCoach";
 
 function App() {
   return (
@@ -19,15 +20,23 @@ function App() {
     //   <Schedule></Schedule>
     // </div>
     <Router>
-      <span>
-        <Link className="link" to="/coachs">
-          Coachs
-        </Link>
-      </span>
+
+      <Link className="link" to="/coachs">
+        Coachs
+      </Link>
+      <Link className="link" to="/addCoachs">
+        Add Coach
+      </Link>
+
       <Route
         path="/coachs"
         exact
         render={() => <Coachs />}
+      />
+      <Route
+        path="/addCoachs"
+        exact
+        render={() => <AddCoach />}
       />
       {/* <Route
           path="/coachs/:id"

@@ -49,5 +49,20 @@
     margin: 12px;
 }
 .btn{
-    background-color: coral;
+    background-color: rgb(241, 106, 57);
+    margin: 17px;
+    height: 40px;
+}
+
+.txtfild{
+    margin: 15px;
+}
+span{
+    padding: 5px;
+}
+.text{
+    left: 10px;
+}
+.AddCoach{
+    padding: 18px;
 }
