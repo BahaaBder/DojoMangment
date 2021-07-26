@@ -26,11 +26,7 @@ const Schedule = inject("ScheduleStore")(
     // const []
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
-      console.log("***************************");
-      console.log(props.ScheduleStore.listSchedule);
-      console.log("***************************");
-      // getSchedule();
-      //  console.log( " tmp proxy ",props.ScheduleStore.tempProxy)
+      console.log(" tmp proxy ", props.ScheduleStore.computedVar);
 
       // await getSchedule()
       // console.log("000",list)
@@ -89,6 +85,8 @@ const Schedule = inject("ScheduleStore")(
       //         }
     });
 
+    calendar.createSchedules(props.ScheduleStore.computedList);
+
     //=============================================event handlers==========================
 
     // calendar.on('beforeCreateSchedule', function(event) {
@@ -113,42 +111,37 @@ const Schedule = inject("ScheduleStore")(
     //     calendar.createSchedules([schedule]);
     // });
 
-    console.log("000000000000000000000000000000000000");
-    console.log("----------------------", eventSchedule);
-    console.log(
-      "----------------------",
-      JSON.parse(JSON.stringify(props.ScheduleStore.listSchedule))
-    );
+    // console.log("000000000000000000000000000000000000")
+    // console.log("----------------------", eventSchedule)
+    // console.log("----------------------", JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule))))
 
-    const arr = [
-      {
-        calenderId: "1",
-        category: "time",
-        duDateClass: "",
-        end: "2021-07-29T21:30:00+01:00",
-        id: "3",
-        start: "2021-07-29T19:30:00+01:00",
-        title: "MMA Mixed Martil art ",
-      },
-      {
-        calenderId: "1",
-        category: "time",
-        duDateClass: "",
-        end: "2021-07-25T19:30:00+01:00",
-        id: "1",
-        start: "2021-07-25T19:30:00+01:00",
-        title: "MMA Mixed Martil art ",
-      },
-    ];
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    console.log(toJS(props.ScheduleStore.listSchedule));
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    const temparr = JSON.parse(
-      JSON.stringify(props.ScheduleStore.listSchedule)
-    );
-    console.log(" temparr ", temparr);
-    console.log(" arr ", arr);
-    calendar.createSchedules(temparr);
+    // const arr = [
+    //     {
+    //         "calenderId": "1",
+    //         category: "time",
+    //         duDateClass: "",
+    //         end: "2021-07-29T21:30:00+01:00",
+    //         id: "3",
+    //         start: "2021-07-29T19:30:00+01:00",
+    //         title: "MMA Mixed Martil art "
+    //     },
+    //     {
+    //         calenderId: "1",
+    //         category: "time",
+    //         duDateClass: "",
+    //         end: "2021-07-25T19:30:00+01:00",
+    //         id: "1",
+    //         start: "2021-07-25T19:30:00+01:00",
+    //         title: "MMA Mixed Martil art "
+    //     }
+    // ]
+    // const temparr = JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule)))
+    // const arrnew=[...temparr]
+    // console.log(" temparr ", temparr)
+
+    // console.log( arrnew)
+
+    // calendar.createSchedules(props.ScheduleStore.computedVar);
 
     // calendar.createSchedules(JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule))));
 

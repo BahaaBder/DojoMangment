@@ -1,5 +1,6 @@
-import { observable, action, makeObservable, computed } from "mobx";
+import { observable, action, makeObservable, computed, toJS } from "mobx";
 import axios from "axios";
+
 const serverApi = "http://localhost:8080";
 class ScheduleInventory {
   constructor() {
@@ -11,16 +12,17 @@ class ScheduleInventory {
       showModal: observable,
       listSchedule: observable,
       handleAlertModalChange: action,
-      getSchedule: action,
+      getSchedule: observable,
       mapScheduleToStr: action,
+      computedList: computed,
     });
+  }
+  get computedList() {
+    return toJS(this.listSchedule);
   }
 
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
-  };
-  handle = (e) => {
-    this.listSchedule = e;
   };
 
   mapScheduleToStr = (list) => {
@@ -35,15 +37,7 @@ class ScheduleInventory {
       tempList.push(object2);
       // console.log(object2)
     });
-    //console.log("++++++++++++++++++++++++++++++++++", tempList);
     return tempList;
-  };
-
-  handleProxy = (proxy) => {
-    const customer = Object.assign({}, proxy);
-    console.log(proxy, customer);
-    this.listSchedule = customer;
-    console.log(" inside handel", this.listSchedule);
   };
 
   getSchedule = () => {
@@ -54,7 +48,9 @@ class ScheduleInventory {
         const temp = this.mapScheduleToStr(response.data);
         console.log("temp mapeed ", temp);
         this.handle(temp);
-        //this.tempProxy = temp;
+        this.tempProxy = temp;
+
+        Object.assign(this.listSchedule, response.data);
 
         // console.log(" my list ",this.tempProxy)
         // this.listSchedule = response.data
