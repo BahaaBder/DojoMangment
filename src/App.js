@@ -2,7 +2,7 @@ import { observer, inject } from "mobx-react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect } from "react";
-import Register from "./components/Register";
+import Register from "./components/LogInComponent/Register";
 //CustomerStore
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
@@ -11,6 +11,7 @@ import React from "react";
 import Schedule from "./components/Schedule";
 import Coachs from "./components/CoachComponent/Coachs";
 import AddCoach from "./components/CoachComponent/AddCoach";
+import LogIn from "./components/LogInComponent/LogIn";
 
 function App() {
   return (
@@ -21,11 +22,17 @@ function App() {
     // </div>
     <Router>
 
+      <Link className="link" to="/schedule">
+        Schedule
+      </Link>
       <Link className="link" to="/coachs">
         Coachs
       </Link>
       <Link className="link" to="/addCoachs">
         Add Coach
+      </Link>
+      <Link className="link" to="/LogIn">
+        LogIn
       </Link>
 
       <Route
@@ -37,6 +44,16 @@ function App() {
         path="/addCoachs"
         exact
         render={() => <AddCoach />}
+      />
+      <Route
+        path="/schedule"
+        exact
+        render={() => <Schedule />}
+      />
+      <Route
+        path="/LogIn"
+        exact
+        render={() => <LogIn />}
       />
       {/* <Route
           path="/coachs/:id"
