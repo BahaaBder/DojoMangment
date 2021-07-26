@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { observer, inject } from 'mobx-react';
 import { TextField } from '@material-ui/core';
+// import Button f
 import './style/Coach.css'
+import { Button } from "react-bootstrap";
 
 class AddCoach extends Component {
   constructor(){
@@ -40,7 +42,6 @@ class AddCoach extends Component {
 
   render() {
 
-    //  let clients =  this.props.ClientsStore.clients;
     return (
       <div className="AddCoach">
         <h4>ADD Coach</h4>
@@ -68,7 +69,7 @@ class AddCoach extends Component {
             value={this.state.type}
             onChange={this.change} />
         </div>
-        <button className="btn" onClick={this.AddCoach}>Add New Coach</button>
+        <Button className="btn" onClick={this.AddCoach}>Add New Coach</Button>
       </div>
     );
   }

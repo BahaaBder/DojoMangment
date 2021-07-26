@@ -23,12 +23,12 @@ export default function Register() {
 
   const checkUserValidInputs = () => {
     if (
-      user.username == "" ||
-      user.useremail == "" ||
-      user.userphone == "" ||
-      user.useraddress == "" ||
-      user.userage == 0 ||
-      user.userpassword == ""
+      user.username === "" ||
+      user.useremail === "" ||
+      user.userphone === "" ||
+      user.useraddress === "" ||
+      user.userage === 0 ||
+      user.userpassword === ""
     ) {
       return false;
     } else {
@@ -40,7 +40,7 @@ export default function Register() {
     if (checkUserValidInputs()) {
       axios.post(SEND_REQUEST_ROUTE, user).then(
         (res) => {
-          if (res.data == "error") {
+          if (res.data === "error") {
             console.log("BTATA");
           }
           setShowError(false);

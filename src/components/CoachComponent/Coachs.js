@@ -58,11 +58,11 @@ export default class Coachs extends Component {
 
     render(){
       return (
-        <div class="allCoaches">
-            {this.state.coachs.map((coach) => {
+        <div className="allCoaches">
+            {this.state.coachs.map((coach,ind) => {
               return (
                 <span className="coach-item">
-                  <Coach
+                  <Coach key={ind}
                     coach={coach}
                   />
                 </span>
