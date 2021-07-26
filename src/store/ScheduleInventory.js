@@ -1,4 +1,4 @@
-import { observable, action, makeObservable, computed } from 'mobx'
+import { observable, action, makeObservable, computed,toJS } from 'mobx'
 import axios from 'axios'
 
 
@@ -15,13 +15,20 @@ class ScheduleInventory {
         makeObservable(this, {
 
             showModal: observable,
-            listSchedule: observable,
+            listSchedule: observable ,
             handleAlertModalChange: action,
-            getSchedule: action,
-            mapScheduleToStr: action
+            getSchedule: observable,
+            mapScheduleToStr: action,
+            computedList:computed
+
 
         })
 
+
+    }
+    get computedList(){
+
+    return toJS(this.listSchedule);
 
     }
 
@@ -29,9 +36,7 @@ class ScheduleInventory {
         this.showModal = !this.showModal
 
     }
-     handle = (e) => {
-        this.listSchedule = e
-    }
+
 
     mapScheduleToStr = (list) => {
         const tempList = []
@@ -45,14 +50,7 @@ class ScheduleInventory {
 
     }
 
-    handleProxy = (proxy) => {
-        const customer = Object.assign({}, proxy);
-        console.log(proxy, customer)
-        this.listSchedule = customer
-        console.log(" inside handel", this.listSchedule)
-
-    }
-
+ 
 
 
     getSchedule = () => {
@@ -63,6 +61,9 @@ class ScheduleInventory {
                 console.log("temp mapeed ", temp)
                 this.handle(temp)
                 this.tempProxy = temp
+
+                Object.assign(this.listSchedule, response.data);
+
                 // console.log(" my list ",this.tempProxy)
                 // this.listSchedule = response.data
                 // // this.listSchedule =this.mapScheduleToStr(response.data )
