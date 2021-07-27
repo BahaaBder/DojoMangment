@@ -59,8 +59,41 @@ CREATE TABLE user_department(
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(depqrtment_id) REFERENCES department(id)
 );
+
+Create TABLE coach(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(40),
+    type VARCHAR(40),
+    year INT,
+    img VARCHAR(1000),
+    descrShort VARCHAR(1000),
+    dojo_id INT,
+    FOREIGN KEY(dojo_id) REFERENCES dojoTable(id)
+);
 -- ​
 
+
+-- INSERT INTO coach
+--  VALUES (null,"Wolf","Boxing",1998,
+--             "https://i.pinimg.com/originals/2f/52/22/2f5222ae1b29f92873e17c8753bda5fe.jpg", 
+--             "Wolf is a proffessional Boxing fighter, he start traing befor 5 years, his first professional boxing fight was before 2 years",1);
+
+-- INSERT INTO coach VALUES (null,"Tiger","Boxing",1994,
+--             "https://st2.depositphotos.com/4265001/9912/v/950/depositphotos_99122894-stock-illustration-tiger-dressed-up-in-boxing.jpg",
+--             "Tiger is a proffessional Boxing fighter, he start traing befor 5 years, his first professional boxing fight was before 2 years",1);
+            
+-- INSERT INTO coach VALUES (null,"Pitbull","MMA",1991,
+--             "https://i.pinimg.com/originals/c7/8d/21/c78d210162d74909f1a9ed1460cf1c6d.jpg",
+--             "Pitbull is a proffessional MMA fighter, he start traing befor 7 years, his first professional boxing fight was before 5 years",1);
+            
+-- INSERT INTO coach VALUES (null,"Monkey","MMA",1963,
+--             "https://i.pinimg.com/236x/15/c8/25/15c825b1868d7a780c7122e600c94d48.jpg",
+--             "Monkey is a proffessional MMA fighter, he start traing befor 13 years, his first professional boxing fight was before 6 years",1);
+            
+-- INSERT INTO coach VALUES (null,"Banda","Muay Thai",2016,
+--             "https://cdn1.vectorstock.com/i/1000x1000/79/65/panda-muay-thai-vector-3527965.jpg",
+--             "Banda is a proffessional Muay Thai fighter, he start traing befor 13 years, his first professional boxing fight was before 6 years",1);
+            
 --INSERT INTO contacts VALUES (null,"A","B","A","A","A","A")
 -- INSERT INTO permission VALUES (null,true,true,true)
 -- INSERT INTO permission VALUES (null,false,false,false)

@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import { Form, Alert } from "react-bootstrap";
-import "../css/Register.css";
+import "./style/Register.css";
 const axios = require("axios");
 const SEND_REQUEST_ROUTE = "http://localhost:8080/registrations";
 const PHONE_ICON = "https://image.flaticon.com/icons/png/512/552/552489.png";
@@ -23,12 +23,12 @@ export default function Register() {
 
   const checkUserValidInputs = () => {
     if (
-      user.username == "" ||
-      user.useremail == "" ||
-      user.userphone == "" ||
-      user.useraddress == "" ||
-      user.userage == 0 ||
-      user.userpassword == ""
+      user.username === "" ||
+      user.useremail === "" ||
+      user.userphone === "" ||
+      user.useraddress === "" ||
+      user.userage === 0 ||
+      user.userpassword === ""
     ) {
       return false;
     } else {
@@ -40,7 +40,7 @@ export default function Register() {
     if (checkUserValidInputs()) {
       axios.post(SEND_REQUEST_ROUTE, user).then(
         (res) => {
-          if (res.data == "error") {
+          if (res.data === "error") {
             console.log("BTATA");
           }
           setShowError(false);

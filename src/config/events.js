@@ -94,3 +94,63 @@ const eventSchedule= [
 ]
 
 export default eventSchedule
+
+///////////////////////
+
+    //=============================================event handlers==========================
+
+    // calendar.on('beforeCreateSchedule', function(event) {
+    //     var startTime = event.start;
+    //     var endTime = event.end;
+    //     var isAllDay = event.isAllDay;
+    //     var guide = event.guide;
+    //     var triggerEventName = event.triggerEventName;
+    //     var schedule;
+
+    //     if (triggerEventName === 'click') {
+    //         // open writing simple schedule popup
+    //         const inputPromet=prompt(" enter shit ")
+    //         schedule = {...inputPromet};
+    //     } else if (triggerEventName === 'dblclick') {
+    //         // open writing detail schedule popup
+    //         const inputPromet=prompt(" enter shit ")
+    //         schedule = {...inputPromet};
+    //     }
+    //     console.log(" schedulr ",schedule)
+
+    //     calendar.createSchedules([schedule]);
+    // });
+
+    // console.log("000000000000000000000000000000000000")
+    // console.log("----------------------", eventSchedule)
+    // console.log("----------------------", JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule))))
+
+    // const arr = [
+    //     {
+    //         "calenderId": "1",
+    //         category: "time",
+    //         duDateClass: "",
+    //         end: "2021-07-29T21:30:00+01:00",
+    //         id: "3",
+    //         start: "2021-07-29T19:30:00+01:00",
+    //         title: "MMA Mixed Martil art "
+    //     },
+    //     {
+    //         calenderId: "1",
+    //         category: "time",
+    //         duDateClass: "",
+    //         end: "2021-07-25T19:30:00+01:00",
+    //         id: "1",
+    //         start: "2021-07-25T19:30:00+01:00",
+    //         title: "MMA Mixed Martil art "
+    //     }
+    // ]
+    // const temparr = JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule)))
+    // const arrnew=[...temparr]
+    // console.log(" temparr ", temparr)
+
+    // console.log( arrnew)
+
+    // calendar.createSchedules(props.ScheduleStore.computedVar);
+
+    // calendar.createSchedules(JSON.parse(JSON.stringify((props.ScheduleStore.listSchedule))));

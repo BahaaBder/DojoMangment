@@ -1,7 +1,6 @@
 const express = require('express')
 const path = require('path')
 const api = require('./Backend/server/routes/api')
-
 var app = express()
 
 const port = 8080

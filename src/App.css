@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 } */
+.link{
+  font-size: 26px;
+  color: antiquewhite;
+  /* border: 1px rgb(73, 70, 70) solid; */
+  padding: 12px;
+  background-color: black;
+  margin: 10px ;
+  padding: 8px;
+}
