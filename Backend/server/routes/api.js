@@ -12,6 +12,8 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
+
+
 router.post("/registrations", async function (req, res) {
   console.log(req.body);
   if (await emailIsExists(req.body.useremail)) {
@@ -97,5 +99,49 @@ router.post("/schedules", (req, res) => {
       });
   } catch (error) {}
 });
+
+router.get('/coachs', function (req, res) {
+  try{
+    sequelize
+    .query(
+      `
+      SELECT * 
+      FROM 
+      coach
+    `
+    )
+    .then(function ([coachs, metadata]) {
+      res.send(coachs);
+    });
+  }
+  catch(error){
+    res.status(400).send(error.msg)
+  }
+
+})
+
+router.post('/coachs', function (req, res){
+  try {
+    console.log(" inserting ");
+    sequelize
+      .query(
+        `
+        INSERT INTO schedule
+         VALUES(
+            ${newSchedule.id},
+            ${newSchedule.calenderId},
+            '${newSchedule.title}',
+            '${newSchedule.category}',
+            '${newSchedule.duDateClass}',
+            '${newSchedule.start}',
+            '${newSchedule.end}',
+            )
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("added ok ");
+      });
+  } catch (error) {}
+})
 
 module.exports = router;

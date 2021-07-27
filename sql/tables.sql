@@ -59,6 +59,19 @@ CREATE TABLE user_department(
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(depqrtment_id) REFERENCES department(id)
 );
+
+-- use dojo
+Create TABLE coach(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(40),
+    type VARCHAR(40),
+    year INT,
+    img VARCHAR(1000),
+    descrShort VARCHAR(1000),
+    dojo_id INT,
+    FOREIGN KEY(id) REFERENCES profile(id),
+    FOREIGN KEY(dojo_id) REFERENCES dojoTable(id)
+);
 -- ​
 
 --INSERT INTO contacts VALUES (null,"A","B","A","A","A","A")
