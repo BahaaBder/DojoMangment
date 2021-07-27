@@ -59,6 +59,21 @@ emailIsExists = (email) => {
     });
 };
 
+//TODO check if work after update register
+router.get("/users",  function(req,res){
+    let user = req.query;
+    let isUserExist =  sequelize.query(
+      `SELECT * FROM profile WHERE email=${user.email} AND password=${user.password}`)
+      .then(function([res]){
+        if (res.length > 0) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    
+});
+
 router.get("/schedules", function (req, res) {
   sequelize
     .query(
