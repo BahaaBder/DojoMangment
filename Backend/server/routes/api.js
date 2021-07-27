@@ -74,7 +74,7 @@ router.get("/schedules", function (req, res) {
 });
 
 router.post("/schedules", (req, res) => {
-  const newSchedule = req.body;
+  const coach = req.body;
   console.log(newsSchedule);
 
   try {
@@ -84,13 +84,13 @@ router.post("/schedules", (req, res) => {
         `
         INSERT INTO schedule
          VALUES(
-            ${newSchedule.id},
-            ${newSchedule.calenderId},
-            '${newSchedule.title}',
-            '${newSchedule.category}',
-            '${newSchedule.duDateClass}',
-            '${newSchedule.start}',
-            '${newSchedule.end}',
+            ${coach.id},
+            ${coach.calenderId},
+            '${coach.title}',
+            '${coach.category}',
+            '${coach.duDateClass}',
+            '${coach.start}',
+            '${coach.end}',
             )
         `
       )
@@ -115,33 +115,36 @@ router.get('/coachs', function (req, res) {
     });
   }
   catch(error){
-    res.status(400).send(error.msg)
+    res.status(400).send(error.message)
   }
 
 })
 
 router.post('/coachs', function (req, res){
+  const coach = req.body.data;
+  console.log(coach);
   try {
-    console.log(" inserting ");
     sequelize
       .query(
         `
-        INSERT INTO schedule
+        INSERT INTO coach
          VALUES(
-            ${newSchedule.id},
-            ${newSchedule.calenderId},
-            '${newSchedule.title}',
-            '${newSchedule.category}',
-            '${newSchedule.duDateClass}',
-            '${newSchedule.start}',
-            '${newSchedule.end}',
+             ${null},
+            '${coach.name}',
+            '${coach.type}',
+             ${coach.year},
+            '${coach.img}',
+            '${coach.descShort}',
+             ${coach.dojo_id}
             )
         `
       )
       .then(function ([results, metadata]) {
         res.send("added ok ");
       });
-  } catch (error) {}
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
 })
 
 module.exports = router;
