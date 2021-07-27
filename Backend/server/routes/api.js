@@ -73,7 +73,7 @@ router.get("/schedules", function (req, res) {
 
 router.post("/schedules", (req, res) => {
   const newSchedule = req.body;
-  console.log(newSchedule);
+  console.log(newsSchedule);
 
   try {
     console.log(" inserting ");

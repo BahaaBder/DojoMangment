@@ -31,7 +31,9 @@ export default function Register(props) {
         }
         return true;
       }
-      const handleClose = () =>{
+      const handleClose = () =>setshow(false);
+
+      const sign = () => {
         if(checkInputs()){
           //check if mail & pass exist
           setshow(false);
@@ -39,8 +41,7 @@ export default function Register(props) {
           seterror(true);
           setshow(true)
         }
-        
-      } 
+      }
       const handleShow = () => setshow(true)
       const forgetPass = () => setpassforget(true);
 
@@ -67,7 +68,7 @@ export default function Register(props) {
             </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button className="btn" variant="secondary" onClick={handleClose}>
+          <Button className="btn" variant="secondary" onClick={sign}>
             sign in
           </Button>
           {/* <Link  to="/Register">

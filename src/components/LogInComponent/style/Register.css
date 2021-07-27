@@ -67,4 +67,5 @@ span{
 }
 .pass{
   color: rgb(89, 189, 89);
+  cursor: pointer;
 }
