@@ -72,8 +72,8 @@ router.get("/schedules", function (req, res) {
 });
 
 router.post("/schedules", (req, res) => {
-  const newsSchedule = req.body;
-  console.log(newsSchedule);
+  const newSchedule = req.body;
+  console.log(newSchedule);
 
   try {
     console.log(" inserting ");
@@ -82,10 +82,10 @@ router.post("/schedules", (req, res) => {
         `
         INSERT INTO schedule
          VALUES(
-            ${newsSchedule.id},
-            ${newsSchedule.calenderId},
-            '${newsSchedule.title}',
-            '${newsSchedule.category}',
+            ${newSchedule.id},
+            ${newSchedule.calenderId},
+            '${newSchedule.title}',
+            '${newSchedule.category}',
             '${newSchedule.duDateClass}',
             '${newSchedule.start}',
             '${newSchedule.end}',
