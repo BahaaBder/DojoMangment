@@ -44,26 +44,19 @@ class ScheduleInventory {
     axios
       .get(`${serverApi}/schedules`)
       .then((response) => {
-        console.log("-----list------", response.data);
+
+        this.listSchedule=response
+
         const temp = this.mapScheduleToStr(response.data);
-        console.log("temp mapeed ", temp);
-        this.tempProxy = temp;
 
         Object.assign(this.listSchedule, response.data);
 
-        // console.log(" my list ",this.tempProxy)
-        // this.listSchedule = response.data
-        // // this.listSchedule =this.mapScheduleToStr(response.data )
-        // console.log(response.data)
+
       })
       .catch(function (error) {
         console.log(error);
       });
-    // let temp;
-    // temp = await this.mapScheduleToStr(this.listSchedule)
-    // this.listSchedule = [...temp]
-    // console.log("-----", temp)
-    // console.log("--0000---", this.listSchedule)
+    
   };
 }
 

@@ -24,41 +24,22 @@ const Schedule = inject("ScheduleStore")(
       console.log(showModal);
     };
     useEffect(async () => {
-      await props.ScheduleStore.getSchedule();
-      console.log(" tmp proxy ", props.ScheduleStore.computedVar);
+      const tempdata  =await props.ScheduleStore.getSchedule();
+      console.log(" tmp proxy ttt  ",tempdata);
+
+      // console.log(" tmp proxy ", props.ScheduleStore.computedList);
     }, []);
 
 
     var calendar = new Calendar("#calendar", {
 
 
-      defaultView: "month",
+      defaultView: 'week',
       taskView: true,
-      popupDetailDate: function (isAllDay, start, end) {
-        var isSameDate = moment(start).isSame(end);
-        var endFormat = (isSameDate ? "" : "YYYY.MM.DD ") + "hh:mm a";
-
-        if (isAllDay) {
-          return (
-            moment(start).format("YYYY.MM.DD") +
-            (isSameDate ? "" : " - " + moment(end).format("YYYY.MM.DD"))
-          );
-        }
-
-        return (
-          moment(start).format("YYYY.MM.DD hh:mm a") +
-          " - " +
-          moment(end).format(endFormat)
-        );
-      },
-              template: {
-
-                  month: {
-                      dayname: daysOfWeek,
-                      startDayOfWeek: 0
-                  }
-
-              }
+      template: {
+        monthDayname: function(dayname) {
+          return '<span class="calendar-week-dayname-name">' + dayname.label + '</span>';
+        }}
     });
 
     calendar.createSchedules(props.ScheduleStore.computedList);
@@ -69,7 +50,7 @@ const Schedule = inject("ScheduleStore")(
       const changes = event.changes;
       calendar.updateSchedule(schedule.id, schedule.calendarId, changes);
     });
-    ////////////////////////////////////
+    ///////////////// on clicke create new schedule ///////////////////
     calendar.on({
       clickSchedule: function (e) {
         console.log("clickSchedule", e);
