@@ -9,6 +9,7 @@ import {
   import React from 'react'
  import Schedule from './Schedule'
  import Register from './Register'
+ import About from './about/About';
 
 
 function NavBar() {
@@ -18,6 +19,11 @@ function NavBar() {
                    
                        <Container fluid="md">
                         <Row className="justify-content-md-center">
+                        <Col>
+                                <Link to="/about">
+                                    about 
+                                </Link>
+                            </Col>
                             <Col>
                                 <Link to="/schedules">
                                     schedules 
@@ -29,6 +35,8 @@ function NavBar() {
                             <Col>
                                 <Link to="/register"> register </Link>
                             </Col>
+
+                           
                         </Row>
                     
                     </Container>
@@ -41,13 +49,21 @@ function NavBar() {
                 component={Register}
 
                 />
-               {
-                   // <Route path="/actions" exact
-                   // component={Actions}
+               
+                   <Route path="/about" exact
+                   component={About}
    
-                   // />
+                   />
 
-               }
+  {
+    //  <Route path="/coaches" exact
+    //  component={Coaches}
+
+    //  /> 
+  }                 
+
+
+               
             </Router>
     )
 }
