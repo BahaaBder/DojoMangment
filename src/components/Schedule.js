@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import Calendar from "tui-calendar"; /* ES6 */
+import React, { useEffect, createRef } from "react";
+import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
 import eventSchedule from "../config/events";
 import calenderType from "../config/calenderType";
@@ -8,11 +8,9 @@ import { useState, useRef } from "react";
 import onClickListener from "../config/helper";
 import ModalCustom from "./ModalCustom";
 import { observer, inject } from "mobx-react";
-import axios from "axios";
-import { toJS } from "mobx";
+const calendarRef = createRef();
 //ScheduleStore
 const serverApi = "http://localhost:8080";
-
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
 const Schedule = inject("ScheduleStore")(
   observer((props) => {
@@ -24,107 +22,180 @@ const Schedule = inject("ScheduleStore")(
       console.log(showModal);
     };
     useEffect(async () => {
-      const tempdata  =await props.ScheduleStore.getSchedule();
-      console.log(" tmp proxy ttt  ",tempdata);
-
-      // console.log(" tmp proxy ", props.ScheduleStore.computedList);
+      await props.ScheduleStore.getSchedule();
     }, []);
+    const handleClickDayname = (ev) => {
+      // view : week, day
+      console.group("onClickDayname");
+      console.log(ev.date);
+      console.groupEnd();
+    };
+    const handleClickSchedule = (ev) => {
+      console.log(" clicled schedule ===> ");
+      console.log(ev);
+    };
+    const handleClickMore = (event) => {
+      console.log("clickMore", event.date, event.target);
+    };
+    const handleBeforeDeleteSchedule = (ev) => {
+      let scheduleID = ev.schedule.id;
+      let scheduleCalendarID = ev.schedule.calendarId;
+      console.log("delete handle ", ev);
+      console.log("->", scheduleID, "|", scheduleCalendarID);
+      props.ScheduleStore.deleteSchedule({
+        id: scheduleID,
+        calendarId: scheduleCalendarID,
+      });
+    };
+    const handleafterRenderSchedule = (ev) => {
+      console.log("************After Render***************");
+    };
+    const handlebeforeUpdateSchedule = (ev) => {
+      console.log("************BEFORE UPDATE***************");
+      console.log(ev);
+    };
+    const handleClickTimezonesCollapseBtn = (ev) => {
+      // console.log("XXXXXXXXXXX++++++++++XXXXXXXXX");
+    };
+    const handleClickNextButton = () => {
+      const calendarInstance = calendarRef.current.getInstance();
+      calendarInstance.next();
+    };
+    const handleClickPrevButton = () => {
+      const calendarInstance = calendarRef.current.getInstance();
+      calendarInstance.prev();
+    };
+    const handleCreateSchedule = () => {
+      const calendarInstance = calendarRef.current.getInstance();
+      calendarInstance.openCreationPopup({});
+    };
+    const handleHide = () => {
+      const calendarInstance = calendarRef.current.getInstance();
+      calendarInstance.toggleTaskView(false);
+    };
+    const handlebeforeCreateSchedule = (event) => {
+
+      var startTime = event.start;
+      var endTime = event.end;
+      var isAllDay = event.isAllDay;
+      var guide = event.guide;
+      var triggerEventName = event.triggerEventName;
+      console.log(startTime, endTime, isAllDay, guide, triggerEventName);
+      // var schedule;
+      // console.log("-----<<<<<<", event);
+
+      console.log("---startTime--<<<<<", event);
+      // console.log("--- endTime--<<<<<<", endTime);
+      console.log(new Date(startTime._date).toISOString())
+      const newSchedule = {
+        id: null,
+        title: event.title,
+        category: "time",
+        dueDateClass: "",
+        start: new Date(startTime._date).toISOString(),
+        end: new Date(endTime._date).toISOString(),
+        calendarId: parseInt(event.calendarId)
 
 
-    var calendar = new Calendar("#calendar", {
-
-
-      defaultView: 'week',
-      taskView: true,
-      template: {
-        monthDayname: function(dayname) {
-          return '<span class="calendar-week-dayname-name">' + dayname.label + '</span>';
-        }}
-    });
-
-    calendar.createSchedules(props.ScheduleStore.computedList);
-
-    /////=======================update by draging ============
-    calendar.on("beforeUpdateSchedule", function (event) {
-      const schedule = event.schedule;
-      const changes = event.changes;
-      calendar.updateSchedule(schedule.id, schedule.calendarId, changes);
-    });
-    ///////////////// on clicke create new schedule ///////////////////
-    calendar.on({
-      clickSchedule: function (e) {
-        console.log("clickSchedule", e);
-      },
-      beforeCreateSchedule: function (e) {
-        console.log("beforeCreateSchedule", e);
-
-        /* step1. open custom edit popup */
-        /*
-              You need to open the modal window first and enter the title information!
-            */
-        // ex...
-
-        const title = prompt("Schedule", "Party");
-
-        const schedule = {
-          id: +new Date(),
-          calendarId: "1",
-          title: title, // title!!!!!!!!
-          isAllDay: false,
-          start: e.start,
-          end: e.end,
-          category: "time",
-        };
-
-        calendar.createSchedules([schedule]);
-        props.ScheduleStore.handleAlertModalChange();
-
-        /* step3. clear guide element */
-        e.guide.clearGuideElement();
-      },
-
-      beforeUpdateSchedule: function (e) {
-        console.log("beforeUpdateSchedule", e);
-        e.schedule.start = e.start;
-        e.schedule.end = e.end;
-        calendar.updateSchedule(
-          e.schedule.id,
-          e.schedule.calendarId,
-          e.schedule
-        );
-      },
-      beforeDeleteSchedule: function (e) {
-        console.log("beforeDeleteSchedule", e);
-        calendar.deleteSchedule(e.schedule.id, e.schedule.calendarId);
-      },
-    });
-
-    //================================
-
-    ////======================================== addded event listener
-
-    // onClickListener(calendar)
-    //========================================
-
-    // calendar.on('clickMore', function(event) {
-    //     console.log('clickMore', event.date, event.target);
-    // });
-
-    // const popup=openCreationPopup()
-
-    return (
-      <div >
-      {
-
-        <div id="calendar" style={{ height: "80px" }}></div>
       }
-        {
-          // <ModalCustom></ModalCustom>
-          // <ModalCustom></ModalCustom>
-        }
+      props.ScheduleStore.createNewSchedule(newSchedule)
+
+
+
+
+
+
+
+
+      //   if (triggerEventName === "click") {
+      //     const title = prompt("Schedule", "Party");
+      //     const schedule = {
+      //       id: +new Date(),
+      //       calendarId: "1",
+      //       title: title, // title!!!!!!!!
+      //       isAllDay: false,
+      //       start: event.start,
+      //       end: event.end,
+      //       category: "time",
+      //     };
+      //   } else if (triggerEventName === "dblclick") {
+      //     // open writing detail schedule popup
+      //   }
+      //   //  calendar.createSchedules([schedule]);
+    };
+    return (
+      <div>
+        <Calendar
+          ref={calendarRef}
+          height="900px"
+          calendars={[
+            {
+              id: "1",
+              name: "Private",
+              bgColor: "#9e5fff",
+              borderColor: "#9e5fff",
+            },
+            {
+              id: "2",
+              name: "Company",
+              bgColor: "#0E4BBF",
+              borderColor: "#0E4BBF",
+            },
+            {
+
+              id: "3",
+              name: "mma",
+              bgColor: "#2ABF0E",
+              borderColor: "#2ABF0E",
+            }
+          ]}
+          disableDblClick={true}
+          disableClick={false}
+          isReadOnly={false}
+          Z
+          month={{
+            startDayOfWeek: 0,
+          }}
+          schedules={props.ScheduleStore.computedList}
+          scheduleView
+          taskView
+          onClickDayname={handleClickDayname}
+          onClickSchedule={handleClickSchedule}
+          onClickMore={handleClickMore}
+          onClickTimezonesCollapseBtn={handleClickTimezonesCollapseBtn}
+          onBeforeDeleteSchedule={handleBeforeDeleteSchedule}
+          onAfterRenderSchedule={handleafterRenderSchedule}
+          onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
+          onBeforeCreateSchedule={handlebeforeCreateSchedule}
+          template={{
+            milestone(schedule) {
+              return `<span style="color:#fff;background-color: ${schedule.bgColor};">${schedule.title}</span>`;
+            },
+            milestoneTitle() {
+              return "Milestone";
+            },
+            allday(schedule) {
+              return `${schedule.title}<i class="fa fa-refresh"></i>`;
+            },
+            alldayTitle() {
+              return "All Day";
+            },
+          }}
+
+          useDetailPopup
+          useCreationPopup
+          view={"week"} // You can also set the `defaultView` option.
+          week={{
+            showTimezoneCollapseButton: true,
+            timezonesCollapsed: true,
+          }}
+        />
+        <button onClick={handleCreateSchedule}>create schedul</button>
+        <button onClick={handleClickNextButton}>Go next!</button>
+        <button onClick={handleClickPrevButton}>Go Prev!</button>
+        <button onClick={handleHide}>hide </button>
       </div>
     );
   })
 );
-
 export default Schedule;
