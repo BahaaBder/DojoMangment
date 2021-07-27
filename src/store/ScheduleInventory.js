@@ -47,7 +47,6 @@ class ScheduleInventory {
         console.log("-----list------", response.data);
         const temp = this.mapScheduleToStr(response.data);
         console.log("temp mapeed ", temp);
-        this.handle(temp);
         this.tempProxy = temp;
 
         Object.assign(this.listSchedule, response.data);
