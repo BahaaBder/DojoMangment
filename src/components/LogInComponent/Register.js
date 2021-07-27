@@ -38,10 +38,18 @@ export default function Register() {
 
   const handleRequest = () => {
     if (checkUserValidInputs()) {
-      axios.post(SEND_REQUEST_ROUTE, user).then((res) => {
-        setShowError(false);
-        setShowSuccess(true);
-      });
+      axios.post(SEND_REQUEST_ROUTE, user).then(
+        (res) => {
+          if (res.data === "error") {
+            console.log("BTATA");
+          }
+          setShowError(false);
+          setShowSuccess(true);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     } else {
       setShowError(true);
       setShowSuccess(false);

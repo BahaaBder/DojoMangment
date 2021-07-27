@@ -23,7 +23,6 @@ const Schedule = inject("ScheduleStore")(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
-      console.log(" tmp proxy ", props.ScheduleStore.computedVar);
     }, []);
     const handleClickDayname = (ev) => {
       // view : week, day
@@ -38,7 +37,6 @@ const Schedule = inject("ScheduleStore")(
     const handleClickMore = (event) => {
       console.log("clickMore", event.date, event.target);
     };
-
     const handleBeforeDeleteSchedule = (ev) => {
       let scheduleID = ev.schedule.id;
       let scheduleCalendarID = ev.schedule.calendarId;
@@ -49,7 +47,6 @@ const Schedule = inject("ScheduleStore")(
         calendarId: scheduleCalendarID,
       });
     };
-
     const handleafterRenderSchedule = (ev) => {
       console.log("************After Render***************");
     };
@@ -60,27 +57,22 @@ const Schedule = inject("ScheduleStore")(
     const handleClickTimezonesCollapseBtn = (ev) => {
       // console.log("XXXXXXXXXXX++++++++++XXXXXXXXX");
     };
-
     const handleClickNextButton = () => {
       const calendarInstance = calendarRef.current.getInstance();
       calendarInstance.next();
     };
-
     const handleClickPrevButton = () => {
       const calendarInstance = calendarRef.current.getInstance();
       calendarInstance.prev();
     };
-
     const handleCreateSchedule = () => {
       const calendarInstance = calendarRef.current.getInstance();
       calendarInstance.openCreationPopup({});
     };
-
     const handleHide = () => {
       const calendarInstance = calendarRef.current.getInstance();
       calendarInstance.toggleTaskView(false);
     };
-
     const handlebeforeCreateSchedule = (event) => {
       var startTime = event.start;
       var endTime = event.end;
@@ -89,25 +81,38 @@ const Schedule = inject("ScheduleStore")(
       var triggerEventName = event.triggerEventName;
       console.log(startTime, endTime, isAllDay, guide, triggerEventName);
       // var schedule;
-      console.log("----->>>>>", event);
-      if (triggerEventName === "click") {
-        const title = prompt("Schedule", "Party");
-        const schedule = {
-          id: +new Date(),
-          calendarId: "1",
-          title: title, // title!!!!!!!!
-          isAllDay: false,
-          start: event.start,
-          end: event.end,
-          category: "time",
-        };
-      } else if (triggerEventName === "dblclick") {
-        // open writing detail schedule popup
-      }
+      // console.log("-----<<<<<<", event);
 
-      //  calendar.createSchedules([schedule]);
+      console.log("---startTime--<<<<<", event);
+      // console.log("--- endTime--<<<<<<", endTime);
+      console.log(new Date(startTime._date).toISOString());
+      const newSchedule = {
+        id: null,
+        title: event.title,
+        category: "time",
+        dueDateClass: "",
+        start: new Date(startTime._date).toISOString(),
+        end: new Date(endTime._date).toISOString(),
+        calendarId: parseInt(event.calendarId),
+      };
+      props.ScheduleStore.createNewSchedule(newSchedule);
+
+      //   if (triggerEventName === "click") {
+      //     const title = prompt("Schedule", "Party");
+      //     const schedule = {
+      //       id: +new Date(),
+      //       calendarId: "1",
+      //       title: title, // title!!!!!!!!
+      //       isAllDay: false,
+      //       start: event.start,
+      //       end: event.end,
+      //       category: "time",
+      //     };
+      //   } else if (triggerEventName === "dblclick") {
+      //     // open writing detail schedule popup
+      //   }
+      //   //  calendar.createSchedules([schedule]);
     };
-
     return (
       <div>
         <Calendar
@@ -115,16 +120,22 @@ const Schedule = inject("ScheduleStore")(
           height="900px"
           calendars={[
             {
-              id: "0",
+              id: "1",
               name: "Private",
               bgColor: "#9e5fff",
               borderColor: "#9e5fff",
             },
             {
-              id: "1",
+              id: "2",
               name: "Company",
-              bgColor: "#00a9ff",
-              borderColor: "#00a9ff",
+              bgColor: "#0E4BBF",
+              borderColor: "#0E4BBF",
+            },
+            {
+              id: "3",
+              name: "mma",
+              bgColor: "#2ABF0E",
+              borderColor: "#2ABF0E",
             },
           ]}
           disableDblClick={true}
@@ -159,18 +170,6 @@ const Schedule = inject("ScheduleStore")(
               return "All Day";
             },
           }}
-          timezones={[
-            {
-              timezoneOffset: 540,
-              displayLabel: "GMT+09:00",
-              tooltip: "Seoul",
-            },
-            {
-              timezoneOffset: -420,
-              displayLabel: "GMT-08:00",
-              tooltip: "Los Angeles",
-            },
-          ]}
           useDetailPopup
           useCreationPopup
           view={"week"} // You can also set the `defaultView` option.

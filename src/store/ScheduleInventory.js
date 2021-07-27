@@ -1,12 +1,10 @@
 import { observable, action, makeObservable, computed, toJS } from "mobx";
 import axios from "axios";
-
 const serverApi = "http://localhost:8080";
 class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
@@ -15,20 +13,23 @@ class ScheduleInventory {
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
+      createNewSchedule: action,
     });
   }
   get computedList() {
     return toJS(this.listSchedule);
   }
-
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
   };
-
-  deleteSchedule = (schedule) => {
-    axios.delete(serverApi + "/schedules", { data: schedule });
+  createNewSchedule = async (schedule) => {
+    await axios.post(serverApi + "/schedules", schedule);
+    this.getSchedule();
   };
-
+  deleteSchedule = async (schedule) => {
+    await axios.delete(serverApi + "/schedules", { data: schedule });
+    this.getSchedule();
+  };
   mapScheduleToStr = (list) => {
     const tempList = [];
     list.forEach((s) => {
@@ -42,7 +43,6 @@ class ScheduleInventory {
     });
     return tempList;
   };
-
   getSchedule = () => {
     axios
       .get(`${serverApi}/schedules`)
@@ -57,5 +57,4 @@ class ScheduleInventory {
       });
   };
 }
-
 export default ScheduleInventory;
