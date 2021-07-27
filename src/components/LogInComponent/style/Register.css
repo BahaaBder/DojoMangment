@@ -55,3 +55,17 @@
   text-align: center;
   margin-top: 23px;
 }
+
+.txtfild{
+  margin: 15px;
+}
+span{
+  padding: 5px;
+}
+.text{
+  left: 10px;
+}
+.pass{
+  color: rgb(89, 189, 89);
+  cursor: pointer;
+}

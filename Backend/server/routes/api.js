@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:@localhost:3306/dojo");
+const sequelize = new Sequelize("mysql://root@localhost/dojo");
 
 sequelize
   .authenticate()
@@ -13,13 +13,7 @@ sequelize
   });
 
 router.post("/registrations", async function (req, res) {
-  console.log(req.body);
-  if (await emailIsExists(req.body.useremail)) {
-    await addToContacts(req.body);
-  } else {
-    res.send("error");
-  }
-  //await addToContacts(req.body);
+  await addToContacts(req.body);
   res.send("adding successfuly !");
 });
 
@@ -31,7 +25,7 @@ addToContacts = (userInfo) => {
   sequelize
     .query(
       `INSERT INTO profile
- VALUES (null
+    VALUES (null
     ,'${userInfo.username}'
     ,'${userInfo.useremail}'
     ,'${userInfo.userpassword}'
@@ -83,17 +77,37 @@ router.post("/schedules", (req, res) => {
         INSERT INTO schedule
          VALUES(
             ${newSchedule.id},
-            ${newSchedule.calenderId},
+            ${newSchedule.calendarId},
             '${newSchedule.title}',
             '${newSchedule.category}',
             '${newSchedule.duDateClass}',
             '${newSchedule.start}',
-            '${newSchedule.end}',
+            '${newSchedule.end}'
             )
         `
       )
       .then(function ([results, metadata]) {
         res.send("added ok ");
+      });
+  } catch (error) {}
+});
+
+router.delete("/schedules", function (req, res) {
+  console.log("--->>>", req.body);
+  let schedule = req.body;
+  try {
+    sequelize
+      .query(
+        `
+         DELETE FROM schedule
+         WHERE id=${schedule.id} 
+         AND 
+         calendarId=${schedule.calendarId}
+         
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("Deleting Schedule Success ");
       });
   } catch (error) {}
 });
