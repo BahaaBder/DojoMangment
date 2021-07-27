@@ -1,11 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-// import { Provider } from 'mobx-react'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "mobx-react";
+import ScheduleInventory from "./store/ScheduleInventory";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-ReactDOM.render(<App />, document.getElementById('root')
+const ScheduleStore = new ScheduleInventory();
+const store = {
+  ScheduleStore,
+};
+ReactDOM.render(
+  <Provider {...store}>
+    {" "}
+    <App />
+  </Provider>,
+  document.getElementById("root")
 );
 
 reportWebVitals();
