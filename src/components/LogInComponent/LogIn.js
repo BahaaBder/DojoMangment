@@ -12,7 +12,7 @@ export default function Register(props) {
     const [password, setpassword] = useState("");
     const [show, setshow] = useState(true);
     const [error, seterror] = useState(false);
-
+    const [passforget, setpassforget] = useState(false)
     const change = (e) =>{
         let id = e.target.id;
         let inputVal = e.target.value;
@@ -42,21 +42,25 @@ export default function Register(props) {
         
       } 
       const handleShow = () => setshow(true)
+      const forgetPass = () => setpassforget(true);
 
     return(
         <Modal className="modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="coach-info">LogIn</Modal.Title>
+          <Modal.Title className="coach-info">Welcome to our set</Modal.Title>
+          <Modal.Title className="coach-info">
+            new here?  <Link className="pass" to="/Register">Create Acount</Link>
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body className="bodyModal">
             <div className="txtfild">
-                <span>Email: </span>
+                <div>Email: </div>
                 <TextField className="text" id="email-input"
                 value={email}
                 onChange={change} />
             </div>
             <div className="txtfild">
-                <span>Passwors: </span>
+                <div>Passwors: <span className="pass" onClick={forgetPass}>Forget Password</span> </div>
                 <TextField className="text" id="pass-input"
                 value={password}
                 onChange={change} />
@@ -66,15 +70,17 @@ export default function Register(props) {
           <Button className="btn" variant="secondary" onClick={handleClose}>
             sign in
           </Button>
-          <Link  to="/Register">
+          {/* <Link  to="/Register">
             <Button className="btn" variant="secondary" onClick={handleClose}>
                 register
             </Button>
-          </Link>
+          </Link> */}
           <Alert variant="danger" show={error}>
             Check Your Inputs Again !
           </Alert>
-
+          <Alert variant="success" show={passforget} >
+            Relax and try to remember you'r password
+          </Alert>
         </Modal.Footer>
       </Modal>
         
