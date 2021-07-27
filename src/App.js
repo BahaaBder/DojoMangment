@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useEffect } from "react";
 import Register from "./components/Register";
 //CustomerStore
+import NavBar from "./components/NavBar";
 
 import React from "react";
 
@@ -12,9 +13,7 @@ import Schedule from "./components/Schedule";
 function App() {
   return (
     <div>
-      <Register />
-      <h1>test</h1>
-      <Schedule></Schedule>
+     <NavBar></NavBar>
     </div>
   );
 }
