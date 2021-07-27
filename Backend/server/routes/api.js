@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:314671470kh@localhost/dojo");
+const sequelize = new Sequelize("mysql://root:@localhost/dojo");
 
 sequelize
   .authenticate()
@@ -89,8 +89,8 @@ router.get("/schedules", function (req, res) {
 });
 
 router.post("/schedules", (req, res) => {
-  const coach = req.body;
-  console.log(newsSchedule);
+  const newSchedule = req.body;
+  console.log(newSchedule);
 
   try {
     console.log(" inserting ");
@@ -99,18 +99,36 @@ router.post("/schedules", (req, res) => {
         `
         INSERT INTO schedule
          VALUES(
-            ${coach.id},
-            ${coach.calenderId},
-            '${coach.title}',
-            '${coach.category}',
-            '${coach.duDateClass}',
-            '${coach.start}',
-            '${coach.end}',
+            ${newSchedule.id},
+            ${newSchedule.calendarId},
+            '${newSchedule.title}',
+            '${newSchedule.category}',
+            '${newSchedule.dueDateClass}',
+            '${newSchedule.start}',
+            '${newSchedule.end}'
             )
         `
       )
       .then(function ([results, metadata]) {
         res.send("added ok ");
+      });
+  } catch (error) {}
+});
+router.delete("/schedules", function (req, res) {
+  console.log("--->>>", req.body);
+  let schedule = req.body;
+  try {
+    sequelize
+      .query(
+        `
+         DELETE FROM schedule
+         WHERE id=${schedule.id} 
+         AND 
+         calendarId=${schedule.calendarId}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("Deleting Schedule Success ");
       });
   } catch (error) {}
 });
