@@ -55,9 +55,9 @@ CREATE TABLE schedule(
 );
 CREATE TABLE user_department(
     user_id INT,
-    department_id INT,
+    depqrtment_id INT,
     FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(department_id) REFERENCES department(id)
+    FOREIGN KEY(depqrtment_id) REFERENCES department(id)
 );
 
 Create TABLE coach(
