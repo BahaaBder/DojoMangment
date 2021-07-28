@@ -1,11 +1,8 @@
 
 import { Container, Row, Col } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar'
-import {
-    BrowserRouter as Router,
-    Route,
-    Link
-} from "react-router-dom";
+import { BrowserRouter as Router,Route,Link}
+from "react-router-dom";
 import React from 'react'
 import Schedule from './Schedule'
 import Coachs from "./CoachComponent/Coachs";

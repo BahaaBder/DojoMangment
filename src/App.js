@@ -1,7 +1,7 @@
-import { observer, inject } from "mobx-react";
+// import { observer, inject } from "mobx-react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 //CustomerStore
 import NavBar from "./components/NavBar";

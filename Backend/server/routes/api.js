@@ -11,10 +11,15 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
-router.post("/registrations", async function (req, res) {
-  await addToContacts(req.body);
-  res.send("adding successfuly !");
-});
+
+
+
+  router.post("/registrations", async function (req, res) {
+    await addToContacts(req.body);
+    res.send("adding successfuly !");
+  });
+  
+
 router.get("/test", function (req, res) {
   res.send("test ok ");
 });
@@ -162,23 +167,13 @@ router.post("/coachs", function (req, res) {
   } catch (error) {
     res.status(400).send(error.message);
   }
-});
-router.delete("/schedules", function (req, res) {
-  console.log("--->>>", req.body);
-  let schedule = req.body;
-  try {
-    sequelize
-      .query(
-        `
-         DELETE FROM schedule
-         WHERE id=${schedule.id} 
-         AND 
-         calendarId=${schedule.calendarId}
-        `
-      )
-      .then(function ([results, metadata]) {
-        res.send("Deleting Schedule Success ");
-      });
-  } catch (error) {}
-});
+})
+
+router.get("/about", function(req, res){
+  sequelize.query(`SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `)
+  .then(function ([results, metadata]) {
+    res.send(results);
+  })
+})
+
 module.exports = router;
