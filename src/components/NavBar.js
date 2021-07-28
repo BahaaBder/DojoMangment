@@ -13,46 +13,62 @@ import AddCoach from "./CoachComponent/AddCoach";
 import LogIn from "./LogInComponent/LogIn";
 import Register from "./LogInComponent/Register";
 import About from './about/About';
+import { observer, inject } from 'mobx-react';
 
-
-function NavBar() {
+const NavBar = inject("LogInStore")(
+    observer((props) =>  {
     return (
         <Router>
             <nav className="navbar navbar-dark bg-dark">
-
                 <Container fluid="md">
-                    <Row className="justify-content-md-center">
-                        <Col>
-                            <Link to="/about">
-                                about
-                            </Link>
-                        </Col>
-                        <Col>
-                            <Link to="/schedules">
-                                schedules
-                            </Link>
-                        </Col>
-                        <Col>
-                            <Link to="/coachs">
-                                Coachs
-                            </Link>
-                        </Col>
-                        <Col>
-                            <Link to="/register"> register </Link>
-                        </Col>
-                        <Col>
-                            <Link to="/addCoachs">
-                                Add Coach
-                            </Link>
-                        </Col>
-                        <Col>
-                            <Link to="/LogIn">
-                                LogIn
-                            </Link>
-                        </Col>
+                    {!props.LogInStore.isSign ?  
+                        <Row className="justify-content-md-center">
+                            <Col>
+                                <Link to="/about">
+                                    about
+                                </Link>
+                            </Col>
+                            <Col>
+                                <Link to="/schedules">
+                                    schedules
+                                </Link>
+                            </Col>
+                            <Col>
+                                <Link to="/coachs">
+                                    Coachs
+                                </Link>
+                            </Col>
+                            <Col>
+                                <Link to="/register"> register </Link>
+                            </Col>
+                            <Col>
+                                <Link to="/addCoachs">
+                                    Add Coach
+                                </Link>
+                            </Col>
+                            <Col>
+                                <Link to="/LogIn">
+                                    LogIn
+                                </Link>
+                            </Col>
 
                     </Row>
 
+                    :
+                    <Row>
+                        <Col>
+                            <Link to="/addCoachs">
+                                 Add Coach
+                            </Link>
+                        </Col>
+                        <Col>
+                            <Link onClick={() =>{props.LogInStore.updateSign(false)}}>
+                                 Exit
+                            </Link>
+                        </Col>
+                    </Row>
+                    }
+                    
                 </Container>
             </nav>
 
@@ -94,7 +110,7 @@ function NavBar() {
 
         </Router>
     )
-}
+}))
 
 export default NavBar
 

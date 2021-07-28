@@ -18,9 +18,7 @@ export default function Register() {
     userphone: "",
     userage: 0,
   });
-
   useEffect(() => {}, []);
-
   const checkUserValidInputs = () => {
     if (
       user.username === "" ||
@@ -35,33 +33,25 @@ export default function Register() {
       return true;
     }
   };
-
+  
   const handleRequest = () => {
     if (checkUserValidInputs()) {
-      axios.post(SEND_REQUEST_ROUTE, user).then(
-        (res) => {
-          if (res.data === "error") {
-            console.log("BTATA");
-          }
-          setShowError(false);
-          setShowSuccess(true);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      axios.post(SEND_REQUEST_ROUTE, user).then((res) => {
+        setShowError(false);
+        setShowSuccess(true);
+      });
     } else {
       setShowError(true);
       setShowSuccess(false);
     }
   };
+
   const handleChange = (e) => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
     });
   };
-
   return (
     <div className="page-content">
       <div className="form-sheet">

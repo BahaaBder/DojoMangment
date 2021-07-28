@@ -1,8 +1,8 @@
+
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize("mysql://root:314671470kh@localhost/dojo");
-
 sequelize
   .authenticate()
   .then(() => {
@@ -11,29 +11,18 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
-
-
-
 router.post("/registrations", async function (req, res) {
-  console.log(req.body);
-  if (await emailIsExists(req.body.useremail)) {
-    await addToContacts(req.body);
-  } else {
-    res.send("error");
-  }
-  //await addToContacts(req.body);
+  await addToContacts(req.body);
   res.send("adding successfuly !");
 });
-
 router.get("/test", function (req, res) {
   res.send("test ok ");
 });
-
 addToContacts = (userInfo) => {
   sequelize
     .query(
       `INSERT INTO profile
- VALUES (null
+    VALUES (null
     ,'${userInfo.username}'
     ,'${userInfo.useremail}'
     ,'${userInfo.userpassword}'
@@ -46,7 +35,6 @@ addToContacts = (userInfo) => {
       sequelize.query(`INSERT INTO user VALUES(${id},2,1)`);
     });
 };
-
 emailIsExists = (email) => {
   sequelize
     .query(`SELECT * FROM profile WHERE email=${email}`)
@@ -58,22 +46,24 @@ emailIsExists = (email) => {
       }
     });
 };
-
 //TODO check if work after update register
-router.get("/users",  function(req,res){
-    let user = req.query;
-    let isUserExist =  sequelize.query(
-      `SELECT * FROM profile WHERE email=${user.email} AND password=${user.password}`)
-      .then(function([res]){
-        if (res.length > 0) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-    
+router.get("/users", function (req, res) {
+  let user = req.query;
+  sequelize
+    .query(
+      `SELECT * FROM
+       profile 
+       WHERE profile.email='${user.email}'
+        AND profile.password='${user.password}'`
+    )
+    .then(function ([results]) {
+      if (results.length > 0) {
+         res.send(true);
+      } else {
+        res.send(false);
+      }
+    });
 });
-
 router.get("/schedules", function (req, res) {
   sequelize
     .query(
@@ -87,11 +77,9 @@ router.get("/schedules", function (req, res) {
       res.send(schedules);
     });
 });
-
 router.post("/schedules", (req, res) => {
   const newSchedule = req.body;
   console.log(newSchedule);
-
   try {
     console.log(" inserting ");
     sequelize
@@ -132,28 +120,24 @@ router.delete("/schedules", function (req, res) {
       });
   } catch (error) {}
 });
-
-router.get('/coachs', function (req, res) {
-  try{
+router.get("/coachs", function (req, res) {
+  try {
     sequelize
-    .query(
-      `
+      .query(
+        `
       SELECT * 
       FROM 
       coach
     `
-    )
-    .then(function ([coachs, metadata]) {
-      res.send(coachs);
-    });
+      )
+      .then(function ([coachs, metadata]) {
+        res.send(coachs);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
   }
-  catch(error){
-    res.status(400).send(error.message)
-  }
-
-})
-
-router.post('/coachs', function (req, res){
+});
+router.post("/coachs", function (req, res) {
   const coach = req.body.data;
   console.log(coach);
   try {
@@ -178,6 +162,23 @@ router.post('/coachs', function (req, res){
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
-
+});
+router.delete("/schedules", function (req, res) {
+  console.log("--->>>", req.body);
+  let schedule = req.body;
+  try {
+    sequelize
+      .query(
+        `
+         DELETE FROM schedule
+         WHERE id=${schedule.id} 
+         AND 
+         calendarId=${schedule.calendarId}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("Deleting Schedule Success ");
+      });
+  } catch (error) {}
+});
 module.exports = router;
