@@ -14,32 +14,21 @@ CREATE TABLE schedule(
 ////
 use dojo; 
 drop TABLE schedule;
-
-
-
 -- ==============================MMA =================================
-
 INSERT INTO schedule VALUES (null,1,"MMA Mixed Martil art ","time","","2021-07-25T19:30:00+01:00","2021-07-25T19:30:00+01:00",1);
 INSERT INTO schedule VALUES (null,1,"MMA Mixed Martil art ","time","","2021-07-27T19:30:00+01:00","2021-07-27T21:30:00+01:00",1);
 INSERT INTO schedule VALUES (null,1,"MMA Mixed Martil art ","time","","2021-07-29T19:30:00+01:00","2021-07-29T21:30:00+01:00",1);
-
+INSERT INTO schedule VALUES (null,3,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T19:30:00+01:00',1);
 use dojo; 
-schadule id 
 INSERT INTO schedule VALUES (null,2,"Classic Mma boxing","time","",'2021-07-28T21:30:00+01:00','2021-07-28T23:30:00+01:00',2);
 INSERT INTO schedule VALUES (null,2,"Classic MMA boxing","time","","2021-07-26T16:30:00+01:00","2021-07-26T20:30:00+01:00",2);
 
-INSERT INTO schedule VALUES (null,3,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T19:30:00+01:00',1);
+
 INSERT INTO schedule VALUES (null,3,"Classic boxing","time","",'2021-07-26T19:30:00+01:00','2021-07-26T19:30:00+01:00'1);
 INSERT INTO schedule VALUES (null,3,"Classic boxing","time","",'2021-07-28T19:30:00+01:00','2021-07-28T19:30:00+01:00'1);
 INSERT INTO schedule VALUES (null,3,"Classic boxing","time","",'2021-07-28T21:30:00+01:00','2021-07-28T23:30:00+01:00'1);
-
-
 -- ==============================Boxing =================================
 use dojo;
-
-
-
-
     -- {
     --     id: '5',
     --     calendarId: '2',
@@ -71,7 +60,6 @@ use dojo;
     --     start: '2021-07-25T09:30:00+01:00',
     --     end: '2021-07-25T11:30:00+01:00'
     -- },
-
     -- {
     --     id: '8',
     --     calendarId: '4',
@@ -90,12 +78,4 @@ use dojo;
     --     start: '2021-07-28T09:30:00+01:00',
     --     end: '2021-07-28T12:30:00+01:00'
     -- },
-
 -- ==============================Brazlian=================================
-
-
-
-
-
-
-​

@@ -17,7 +17,7 @@ import React from "react";
 function App() {
   return (
     <div>
-     <NavBar></NavBar>
+        <NavBar></NavBar>
     </div>
   );
 }

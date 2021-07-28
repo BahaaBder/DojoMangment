@@ -41,28 +41,38 @@ CREATE TABLE user(
     FOREIGN KEY(dojo_id) REFERENCES dojoTable(id)
 );
 
--- ​
--- CREATE TABLE schedule(
---     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     calenderId INT,
---     title VARCHAR(40),
---     category VARCHAR(40),
---     duDateClass VARCHAR(40),
---     start VARCHAR(40),
---     end VARCHAR(40),
---     isReadOnly BOOLEAN,
+--
+​USE dojo;
+drop table schedule; ​
+CREATE TABLE schedule(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    calendarId INT,
+    title VARCHAR(40),
+    category VARCHAR(40),
+    duDateClass VARCHAR(40),
+    start VARCHAR(40),
+    end VARCHAR(40),
+    userId INT,
+    FOREIGN KEY(userId) REFERENCES profile(id)
+);
+
+-- ​USE dojo;
+-- drop table user_department;
+-- ​USE dojo;
+-- CREATE TABLE user_department(
 --     user_id INT,
---     FOREIGN KEY(user_id) REFERENCES user(id)
+--     department_id INT,
+--     FOREIGN KEY(user_id) REFERENCES user(id),
+--     FOREIGN KEY(department_id) REFERENCES department(id)
 -- );
 
 ​USE dojo;
 drop table user_department;
-​USE dojo;
-CREATE TABLE user_department(
-    user_id INT,
-    department_id INT,
-    FOREIGN KEY(user_id) REFERENCES user(id),
-    FOREIGN KEY(department_id) REFERENCES department(id)
+CREATE TABLE user_schedule(
+    userId INT,
+    schedule_id INT,
+    FOREIGN KEY(userId) REFERENCES user(id),
+    FOREIGN KEY(schedule_id) REFERENCES schedule(id)
 );
 
 Create TABLE coach(

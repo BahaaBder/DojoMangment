@@ -4,9 +4,11 @@ import "./style/Register.css";
 import { TextField } from '@material-ui/core';
 import { Button,Modal,Alert } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import { observer, inject } from 'mobx-react';
 const axios = require("axios");
 
-export default function LogIn(props) {
+const LogIn =inject("LogInStore")(
+  observer((props) => {
 
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -37,14 +39,22 @@ export default function LogIn(props) {
         if(checkInputs()){
           //check if mail & pass exist
           try{
-             let isExist = await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
-            if(isExist){
+             let userIdExist = await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+             userIdExist = userIdExist.data;
+             if(userIdExist.id){
               console.log("found");
+              setshow(false);
+              // let userId =  await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+              props.LogInStore.updateId(userIdExist.id);
+              props.LogInStore.updateSign(true);
             }
             else{
               console.log("not found");
+              props.LogInStore.updateSign(false);
+              seterror(true);
+              setshow(true)
             }
-            setshow(false);
+            
           }
           catch(error){
             console.log(error.message);
@@ -76,6 +86,7 @@ export default function LogIn(props) {
             <div className="txtfild">
                 <div>Passwors: <span className="pass" onClick={forgetPass}>Forget Password</span> </div>
                 <TextField className="text" id="pass-input"
+                type="password"
                 value={password}
                 onChange={change} />
             </div>
@@ -99,4 +110,5 @@ export default function LogIn(props) {
       </Modal>
         
     );
-}
+}))
+export default LogIn

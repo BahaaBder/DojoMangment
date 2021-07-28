@@ -5,19 +5,19 @@ import "tui-calendar/dist/tui-calendar.css";
 import moment from "moment";
 import { useState, useRef } from "react";
 import { observer, inject } from "mobx-react";
+import UserPopUp from "./UserPopUp";
 const calendarRef = createRef();
-const isAdmin = false
-const userCalender = 1
+const isAdmin = false;
+let scheduleInfo = {};
 //ScheduleStore
 const serverApi = "http://localhost:8080";
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
-const Schedule = inject("ScheduleStore")(
+const Schedule = inject("ScheduleStore","LogInStore")(
   observer((props) => {
     const [showModal, setShowModal] = useState(false);
     const [event, setEvent] = useState(null);
     const [list, setList] = useState([]);
-   const [calenderFilterUser, setCalenderFilterUser] = useState([])
-    const [clickedOnSchedule, setClickedOnSchedule] = useState(false)
+    const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const toggle = (e) => {
       setShowModal(!e);
       console.log(showModal);
@@ -32,34 +32,45 @@ const Schedule = inject("ScheduleStore")(
     }, []);
  
     const handleClickDayname = (ev) => {
+      console.log("************Click Day name***************");
       // view : week, day
       console.group("onClickDayname");
       console.log(ev.date);
       console.groupEnd();
     };
+
+    // const changColor = () =>{
+
+    // }
     const handleClickSchedule = (ev) => {
+      console.log("************Click Schedule****************");
+      console.log("%%%", ev);
+      scheduleInfo = {
+        userId: props.LogInStore.userId,
+        scheduleId: ev.schedule.id,
+        calendarId: ev.schedule.calendarId,
+        start: new Date(ev.schedule.start._date).toISOString(),
+        end: new Date(ev.schedule.end._date).toISOString(),
+        title: ev.schedule.title,
+      };
+      console.log("%%%", scheduleInfo);
       if (isAdmin) {
         console.log(" admin clicled schedule ===> ");
-
-
-        // pop up 
+        // pop up
         console.log(ev);
-
       } else {
         console.log(" trainee clicled schedule ===> ");
-
-        setClickedOnSchedule(!clickedOnSchedule)
-
-        /// popo 
-
+        setClickedOnSchedule(!clickedOnSchedule);
+        /// popo
         console.log(ev);
       }
-
     };
     const handleClickMore = (event) => {
+      console.log("************Click More***************");
       console.log("clickMore", event.date, event.target);
     };
     const handleBeforeDeleteSchedule = (ev) => {
+      console.log("************Before Delete***************");
       let scheduleID = ev.schedule.id;
       let scheduleCalendarID = ev.schedule.calendarId;
       console.log("delete handle ", ev);
@@ -76,9 +87,7 @@ const Schedule = inject("ScheduleStore")(
       console.log("************BEFORE UPDATE***************");
       console.log(ev);
     };
-    const handleClickTimezonesCollapseBtn = (ev) => {
-      // console.log("XXXXXXXXXXX++++++++++XXXXXXXXX");
-    };
+    const handleClickTimezonesCollapseBtn = (ev) => {};
     const handleClickNextButton = () => {
       const calendarInstance = calendarRef.current.getInstance();
       calendarInstance.next();
@@ -96,39 +105,29 @@ const Schedule = inject("ScheduleStore")(
       calendarInstance.toggleTaskView(false);
     };
     const handlebeforeCreateSchedule = (event) => {
-
-      var startTime = event.start;
-      var endTime = event.end;
-      var isAllDay = event.isAllDay;
-      var guide = event.guide;
-      var triggerEventName = event.triggerEventName;
-      console.log(startTime, endTime, isAllDay, guide, triggerEventName);
-      // var schedule;
-      // console.log("-----<<<<<<", event);
-
-      console.log("---startTime--<<<<<", event);
-      // console.log("--- endTime--<<<<<<", endTime);
-      console.log(new Date(startTime._date).toISOString())
-      const newSchedule = {
-        id: null,
-        title: event.title,
-        category: "time",
-        dueDateClass: "",
-        start: new Date(startTime._date).toISOString(),
-        end: new Date(endTime._date).toISOString(),
-        calendarId: parseInt(event.calendarId)
-
-
+      if (isAdmin) {
+        var startTime = event.start;
+        var endTime = event.end;
+        var isAllDay = event.isAllDay;
+        var guide = event.guide;
+        var triggerEventName = event.triggerEventName;
+        console.log(startTime, endTime, isAllDay, guide, triggerEventName);
+        // var schedule;
+        // console.log("-----<<<<<<", event);
+        console.log("---startTime--<<<<<", event);
+        // console.log("--- endTime--<<<<<<", endTime);
+        console.log(new Date(startTime._date).toISOString());
+        const newSchedule = {
+          id: null,
+          title: event.title,
+          category: "time",
+          dueDateClass: "",
+          start: new Date(startTime._date).toISOString(),
+          end: new Date(endTime._date).toISOString(),
+          calendarId: parseInt(event.calendarId),
+        };
+        props.ScheduleStore.createNewSchedule(newSchedule);
       }
-      props.ScheduleStore.createNewSchedule(newSchedule)
-
-
-
-
-
-
-
-
       //   if (triggerEventName === "click") {
       //     const title = prompt("Schedule", "Party");
       //     const schedule = {
@@ -147,18 +146,14 @@ const Schedule = inject("ScheduleStore")(
     };
     return (
       <div>
-
         {
           <Calendar
-
             ref={calendarRef}
             height="900px"
             calendars={[
-
-
               {
                 id: "1",
-                name: "private",
+                name: "Private",
                 bgColor: "#9e5fff",
                 borderColor: "#9e5fff",
               },
@@ -169,12 +164,11 @@ const Schedule = inject("ScheduleStore")(
                 borderColor: "#0E4BBF",
               },
               {
-
                 id: "3",
                 name: "mma",
                 bgColor: "#2ABF0E",
                 borderColor: "#2ABF0E",
-              }
+              },
             ]}
             disableDblClick={true}
             disableClick={false}
@@ -184,9 +178,6 @@ const Schedule = inject("ScheduleStore")(
               startDayOfWeek: 0,
             }}
             schedules={props.ScheduleStore.computedList}
-
-
-
             scheduleView
             taskView
             onClickDayname={handleClickDayname}
@@ -211,28 +202,18 @@ const Schedule = inject("ScheduleStore")(
                 return "All Day";
               },
             }}
-
-
-
             useDetailPopup={isAdmin}
             useCreationPopup={isAdmin}
-
-
-
             view={"week"} // You can also set the `defaultView` option.
             week={{
               showTimezoneCollapseButton: true,
               timezonesCollapsed: true,
             }}
           />
-
         }
-
-        {
-          clickedOnSchedule ? <LogIn></LogIn> : null
-
-
-        }
+        {clickedOnSchedule ? (
+          <UserPopUp scheduleInfo={scheduleInfo}></UserPopUp>
+        ) : null}
         <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>
         <button onClick={handleClickPrevButton}>Go Prev!</button>

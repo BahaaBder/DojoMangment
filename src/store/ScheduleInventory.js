@@ -5,17 +5,20 @@ class ScheduleInventory{
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId=3
-    this.defaultCalender=1
+    this.userId=1;
+    this.isHaveACource=false;
+
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
-      handleAlertModalChange: action,
+      isHaveACource: observable,
       getSchedule: observable,
+      handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
-      createNewSchedule:action
+      createNewSchedule:action,
+      haveACource:action
     });
   }
  
@@ -28,13 +31,10 @@ class ScheduleInventory{
   createNewSchedule=async (schedule)=>{
     await axios.post(serverApi + "/schedules",  schedule );
     this.getSchedule()
-
-
   }
   deleteSchedule = async (schedule) => {
     await axios.delete(serverApi + "/schedules", { data: schedule });
     this.getSchedule()
-
   };
   mapScheduleToStr = (list) => {
     const tempList = [];
@@ -43,11 +43,9 @@ class ScheduleInventory{
          const object2 = Object.assign(  {},
           s,
           { id: s.id.toString() },
-          { calendarId: this.defaultCalender.toString() })
+          { calendarId: this.userId.toString() })
           tempList.push(object2);
-
       }else{
-
          const object2 = Object.assign(
           {},
           s,
@@ -59,6 +57,34 @@ class ScheduleInventory{
     });
     return tempList;
   };
+
+  //Tawfiq
+  JoinToCours = async (data) =>{
+    try{
+        let res = await axios.post(`${serverApi}/userSchedule`,{scheduleId:parseInt(data.scheduleId),userId:data.userId})
+        console.log(res);
+    }
+    catch(error){
+      console.log(error.message);
+    }
+  }
+
+  haveACource = async (data) =>{
+    let isExist = await axios.get(`http://localhost:8080/userSchedule?userId=${data.userId}&scheduleId=${data.scheduleId}`);
+    this.isHaveACource = isExist.data;
+  }
+
+   //Tawfiq
+   exitFromCource = async (data) =>{
+    try{
+      let res = await axios.delete(`${serverApi}/userSchedule`,{data:{scheduleId:parseInt(data.scheduleId),userId:data.userId}})
+      console.log(res);
+    }
+    catch(error){
+      console.log(error.message);
+    }
+  }
+
   getSchedule = () => {
     axios
       .get(`${serverApi}/schedules`)
