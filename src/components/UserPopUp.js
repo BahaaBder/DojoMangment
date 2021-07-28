@@ -20,12 +20,22 @@ import axios from "axios";
     // setIsJoined(true);
     sethaveACource(true);
     props.ScheduleStore.JoinToCours(props.scheduleInfo)
+    props.ScheduleStore.changeScheduleColor({
+        scheduleId : props.scheduleInfo.scheduleId,
+        userId : props.scheduleInfo.userId,
+        isJoin:true
+    }); // tawfiq new changes
   };
 
   const handleLeave = () => {
     // setIsJoined(false);
     sethaveACource(false);
-    props.ScheduleStore.exitFromCource(props.scheduleInfo)
+    props.ScheduleStore.exitFromCource(props.scheduleInfo);
+    props.ScheduleStore.changeScheduleColor({
+        scheduleId : props.scheduleInfo.scheduleId,
+        userId : props.scheduleInfo.userId,
+        isJoin:false
+    }); // tawfiq new changes
   };
   return (
     <Modal show={show} onHide={handleClose}>

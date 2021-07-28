@@ -24,6 +24,7 @@ const Schedule = inject("ScheduleStore","LogInStore")(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
+      
     }, []);
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
@@ -33,9 +34,10 @@ const Schedule = inject("ScheduleStore","LogInStore")(
       console.groupEnd();
     };
 
-    // const changColor = () =>{
-
-    // }
+    const changeScheduleColor = () =>{   // tawfiq new changes
+        let userId = props.LogInStore.userId
+        props.ScheduleStore.changeScheduleColor(userId)
+    }
     const handleClickSchedule = (ev) => {
       console.log("************Click Schedule****************");
       console.log("%%%", ev);
@@ -163,6 +165,18 @@ const Schedule = inject("ScheduleStore","LogInStore")(
                 bgColor: "#2ABF0E",
                 borderColor: "#2ABF0E",
               },
+              {
+                id: "4",
+                name: "InCourcColor",
+                bgColor: "#3cd371",
+                borderColor: "#3cd371",
+              },
+              {
+                id: "5",
+                name: "InCourcColor",
+                bgColor: "#ff5800",
+                borderColor: "#ff5800",
+              },
             ]}
             disableDblClick={true}
             disableClick={false}
@@ -206,7 +220,7 @@ const Schedule = inject("ScheduleStore","LogInStore")(
           />
         }
         {clickedOnSchedule ? (
-          <UserPopUp scheduleInfo={scheduleInfo}></UserPopUp>
+          <UserPopUp scheduleInfo={scheduleInfo} changeScheduleColor={changeScheduleColor}></UserPopUp>
         ) : null}
         <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>

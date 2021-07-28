@@ -18,7 +18,8 @@ class ScheduleInventory{
       deleteSchedule: action,
       computedList: computed,
       createNewSchedule:action,
-      haveACource:action
+      haveACource:action,
+      changeScheduleColor:action
     });
   }
   get computedList() {
@@ -36,14 +37,14 @@ class ScheduleInventory{
     this.getSchedule()
   };
   mapScheduleToStr = (list) => {
-    const tempList = [];
+    const temp = [];
     list.forEach((s) => {
       if(s.userId===this.userId){
          const object2 = Object.assign(  {},
           s,
           { id: s.id.toString() },
           { calendarId: this.userId.toString() })
-          tempList.push(object2);
+          temp.push(object2);
       }else{
          const object2 = Object.assign(
           {},
@@ -51,13 +52,47 @@ class ScheduleInventory{
           { id: s.id.toString() },
           { calendarId: s.calendarId.toString() }
         );
-        tempList.push(object2);
+        temp.push(object2);
       }
     });
-    return tempList;
+    return temp;
   };
 
   //Tawfiq
+
+  changeScheduleColor = (userData) => {
+    let temp = [];
+    let schedule =toJS(this.listSchedule);
+        schedule.forEach((s) => {
+          if(s.userId===parseInt(userData.userId) && parseInt(s.id)===parseInt(userData.scheduleId)){
+            
+            if(userData.isJoin){
+              const object2 = Object.assign(  {},
+               s,
+               { calendarId: '4' })
+               temp.push(object2);
+            }else{
+              const object2 = Object.assign(
+               {},
+               s,
+               { calendarId: '5' }
+             );
+             temp.push(object2);
+            }
+            
+          }else{
+            const object2 = Object.assign(
+              {},
+              s,
+              { calendarId: '5' }
+            );
+            temp.push(object2);
+          }
+        });
+        Object.assign(this.listSchedule, temp);
+        console.log(this.listSchedule);
+  };
+
   JoinToCours = async (data) =>{
     try{
         let res = await axios.post(`${serverApi}/userSchedule`,{scheduleId:parseInt(data.scheduleId),userId:data.userId})

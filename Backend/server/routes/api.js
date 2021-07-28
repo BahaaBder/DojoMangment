@@ -250,6 +250,22 @@ router.get("/userSchedule", function (req, res) {
     res.status(400).send(error.message);
   }
 })
+
+router.get("/userInSchedule", function (req, res) {
+  try {
+    sequelize
+      .query(
+        `
+         SELECT *  FROM user_schedule
+        `
+      )
+      .then(function ([results, metadata]) {
+          res.send(results)
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+})
 // router.update("/userDepartment",function(req,res){
 //   const data = req.body.data;
 //   sequelize.query(`update schedule set calender = ${data.info.userId} WHERE ${data.info.id}=${data.userId} `)
