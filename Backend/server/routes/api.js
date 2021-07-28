@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root@localhost/dojo");
+const sequelize = new Sequelize("mysql://root:@localhost/dojo");
 
 sequelize
   .authenticate()
@@ -14,16 +14,11 @@ sequelize
 
 
 
-router.post("/registrations", async function (req, res) {
-  console.log(req.body);
-  if (await emailIsExists(req.body.useremail)) {
+  router.post("/registrations", async function (req, res) {
     await addToContacts(req.body);
-  } else {
-    res.send("error");
-  }
-  //await addToContacts(req.body);
-  res.send("adding successfuly !");
-});
+    res.send("adding successfuly !");
+  });
+  
 
 router.get("/test", function (req, res) {
   res.send("test ok ");
@@ -178,6 +173,13 @@ router.post('/coachs', function (req, res){
   } catch (error) {
     res.status(400).send(error.message);
   }
+})
+
+router.get("/about", function(req, res){
+  sequelize.query(`SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `)
+  .then(function ([results, metadata]) {
+    res.send(results);
+  })
 })
 
 module.exports = router;
