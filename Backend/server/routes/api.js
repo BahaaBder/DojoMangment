@@ -18,7 +18,7 @@ router.post("/registrations", async function (req, res) {
 });
 
 router.get("/test", function (req, res) {
-  res.send("test ok ");
+  res.send("test ok");
 });
 
 addToContacts = (userInfo) => {
