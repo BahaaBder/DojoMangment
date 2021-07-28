@@ -18,9 +18,7 @@ export default function Register() {
     userphone: "",
     userage: 0,
   });
-
   useEffect(() => {}, []);
-
   const checkUserValidInputs = () => {
     if (
       user.username === "" ||
@@ -35,7 +33,7 @@ export default function Register() {
       return true;
     }
   };
-
+  
   const handleRequest = () => {
     if (checkUserValidInputs()) {
       axios.post(SEND_REQUEST_ROUTE, user).then((res) => {
@@ -54,7 +52,6 @@ export default function Register() {
       [e.target.name]: e.target.value,
     });
   };
-
   return (
     <div className="page-content">
       <div className="form-sheet">

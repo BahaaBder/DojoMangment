@@ -12,13 +12,15 @@ let scheduleInfo = {};
 //ScheduleStore
 const serverApi = "http://localhost:8080";
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
-const Schedule = inject("ScheduleStore")(
+const Schedule = inject(
+  "ScheduleStore",
+  "LogInStore"
+)(
   observer((props) => {
     const [showModal, setShowModal] = useState(false);
     const [event, setEvent] = useState(null);
     const [list, setList] = useState([]);
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
-
     const toggle = (e) => {
       setShowModal(!e);
       console.log(showModal);
@@ -33,18 +35,21 @@ const Schedule = inject("ScheduleStore")(
       console.log(ev.date);
       console.groupEnd();
     };
+
+    // const changColor = () =>{
+
+    // }
     const handleClickSchedule = (ev) => {
       console.log("************Click Schedule****************");
       console.log("%%%", ev);
-
       scheduleInfo = {
-        userId: 233,
+        userId: props.LogInStore.userId,
+        scheduleId: ev.schedule.id,
         calendarId: ev.schedule.calendarId,
         start: new Date(ev.schedule.start._date).toISOString(),
         end: new Date(ev.schedule.end._date).toISOString(),
         title: ev.schedule.title,
       };
-
       console.log("%%%", scheduleInfo);
       if (isAdmin) {
         console.log(" admin clicled schedule ===> ");
@@ -120,7 +125,6 @@ const Schedule = inject("ScheduleStore")(
         };
         props.ScheduleStore.createNewSchedule(newSchedule);
       }
-
       //   if (triggerEventName === "click") {
       //     const title = prompt("Schedule", "Party");
       //     const schedule = {
