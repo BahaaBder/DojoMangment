@@ -4,10 +4,7 @@ import "tui-calendar/dist/tui-calendar.css";
 import moment from "moment";
 import { useState, useRef } from "react";
 import { observer, inject } from "mobx-react";
-<<<<<<< HEAD
-=======
 const calendarRef = createRef();
->>>>>>> master
 //ScheduleStore
 const serverApi = "http://localhost:8080";
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
@@ -22,10 +19,6 @@ const Schedule = inject("ScheduleStore")(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
-<<<<<<< HEAD
-      console.log(" tmp proxy ", props.ScheduleStore.listSchedule.list);
-=======
->>>>>>> master
     }, []);
     const handleClickDayname = (ev) => {
       // view : week, day
@@ -100,79 +93,8 @@ const Schedule = inject("ScheduleStore")(
         calendarId: parseInt(event.calendarId)
 
 
-<<<<<<< HEAD
-    var calendar = new Calendar("#calendar", {
-
-
-      defaultView: "month",
-      taskView: true,
-      popupDetailDate: function (isAllDay, start, end) {
-        var isSameDate = moment(start).isSame(end);
-        var endFormat = (isSameDate ? "" : "YYYY.MM.DD ") + "hh:mm a";
-
-        if (isAllDay) {
-          return (
-            moment(start).format("YYYY.MM.DD") +
-            (isSameDate ? "" : " - " + moment(end).format("YYYY.MM.DD"))
-          );
-        }
-
-        return (
-          moment(start).format("YYYY.MM.DD hh:mm a") +
-          " - " +
-          moment(end).format(endFormat)
-        );
-      },
-              template: {
-
-                  month: {
-                      dayname: daysOfWeek,
-                      startDayOfWeek: 0
-                  }
-
-              }
-    });
-
-    calendar.createSchedules(props.ScheduleStore.computedList);
-
-    /////=======================update by draging ============
-    calendar.on("beforeUpdateSchedule", function (event) {
-      const schedule = event.schedule;
-      const changes = event.changes;
-      calendar.updateSchedule(schedule.id, schedule.calendarId, changes);
-    });
-    ////////////////////////////////////
-    calendar.on({
-      clickSchedule: function (e) {
-        console.log("clickSchedule", e);
-      },
-      beforeCreateSchedule: function (e) {
-        // console.log("beforeCreateSchedule", e);
-
-        /* step1. open custom edit popup */
-        /*
-              You need to open the modal window first and enter the title information!
-            */
-        // ex...
-
-        const title = prompt("Schedule", "Party");
-
-        const schedule = {
-          id: +new Date(),
-          calendarId: "1",
-          title: title, // title!!!!!!!!
-          isAllDay: false,
-          start: e.start,
-          end: e.end,
-          category: "time",
-        };
-
-        calendar.createSchedules([schedule]);
-        props.ScheduleStore.handleAlertModalChange();
-=======
       }
       props.ScheduleStore.createNewSchedule(newSchedule)
->>>>>>> master
 
 
 

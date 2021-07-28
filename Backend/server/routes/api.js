@@ -14,16 +14,11 @@ sequelize
 
 
 
-router.post("/registrations", async function (req, res) {
-  console.log(req.body);
-  if (await emailIsExists(req.body.useremail)) {
+  router.post("/registrations", async function (req, res) {
     await addToContacts(req.body);
-  } else {
-    res.send("error");
-  }
-  //await addToContacts(req.body);
-  res.send("adding successfuly !");
-});
+    res.send("adding successfuly !");
+  });
+  
 
 router.get("/test", function (req, res) {
   res.send("test ok ");
