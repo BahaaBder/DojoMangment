@@ -4,9 +4,10 @@ class LogInStore {
     constructor() {
   
       this.isSign = false;
-  
+      this.userId=0;
       makeObservable(this, {
         isSign: observable,
+        userId:observable,
         updateSign: action,
   
       });
@@ -15,7 +16,9 @@ class LogInStore {
     updateSign = (isSign) => {
        this.isSign = isSign;
     };
-  
+    updateId= (userId) => {
+      this.userId = userId;
+   };
   }
   
   export default LogInStore;

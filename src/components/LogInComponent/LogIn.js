@@ -39,11 +39,13 @@ const LogIn =inject("LogInStore")(
         if(checkInputs()){
           //check if mail & pass exist
           try{
-             let isExist = await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
-             isExist = isExist.data;
-             if(isExist){
+             let userIdExist = await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+             userIdExist = userIdExist.data;
+             if(userIdExist.id){
               console.log("found");
               setshow(false);
+              // let userId =  await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+              props.LogInStore.updateId(userIdExist.id);
               props.LogInStore.updateSign(true);
             }
             else{

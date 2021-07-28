@@ -15,9 +15,10 @@ let about = new aboutStore();
 const CoachStore = new Coach();
 const LogInStore = new LogIn();
 const store = {
+  about,
   ScheduleStore,
   CoachStore,
-  LogInStore,
+  LogInStore
 };
 ReactDOM.render(
   <Provider {...store}>

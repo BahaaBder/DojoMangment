@@ -42,23 +42,23 @@ class About extends Component{
     //     }
     // ]
 
-    componentDidMount = async () =>{
-      let tempData = await this.props.about.aboutList
-      this.setState({aboutList : tempData.data})
-      console.log(this.state.aboutList);
-    }
+    // componentDidMount = async () =>{
+    //   let tempData = await this.props.about.aboutList
+    //   this.setState({aboutList : tempData.data})
+    //   console.log(this.state.aboutList);
+    // }
 
 render(){
   return (
     <div>
-      {this.state.aboutList.map(dep =>
+      {/* {this.state.aboutList.map(dep =>
       <div key={dep.id}>
         <h1>{dep.department_name}</h1>
         <h3>{dep.descreption}</h3>
         <br></br>
         <br></br>
       </div>
-      )}
+      )} */}
     </div>
   )
 }
