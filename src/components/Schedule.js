@@ -1,12 +1,8 @@
 import React, { useEffect, createRef } from "react";
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
-import eventSchedule from "../config/events";
-import calenderType from "../config/calenderType";
 import moment from "moment";
 import { useState, useRef } from "react";
-import onClickListener from "../config/helper";
-import ModalCustom from "./ModalCustom";
 import { observer, inject } from "mobx-react";
 const calendarRef = createRef();
 //ScheduleStore

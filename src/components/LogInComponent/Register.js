@@ -38,23 +38,16 @@ export default function Register() {
 
   const handleRequest = () => {
     if (checkUserValidInputs()) {
-      axios.post(SEND_REQUEST_ROUTE, user).then(
-        (res) => {
-          if (res.data === "error") {
-            console.log("BTATA");
-          }
-          setShowError(false);
-          setShowSuccess(true);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+      axios.post(SEND_REQUEST_ROUTE, user).then((res) => {
+        setShowError(false);
+        setShowSuccess(true);
+      });
     } else {
       setShowError(true);
       setShowSuccess(false);
     }
   };
+
   const handleChange = (e) => {
     setUser({
       ...user,
@@ -130,7 +123,7 @@ export default function Register() {
       <div className="info-page">
         <div className="info-box">
           <div className="icon-image">
-            <img className="image" src={PHONE_ICON} />
+            <img className="image" src={PHONE_ICON} alt="" />
           </div>
           <div className="info-content">
             <div>
@@ -142,7 +135,7 @@ export default function Register() {
         </div>
         <div className="info-box">
           <div className="icon-image">
-            <img className="image" src={CLOCK_ICON} />
+            <img className="image" src={CLOCK_ICON} alt="" />
           </div>
           <div className="info-content">
             <div>
@@ -154,7 +147,7 @@ export default function Register() {
         </div>
         <div className="info-box">
           <div className="icon-image">
-            <img className="image" src={WAZE_ICON} />
+            <img className="image" src={WAZE_ICON} alt="" />
           </div>
           <div className="info-content">
             <div>
