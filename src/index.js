@@ -5,21 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "mobx-react";
 import ScheduleInventory from "./store/ScheduleInventory";
+import aboutStore from './store/aboutStore'
 import "bootstrap/dist/css/bootstrap.min.css";
 import Coach from "./store/CoachStore";
 
-const ScheduleStore = new ScheduleInventory();
+let ScheduleStore = new ScheduleInventory();
+let about = new aboutStore();
 const CoachStore = new Coach();
 const store = {
   ScheduleStore,
-  CoachStore,
-};
-ReactDOM.render(
-  <Provider {...store}>
-    {" "}
-    <App />
-  </Provider>,
-  document.getElementById("root")
-);
+  about,
+  CoachStore
+}
+ReactDOM.render(<Provider {...store}><App /></Provider>,document.getElementById("root"))
 
 reportWebVitals();
