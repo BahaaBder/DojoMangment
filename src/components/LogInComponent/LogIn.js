@@ -6,7 +6,7 @@ import { Button,Modal,Alert } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 // const axios = require("axios");
 
-export default function Register(props) {
+export default function LogIn(props) {
 
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -33,10 +33,23 @@ export default function Register(props) {
       }
       const handleClose = () =>setshow(false);
 
-      const sign = () => {
+      const sign = async () => {
         if(checkInputs()){
           //check if mail & pass exist
-          setshow(false);
+          try{
+             let isExist = await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+            if(isExist){
+              console.log("found");
+            }
+            else{
+              console.log("not found");
+            }
+            setshow(false);
+          }
+          catch(error){
+            console.log(error.message);
+          }
+
         }else {
           seterror(true);
           setshow(true)

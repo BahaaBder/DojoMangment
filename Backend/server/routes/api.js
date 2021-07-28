@@ -12,6 +12,8 @@ sequelize
     console.error("Unable to connect to the database:", err);
   });
 
+
+
 router.post("/registrations", async function (req, res) {
   console.log(req.body);
   if (await emailIsExists(req.body.useremail)) {
@@ -57,6 +59,21 @@ emailIsExists = (email) => {
     });
 };
 
+//TODO check if work after update register
+router.get("/users",  function(req,res){
+    let user = req.query;
+    let isUserExist =  sequelize.query(
+      `SELECT * FROM profile WHERE email=${user.email} AND password=${user.password}`)
+      .then(function([res]){
+        if (res.length > 0) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+    
+});
+
 router.get("/schedules", function (req, res) {
   sequelize
     .query(
@@ -73,7 +90,7 @@ router.get("/schedules", function (req, res) {
 
 router.post("/schedules", (req, res) => {
   const newSchedule = req.body;
-  console.log(newsSchedule);
+  console.log(newSchedule);
 
   try {
     console.log(" inserting ");
@@ -83,12 +100,12 @@ router.post("/schedules", (req, res) => {
         INSERT INTO schedule
          VALUES(
             ${newSchedule.id},
-            ${newSchedule.calenderId},
+            ${newSchedule.calendarId},
             '${newSchedule.title}',
             '${newSchedule.category}',
-            '${newSchedule.duDateClass}',
+            '${newSchedule.dueDateClass}',
             '${newSchedule.start}',
-            '${newSchedule.end}',
+            '${newSchedule.end}'
             )
         `
       )
@@ -97,6 +114,71 @@ router.post("/schedules", (req, res) => {
       });
   } catch (error) {}
 });
+router.delete("/schedules", function (req, res) {
+  console.log("--->>>", req.body);
+  let schedule = req.body;
+  try {
+    sequelize
+      .query(
+        `
+         DELETE FROM schedule
+         WHERE id=${schedule.id} 
+         AND 
+         calendarId=${schedule.calendarId}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("Deleting Schedule Success ");
+      });
+  } catch (error) {}
+});
+
+router.get('/coachs', function (req, res) {
+  try{
+    sequelize
+    .query(
+      `
+      SELECT * 
+      FROM 
+      coach
+    `
+    )
+    .then(function ([coachs, metadata]) {
+      res.send(coachs);
+    });
+  }
+  catch(error){
+    res.status(400).send(error.message)
+  }
+
+})
+
+router.post('/coachs', function (req, res){
+  const coach = req.body.data;
+  console.log(coach);
+  try {
+    sequelize
+      .query(
+        `
+        INSERT INTO coach
+         VALUES(
+             ${null},
+            '${coach.name}',
+            '${coach.type}',
+             ${coach.year},
+            '${coach.img}',
+            '${coach.descShort}',
+             ${coach.dojo_id}
+            )
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("added ok ");
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+})
 
 router.get("/about", function(req, res){
   sequelize.query(`SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `)

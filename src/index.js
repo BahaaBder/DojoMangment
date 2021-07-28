@@ -7,13 +7,16 @@ import { Provider } from "mobx-react";
 import ScheduleInventory from "./store/ScheduleInventory";
 import aboutStore from './store/aboutStore'
 import "bootstrap/dist/css/bootstrap.min.css";
+import Coach from "./store/CoachStore";
 
 let ScheduleStore = new ScheduleInventory();
 let about = new aboutStore();
-let store = {
+const CoachStore = new Coach();
+const store = {
   ScheduleStore,
-  about
-};
+  about,
+  CoachStore
+}
 ReactDOM.render(<Provider {...store}><App /></Provider>,document.getElementById("root"))
 
 reportWebVitals();
