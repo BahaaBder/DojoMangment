@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Button,Modal } from 'react-bootstrap';
 import "./style/Coach.css"
 
@@ -17,7 +17,7 @@ export default class Coach extends Component {
       <div>
         <div className="coachMain" onClick={this.handleShow}>          
             <span>
-                <img className="coachImg" src={coach.img} />
+                <img className="coachImg" src={coach.img} alt="" />
             </span>
             <span className="displayName">
                 <div >
@@ -34,7 +34,7 @@ export default class Coach extends Component {
         </Modal.Header>
         <Modal.Body className="bodyModal">
             <div class="onlyImg" >
-                <img className="coachImg" src={coach.img} />
+                <img className="coachImg" src={coach.img} alt="" />
             </div>
             <div className="info">
                 <div>

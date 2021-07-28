@@ -1,10 +1,10 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 
 import "./style/Register.css";
 import { TextField } from '@material-ui/core';
 import { Button,Modal,Alert } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-const axios = require("axios");
+// const axios = require("axios");
 
 export default function Register(props) {
 

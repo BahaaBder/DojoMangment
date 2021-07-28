@@ -2,10 +2,10 @@ import { observable, action, makeObservable, computed, toJS } from "mobx";
 import axios from "axios";
 
 const serverApi = "http://localhost:8080";
-class ScheduleInventory {
+class ScheduleInventory{
   constructor() {
     this.showModal = false;
-    this.listSchedule = [];
+    this.listSchedule = {list:[]}
     this.tempProxy = [];
 
     makeObservable(this, {
@@ -40,25 +40,28 @@ class ScheduleInventory {
     return tempList;
   };
 
-  getSchedule = () => {
-    axios
-      .get(`${serverApi}/schedules`)
-      .then((response) => {
-        console.log("-----list------", response.data);
-        const temp = this.mapScheduleToStr(response.data);
-        console.log("temp mapeed ", temp);
-        this.tempProxy = temp;
+  getSchedule = async () => {
+    let tempData = axios.get(`${serverApi}/schedules`)
+    let data = await tempData
+    this.listSchedule.list = data.data
+    // console.log(this.listSchedule.list);
+    // axios.get(`${serverApi}/schedules`)
+    //   .then((response) => {
+    //     console.log("-----list------", response.data);
+    //     const temp = this.mapScheduleToStr(response.data);
+    //     console.log("temp mapeed ", temp);
+    //     this.tempProxy = temp;
 
-        Object.assign(this.listSchedule, response.data);
+    //     Object.assign(this.listSchedule, response.data);
 
-        // console.log(" my list ",this.tempProxy)
-        // this.listSchedule = response.data
-        // // this.listSchedule =this.mapScheduleToStr(response.data )
-        // console.log(response.data)
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    //     // console.log(" my list ",this.tempProxy)
+    //     // this.listSchedule = response.data
+    //     // // this.listSchedule =this.mapScheduleToStr(response.data )
+    //     // console.log(response.data)
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
     // let temp;
     // temp = await this.mapScheduleToStr(this.listSchedule)
     // this.listSchedule = [...temp]

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { observer, inject } from 'mobx-react';
+// import { observer, inject } from 'mobx-react';
 import Coach from "./Coach"
 import "./style/Coach.css"
 

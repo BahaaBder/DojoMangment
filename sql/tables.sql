@@ -1,3 +1,4 @@
+create database dojo;
 USE dojo;
 
 CREATE TABLE dojoTable(
@@ -60,6 +61,34 @@ CREATE TABLE user_department(
     FOREIGN KEY(depqrtment_id) REFERENCES department(id)
 );
 -- ​
+
+USE dojo;
+CREATE TABLE DepartmentDetails (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    department_name TEXT,
+    descreption TEXT
+);
+
+CREATE TABLE About (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    motivations TEXT,
+    overview TEXT,
+    dojo_id int,
+    dep_details_id int,
+
+    FOREIGN KEY(dojo_id) REFERENCES dojoTable(id),
+    FOREIGN KEY(dep_details_id) REFERENCES DepartmentDetails(id)
+);
+
+-- USE dojo;
+-- drop table About, DepartmentDetails
+
+USE dojo;
+INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
+INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
+
+INSERT INTO About VALUES(null, "motivation1", "overview1", null, 1);
+INSERT INTO About VALUES(null, "motivation2", "overview2", null, 2);
 
 --INSERT INTO contacts VALUES (null,"A","B","A","A","A","A")
 -- INSERT INTO permission VALUES (null,true,true,true)

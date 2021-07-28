@@ -130,7 +130,7 @@ export default function Register() {
       <div className="info-page">
         <div className="info-box">
           <div className="icon-image">
-            <img className="image" src={PHONE_ICON} />
+            <img className="image" src={PHONE_ICON} alt="" />
           </div>
           <div className="info-content">
             <div>
@@ -142,7 +142,7 @@ export default function Register() {
         </div>
         <div className="info-box">
           <div className="icon-image">
-            <img className="image" src={CLOCK_ICON} />
+            <img className="image" src={CLOCK_ICON} alt="" />
           </div>
           <div className="info-content">
             <div>
@@ -154,7 +154,7 @@ export default function Register() {
         </div>
         <div className="info-box">
           <div className="icon-image">
-            <img className="image" src={WAZE_ICON} />
+            <img className="image" src={WAZE_ICON} alt="" />
           </div>
           <div className="info-content">
             <div>

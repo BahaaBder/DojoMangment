@@ -1,15 +1,9 @@
 import React, { useEffect } from "react";
 import Calendar from "tui-calendar"; /* ES6 */
 import "tui-calendar/dist/tui-calendar.css";
-import eventSchedule from "../config/events";
-import calenderType from "../config/calenderType";
 import moment from "moment";
 import { useState, useRef } from "react";
-import onClickListener from "../config/helper";
-import ModalCustom from "./ModalCustom";
 import { observer, inject } from "mobx-react";
-import axios from "axios";
-import { toJS } from "mobx";
 //ScheduleStore
 const serverApi = "http://localhost:8080";
 
@@ -25,7 +19,7 @@ const Schedule = inject("ScheduleStore")(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
-      console.log(" tmp proxy ", props.ScheduleStore.computedVar);
+      console.log(" tmp proxy ", props.ScheduleStore.listSchedule.list);
     }, []);
 
 
@@ -75,7 +69,7 @@ const Schedule = inject("ScheduleStore")(
         console.log("clickSchedule", e);
       },
       beforeCreateSchedule: function (e) {
-        console.log("beforeCreateSchedule", e);
+        // console.log("beforeCreateSchedule", e);
 
         /* step1. open custom edit popup */
         /*
