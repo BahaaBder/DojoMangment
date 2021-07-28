@@ -5,6 +5,8 @@ class ScheduleInventory{
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
+    this.userId=3
+    this.defaultCalender=1
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
@@ -16,6 +18,7 @@ class ScheduleInventory{
       createNewSchedule:action
     });
   }
+ 
   get computedList() {
     return toJS(this.listSchedule);
   }
@@ -36,13 +39,23 @@ class ScheduleInventory{
   mapScheduleToStr = (list) => {
     const tempList = [];
     list.forEach((s) => {
-      const object2 = Object.assign(
-        {},
-        s,
-        { id: s.id.toString() },
-        { calendarId: s.calendarId.toString() }
-      );
-      tempList.push(object2);
+      if(s.userId===this.userId){
+         const object2 = Object.assign(  {},
+          s,
+          { id: s.id.toString() },
+          { calendarId: this.defaultCalender.toString() })
+          tempList.push(object2);
+
+      }else{
+
+         const object2 = Object.assign(
+          {},
+          s,
+          { id: s.id.toString() },
+          { calendarId: s.calendarId.toString() }
+        );
+        tempList.push(object2);
+      }
     });
     return tempList;
   };
@@ -53,7 +66,7 @@ class ScheduleInventory{
         console.log("-----list------", response.data);
         const temp = this.mapScheduleToStr(response.data);
         console.log("temp mapeed ", temp);
-        Object.assign(this.listSchedule, response.data);
+        Object.assign(this.listSchedule, temp);
       })
       .catch(function (error) {
         console.log(error);

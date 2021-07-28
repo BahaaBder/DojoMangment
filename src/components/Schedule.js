@@ -1,10 +1,13 @@
 import React, { useEffect, createRef } from "react";
+import LogIn from "./LogInComponent/LogIn";
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
 import moment from "moment";
 import { useState, useRef } from "react";
 import { observer, inject } from "mobx-react";
 const calendarRef = createRef();
+const isAdmin = false
+const userCalender = 1
 //ScheduleStore
 const serverApi = "http://localhost:8080";
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
@@ -13,13 +16,21 @@ const Schedule = inject("ScheduleStore")(
     const [showModal, setShowModal] = useState(false);
     const [event, setEvent] = useState(null);
     const [list, setList] = useState([]);
+   const [calenderFilterUser, setCalenderFilterUser] = useState([])
+    const [clickedOnSchedule, setClickedOnSchedule] = useState(false)
     const toggle = (e) => {
       setShowModal(!e);
       console.log(showModal);
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
+    
+      // const arr = filterByUser(props.ScheduleStore.computedList, 1)
+      // setCalenderFilterUser(arr)
+
+
     }, []);
+ 
     const handleClickDayname = (ev) => {
       // view : week, day
       console.group("onClickDayname");
@@ -27,8 +38,23 @@ const Schedule = inject("ScheduleStore")(
       console.groupEnd();
     };
     const handleClickSchedule = (ev) => {
-      console.log(" clicled schedule ===> ");
-      console.log(ev);
+      if (isAdmin) {
+        console.log(" admin clicled schedule ===> ");
+
+
+        // pop up 
+        console.log(ev);
+
+      } else {
+        console.log(" trainee clicled schedule ===> ");
+
+        setClickedOnSchedule(!clickedOnSchedule)
+
+        /// popo 
+
+        console.log(ev);
+      }
+
     };
     const handleClickMore = (event) => {
       console.log("clickMore", event.date, event.target);
@@ -121,72 +147,93 @@ const Schedule = inject("ScheduleStore")(
     };
     return (
       <div>
-        <Calendar
-          ref={calendarRef}
-          height="900px"
-          calendars={[
-            {
-              id: "1",
-              name: "Private",
-              bgColor: "#9e5fff",
-              borderColor: "#9e5fff",
-            },
-            {
-              id: "2",
-              name: "Company",
-              bgColor: "#0E4BBF",
-              borderColor: "#0E4BBF",
-            },
-            {
 
-              id: "3",
-              name: "mma",
-              bgColor: "#2ABF0E",
-              borderColor: "#2ABF0E",
-            }
-          ]}
-          disableDblClick={true}
-          disableClick={false}
-          isReadOnly={false}
-          Z
-          month={{
-            startDayOfWeek: 0,
-          }}
-          schedules={props.ScheduleStore.computedList}
-          scheduleView
-          taskView
-          onClickDayname={handleClickDayname}
-          onClickSchedule={handleClickSchedule}
-          onClickMore={handleClickMore}
-          onClickTimezonesCollapseBtn={handleClickTimezonesCollapseBtn}
-          onBeforeDeleteSchedule={handleBeforeDeleteSchedule}
-          onAfterRenderSchedule={handleafterRenderSchedule}
-          onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
-          onBeforeCreateSchedule={handlebeforeCreateSchedule}
-          template={{
-            milestone(schedule) {
-              return `<span style="color:#fff;background-color: ${schedule.bgColor};">${schedule.title}</span>`;
-            },
-            milestoneTitle() {
-              return "Milestone";
-            },
-            allday(schedule) {
-              return `${schedule.title}<i class="fa fa-refresh"></i>`;
-            },
-            alldayTitle() {
-              return "All Day";
-            },
-          }}
+        {
+          <Calendar
 
-          useDetailPopup
-          useCreationPopup
-          view={"week"} // You can also set the `defaultView` option.
-          week={{
-            showTimezoneCollapseButton: true,
-            timezonesCollapsed: true,
-          }}
-        />
-        <button onClick={handleCreateSchedule}>create schedul</button>
+            ref={calendarRef}
+            height="900px"
+            calendars={[
+
+
+              {
+                id: "1",
+                name: "private",
+                bgColor: "#9e5fff",
+                borderColor: "#9e5fff",
+              },
+              {
+                id: "2",
+                name: "Company",
+                bgColor: "#0E4BBF",
+                borderColor: "#0E4BBF",
+              },
+              {
+
+                id: "3",
+                name: "mma",
+                bgColor: "#2ABF0E",
+                borderColor: "#2ABF0E",
+              }
+            ]}
+            disableDblClick={true}
+            disableClick={false}
+            isReadOnly={false}
+            Z
+            month={{
+              startDayOfWeek: 0,
+            }}
+            schedules={props.ScheduleStore.computedList}
+
+
+
+            scheduleView
+            taskView
+            onClickDayname={handleClickDayname}
+            onClickSchedule={handleClickSchedule}
+            onClickMore={handleClickMore}
+            onClickTimezonesCollapseBtn={handleClickTimezonesCollapseBtn}
+            onBeforeDeleteSchedule={handleBeforeDeleteSchedule}
+            onAfterRenderSchedule={handleafterRenderSchedule}
+            onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
+            onBeforeCreateSchedule={handlebeforeCreateSchedule}
+            template={{
+              milestone(schedule) {
+                return `<span style="color:#fff;background-color: ${schedule.bgColor};">${schedule.title}</span>`;
+              },
+              milestoneTitle() {
+                return "Milestone";
+              },
+              allday(schedule) {
+                return `${schedule.title}<i class="fa fa-refresh"></i>`;
+              },
+              alldayTitle() {
+                return "All Day";
+              },
+            }}
+
+
+
+            useDetailPopup={isAdmin}
+            useCreationPopup={isAdmin}
+
+
+
+            view={"week"} // You can also set the `defaultView` option.
+            week={{
+              showTimezoneCollapseButton: true,
+              timezonesCollapsed: true,
+            }}
+          />
+
+        }
+
+        {
+          clickedOnSchedule ? <LogIn></LogIn> : null
+
+
+        }
+        <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>
         <button onClick={handleClickPrevButton}>Go Prev!</button>
         <button onClick={handleHide}>hide </button>

@@ -74,6 +74,7 @@ Create TABLE coach(
     descrShort VARCHAR(1000),
     dojo_id INT,
     FOREIGN KEY(dojo_id) REFERENCES dojoTable(id)
+
 );
 -- ​
 
