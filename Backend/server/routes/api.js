@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root@localhost/dojo");
+const sequelize = new Sequelize("mysql://root:@localhost/dojo");
 
 sequelize
   .authenticate()
@@ -107,6 +107,7 @@ router.post("/schedules", (req, res) => {
       });
   } catch (error) {}
 });
+
 router.delete("/schedules", function (req, res) {
   console.log("--->>>", req.body);
   let schedule = req.body;
@@ -171,24 +172,14 @@ router.post("/coachs", function (req, res) {
   }
 });
 
-router.delete("/schedules", function (req, res) {
-  console.log("--->>>", req.body);
-  let schedule = req.body;
-  try {
-    sequelize
-      .query(
-        `
-         DELETE FROM schedule
-         WHERE id=${schedule.id} 
-         AND 
-         calendarId=${schedule.calendarId}
-         
-        `
-      )
-      .then(function ([results, metadata]) {
-        res.send("Deleting Schedule Success ");
-      });
-  } catch (error) {}
+router.get("/about", function (req, res) {
+  sequelize
+    .query(
+      `SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `
+    )
+    .then(function ([results, metadata]) {
+      res.send(results);
+    });
 });
 
 module.exports = router;
