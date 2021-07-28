@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:314671470kh@localhost/dojo");
+const sequelize = new Sequelize("mysql://root@localhost/dojo");
 
 sequelize
   .authenticate()

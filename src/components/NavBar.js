@@ -27,6 +27,7 @@ function NavBar() {
                                 about
                             </Link>
                         </Col>
+                      
                         <Col>
                             <Link to="/schedules">
                                 schedules
