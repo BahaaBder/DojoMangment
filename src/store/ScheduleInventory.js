@@ -19,6 +19,7 @@ class ScheduleInventory {
       computedList: computed,
       createNewSchedule: action,
       haveACource: action,
+      changeScheduleColor: action,
     });
   }
   get computedList() {
@@ -91,6 +92,16 @@ class ScheduleInventory {
     }
   };
 
+  changeScheduleColor = () => {
+    let temp = [];
+    let schedule = toJS(this.listSchedule);
+    axios.get(`${serverApi}/userInSchedule`).then((response) => {
+      let usersInSchedule = response.data;
+      let isExist = false;
+      schedule.forEach((s) => {});
+      Object.assign(this.listSchedule, temp);
+    });
+  };
   getSchedule = () => {
     axios
       .get(`${serverApi}/schedules`)
@@ -105,4 +116,5 @@ class ScheduleInventory {
       });
   };
 }
+
 export default ScheduleInventory;

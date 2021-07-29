@@ -22,12 +22,22 @@ const UserPopUp = inject("ScheduleStore")(
       // setIsJoined(true);
       sethaveACource(true);
       props.ScheduleStore.JoinToCours(props.scheduleInfo);
+      props.ScheduleStore.changeScheduleColor({
+        scheduleId: props.scheduleInfo.scheduleId,
+        userId: props.scheduleInfo.userId,
+        isJoined: true,
+      });
     };
 
     const handleLeave = () => {
       // setIsJoined(false);
       sethaveACource(false);
       props.ScheduleStore.exitFromCource(props.scheduleInfo);
+      props.ScheduleStore.changeScheduleColor({
+        scheduleId: props.scheduleInfo.scheduleId,
+        userId: props.scheduleInfo.userId,
+        isJoined: false,
+      });
     };
     return (
       <Modal show={show} onHide={handleClose}>

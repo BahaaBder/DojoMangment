@@ -141,6 +141,11 @@ const Schedule = inject(
       //   }
       //   //  calendar.createSchedules([schedule]);
     };
+    const changeScheduleColor = () => {
+      // tawfiq new changes
+      let userId = props.LogInStore.userId;
+      props.ScheduleStore.changeScheduleColor(userId);
+    };
     return (
       <div>
         {
@@ -165,6 +170,18 @@ const Schedule = inject(
                 name: "mma",
                 bgColor: "#2ABF0E",
                 borderColor: "#2ABF0E",
+              },
+              {
+                id: "4",
+                name: "InCourcColor",
+                bgColor: "#3CD371",
+                borderColor: "#3CD371",
+              },
+              {
+                id: "5",
+                name: "NotInCourcColor",
+                bgColor: "#FF5800",
+                borderColor: "#FF5800",
               },
             ]}
             disableDblClick={true}

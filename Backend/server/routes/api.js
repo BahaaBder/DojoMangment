@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:314671470kh@localhost/dojo");
+const sequelize = new Sequelize("mysql://root@localhost/dojo");
 sequelize
   .authenticate()
   .then(() => {
@@ -10,14 +10,12 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
-
 router.post("/registrations", async function (req, res) {
   await addToContacts(req.body);
   res.send("adding successfuly !");
 });
-
 router.get("/test", function (req, res) {
-  res.send("test ok");
+  res.send("test ok ");
 });
 addToContacts = (userInfo) => {
   sequelize
@@ -104,7 +102,6 @@ router.post("/schedules", (req, res) => {
       });
   } catch (error) {}
 });
-
 router.delete("/schedules", function (req, res) {
   console.log("--->>>", req.body);
   let schedule = req.body;
@@ -166,7 +163,6 @@ router.post("/coachs", function (req, res) {
     res.status(400).send(error.message);
   }
 });
-
 router.get("/about", function (req, res) {
   sequelize
     .query(
@@ -176,9 +172,7 @@ router.get("/about", function (req, res) {
       res.send(results);
     });
 });
-
 //tawfiq
-
 router.post("/userSchedule", function (req, res) {
   const user_schedule = req.body;
   try {
@@ -199,7 +193,6 @@ router.post("/userSchedule", function (req, res) {
     res.status(400).send(error.message);
   }
 });
-
 router.delete("/userSchedule", function (req, res) {
   const user_schedule = req.body;
   try {
@@ -219,7 +212,6 @@ router.delete("/userSchedule", function (req, res) {
     res.status(400).send(error.message);
   }
 });
-
 router.get("/userSchedule", function (req, res) {
   let user_schedule = req.query;
   let userId = parseInt(user_schedule.userId);
@@ -243,6 +235,21 @@ router.get("/userSchedule", function (req, res) {
         } else {
           res.send(false);
         }
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+router.get("/userInSchedule", function (req, res) {
+  try {
+    sequelize
+      .query(
+        `
+         SELECT *  FROM user_schedule
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
       });
   } catch (error) {
     res.status(400).send(error.message);
