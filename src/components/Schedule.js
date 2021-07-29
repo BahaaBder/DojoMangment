@@ -24,11 +24,6 @@ const Schedule = inject("ScheduleStore","LogInStore")(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
-    
-      // const arr = filterByUser(props.ScheduleStore.computedList, 1)
-      // setCalenderFilterUser(arr)
-
-
     }, []);
  
     const handleClickDayname = (ev) => {
@@ -56,15 +51,18 @@ const Schedule = inject("ScheduleStore","LogInStore")(
       console.log("%%%", scheduleInfo);
       if (isAdmin) {
         console.log(" admin clicled schedule ===> ");
-        // pop up
         console.log(ev);
       } else {
         console.log(" trainee clicled schedule ===> ");
         setClickedOnSchedule(!clickedOnSchedule);
-        /// popo
         console.log(ev);
       }
     };
+    const changeScheduleColor = () =>{   // tawfiq new changes
+      let userId = props.LogInStore.userId
+      props.ScheduleStore.changeScheduleColor(userId)
+  }
+
     const handleClickMore = (event) => {
       console.log("************Click More***************");
       console.log("clickMore", event.date, event.target);
@@ -152,6 +150,12 @@ const Schedule = inject("ScheduleStore","LogInStore")(
             height="900px"
             calendars={[
               {
+                id: "0",
+                name: "user",
+                bgColor: "#40dfa0",
+                borderColor: "#9e5fff",
+              },
+              {
                 id: "1",
                 name: "Private",
                 bgColor: "#9e5fff",
@@ -168,6 +172,18 @@ const Schedule = inject("ScheduleStore","LogInStore")(
                 name: "mma",
                 bgColor: "#2ABF0E",
                 borderColor: "#2ABF0E",
+              },
+              {
+                id: "4",
+                name: "InCourceColor",
+                bgColor: "#3CD371",
+                borderColor: "#3CD371",
+              },
+              {
+                id: "5",
+                name: "NotInCourcColor",
+                bgColor: "#FF5800",
+                borderColor: "#FF5800",
               },
             ]}
             disableDblClick={true}

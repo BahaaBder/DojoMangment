@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root:314671470kh@localhost/dojo");
+const sequelize = new Sequelize("mysql://root:@localhost/dojo");
 sequelize
   .authenticate()
   .then(() => {
@@ -180,8 +180,71 @@ router.get("/about", function(req, res){
 
 //tawfiq
 
+router.get("/userDepartment",function(req,res){
+  try {
+    sequelize
+      .query(
+        `
+       SELECT * FROM 
+       user_department 
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+
+})
+
+
+
+router.post("/userDepartment", function (req, res) {
+  const user_schedule = req.body;
+  console.log("==userDepartment post ==",user_schedule)
+  try {
+
+      sequelize.query(`
+    select * from user_department 
+    where user_id=${user_schedule.user_id} and 
+    department_id=${user_schedule.department_id}
+
+    `)  .then(function ([results, metadata]) {
+      console.log(" user  outside if department already exist ",results)
+
+
+    if(results.length>0){
+      console.log(" user department already exist ")
+      res.send(" already there ")
+    }else{
+      sequelize
+      .query(
+        `
+        INSERT INTO user_department
+         VALUES(
+             ${user_schedule.user_id},
+             ${user_schedule.department_id})
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("added ok ");
+      });
+
+    }
+
+    
+    });
+
+  
+  }catch (error) {
+    res.status(400).send(error.message);
+  }
+})
+
 router.post("/userSchedule", function (req, res) {
   const user_schedule = req.body;
+  console.log("==userSchedule post ==",user_schedule)
   try {
     sequelize
       .query(
@@ -215,6 +278,24 @@ router.delete("/userSchedule", function (req, res) {
       )
       .then(function ([results, metadata]) {
         res.send("added ok ");
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+})
+
+router.get("/userInSchedule", function (req, res) {
+  try {
+    sequelize
+      .query(
+        `
+         SELECT * 
+          FROM
+           user_schedule
+        `
+      )
+      .then(function ([results, metadata]) {
+          res.send(results)
       });
   } catch (error) {
     res.status(400).send(error.message);

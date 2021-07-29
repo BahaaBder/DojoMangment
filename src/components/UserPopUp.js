@@ -19,7 +19,11 @@ import axios from "axios";
   const handleJoin = () => {
     // setIsJoined(true);
     sethaveACource(true);
-    props.ScheduleStore.JoinToCours(props.scheduleInfo)
+
+    props.ScheduleStore.JoinToCourse(props.scheduleInfo)
+    // props.ScheduleStore.changeScheduleColor();
+
+
   };
 
   const handleLeave = () => {
