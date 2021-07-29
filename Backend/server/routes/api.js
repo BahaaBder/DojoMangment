@@ -199,8 +199,8 @@ router.post("/userDepartment", function (req, res) {
       .query(
         `
     select * from user_department 
-    where user_id=${user_schedule.user_id} and 
-    department_id=${user_schedule.department_id}
+    where user_id=${user_schedule.userId} and 
+    department_id=${user_schedule.departmentId}
 
     `
       )
@@ -216,8 +216,8 @@ router.post("/userDepartment", function (req, res) {
               `
         INSERT INTO user_department
          VALUES(
-             ${user_schedule.user_id},
-             ${user_schedule.department_id})
+             ${user_schedule.userId},
+             ${user_schedule.departmentId})
         `
             )
             .then(function ([results, metadata]) {
@@ -251,16 +251,16 @@ router.post("/userSchedule", function (req, res) {
     res.status(400).send(error.message);
   }
 });
-router.delete("/userSchedule", function (req, res) {
-  const user_schedule = req.body;
+router.delete("/userDepartment", function (req, res) {
+  const user_department = req.body;
   try {
     sequelize
       .query(
         `
-         DELETE FROM user_schedule
+         DELETE FROM user_department
          WHERE
-             userId=${user_schedule.userId} AND
-             schedule_id=${user_schedule.scheduleId}
+             user_id=${user_department.user_id} AND
+             department_id=${user_department.department_id}
         `
       )
       .then(function ([results, metadata]) {
@@ -300,7 +300,7 @@ router.get("/userSchedule", function (req, res) {
     sequelize
       .query(
         `
-         SELECT *  FROM user_schedule
+         SELECT *  FROM user_department
          WHERE
              userId=${userId} AND
              schedule_id=${scheduleID}
@@ -339,4 +339,24 @@ router.get("/userInSchedule", function (req, res) {
 //     res.send(results);
 //   })
 // })
+router.get("/departmentOfSchedule/:scheduleId", function (req, res) {
+  const s_id = req.params.scheduleId;
+  console.log(s_id);
+  const dep = "department_id";
+  try {
+    sequelize
+      .query(
+        `
+         SELECT ${dep}
+          FROM
+           schedule where id=${s_id}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 module.exports = router;

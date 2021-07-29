@@ -5,6 +5,7 @@
 
 
 
+
 use dojo;
 CREATE TABLE dojoTable(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -112,15 +113,15 @@ insert into user_department VALUES(1,3);
 
 
 use dojo;
-INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-25T19:30:00+01:00","2021-07-25T19:30:00+01:00",1);
-INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-27T19:30:00+01:00","2021-07-27T21:30:00+01:00",1);
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-25T12:00:00+01:00","2021-07-25T19:30:00+01:00",1);
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-27T13:30:00+01:00","2021-07-27T14:30:00+01:00",1);
 INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-29T19:30:00+01:00","2021-07-29T21:30:00+01:00",1);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T19:30:00+01:00',2);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-26T19:30:00+01:00','2021-07-26T19:30:00+01:00',2);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T19:30:00+01:00','2021-07-28T19:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T20:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-26T19:30:00+01:00','2021-07-26T20:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T19:30:00+01:00','2021-07-28T21:30:00+01:00',2);
 INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T21:30:00+01:00','2021-07-28T23:30:00+01:00',2);
-
-
+INSERT INTO schedule VALUES (null,"Japan","time","",'2021-07-29T21:30:00+01:00','2021-07-29T23:30:00+01:00',4);
+INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00+01:00','2021-07-30T20:00:00+01:00',3);
    
 --use dojo;
 -- CREATE TABLE DepartmentDetails (

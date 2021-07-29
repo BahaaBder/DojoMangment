@@ -7,7 +7,7 @@ class ScheduleInventory {
     this.listSchedule = [];
     this.userId = 1;
     this.isHaveACource = false;
-
+    this.arrayOfUserDepartment = [];
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
@@ -20,6 +20,8 @@ class ScheduleInventory {
       createNewSchedule: action,
       haveACourse: action,
       JoinToCourse: action,
+      arrayOfUserDepartment: observable,
+      checkIfAlreadyJoin: action,
     });
   }
 
@@ -53,26 +55,19 @@ class ScheduleInventory {
     });
   };
 
-  mapScheduleToStr = (list) => {
+  mapScheduleToStr = async (list) => {
     const tempList = [];
+    let getMyUser = await axios.get(`${serverApi}/userDepartment`);
+
+    let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
+    console.log("++++", departmentArray);
     list.forEach((s) => {
-      if (s.userId === this.userId) {
-        console.log("if");
-        const object2 = Object.assign(
-          {},
-          s,
-          { id: s.id.toString() },
-          { calendarId: this.userId.toString() }
-        );
+      console.log("--##", s);
+      if (departmentArray.includes(s.department_id)) {
+        const object2 = Object.assign({}, s, { calendarId: "1" });
         tempList.push(object2);
       } else {
-        console.log("else");
-        const object2 = Object.assign(
-          {},
-          s,
-          { id: s.id.toString() },
-          { calendarId: s.calendarId.toString() }
-        );
+        const object2 = Object.assign({}, s, { calendarId: "0" });
         tempList.push(object2);
       }
     });
@@ -86,6 +81,7 @@ class ScheduleInventory {
         departmentForUser.push(user_department.department_id);
       }
     });
+    this.arrayOfUserDepartment = departmentForUser;
     return departmentForUser;
   };
 
@@ -94,23 +90,28 @@ class ScheduleInventory {
     let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
     this.filterDepartmentForUser(departmentArray);
   };
+
   //Tawfiq
 
+  checkIfAlreadyJoin = async (data) => {
+    let departmentPromise = await axios.get(
+      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+    );
+    const dep_id = departmentPromise.data[0].department_id;
+    return this.arrayOfUserDepartment.includes(dep_id);
+  };
   JoinToCourse = async (data) => {
     try {
-      let res = await axios.post(`${serverApi}/userDepartment`, {
-        department_id: parseInt(data.calendarId),
-        user_id: data.userId,
-      });
-      let getMyUser = await axios.get(`${serverApi}/userDepartment`, {
-        department_id: parseInt(data.calendarId),
-        user_id: data.userId,
-      });
-      let departmentArray = this.getUserDepartments(
-        getMyUser.data,
-        data.userId
+      let departmentPromise = await axios.get(
+        `${serverApi}/departmentOfSchedule/${data.scheduleId}`
       );
-      this.filterDepartmentForUser(departmentArray);
+      const dep_id = departmentPromise.data[0].department_id;
+      console.log("Join $ :", dep_id);
+
+      let res = await axios.post(`${serverApi}/userDepartment`, {
+        userId: data.userId,
+        departmentId: dep_id,
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -123,9 +124,15 @@ class ScheduleInventory {
 
   //Tawfiq
   exitFromCource = async (data) => {
+    let departmentPromise = await axios.get(
+      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+    );
+    const dep_id = departmentPromise.data[0].department_id;
+    console.log("Join $ :", dep_id);
+
     try {
-      let res = await axios.delete(`${serverApi}/userSchedule`, {
-        data: { scheduleId: parseInt(data.scheduleId), userId: data.userId },
+      let res = await axios.delete(`${serverApi}/userDepartment`, {
+        data: { department_id: dep_id, user_id: data.userId },
       });
       console.log(res);
     } catch (error) {
@@ -179,10 +186,11 @@ class ScheduleInventory {
   getSchedule = () => {
     axios
       .get(`${serverApi}/schedules`)
-      .then((response) => {
+      .then(async (response) => {
         console.log("-----list------", response.data);
-        const temp = this.mapScheduleToStr(response.data);
+        const temp = await this.mapScheduleToStr(response.data);
         Object.assign(this.listSchedule, temp);
+        console.log("$ ", this.computedList);
         //this.filterByUserDepartment();
       })
       .catch(function (error) {

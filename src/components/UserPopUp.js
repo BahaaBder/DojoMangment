@@ -12,29 +12,22 @@ const UserPopUp = inject("ScheduleStore")(
     const [haveACource, sethaveACource] = useState(false);
 
     useEffect(async () => {
-      let isExist = await axios.get(
-        `http://localhost:8080/userSchedule?userId=${props.scheduleInfo.userId}&scheduleId=${props.scheduleInfo.scheduleId}`
+      const IsExist = await props.ScheduleStore.checkIfAlreadyJoin(
+        props.scheduleInfo
       );
-      sethaveACource(isExist.data);
+      sethaveACource(IsExist);
     }, []);
 
     const handleJoin = () => {
       // setIsJoined(true);
       sethaveACource(true);
-
       props.ScheduleStore.JoinToCourse(props.scheduleInfo);
-      // props.ScheduleStore.changeScheduleColor();
     };
 
     const handleLeave = () => {
       // setIsJoined(false);
       sethaveACource(false);
       props.ScheduleStore.exitFromCource(props.scheduleInfo);
-      props.ScheduleStore.changeScheduleColor({
-        scheduleId: props.scheduleInfo.scheduleId,
-        userId: props.scheduleInfo.userId,
-        isJoined: false,
-      });
     };
     return (
       <Modal show={show} onHide={handleClose}>

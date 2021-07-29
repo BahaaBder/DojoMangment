@@ -12,6 +12,7 @@ let scheduleInfo = {};
 //ScheduleStore
 const serverApi = "http://localhost:8080";
 const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
+
 const Schedule = inject(
   "ScheduleStore",
   "LogInStore"
@@ -28,7 +29,7 @@ const Schedule = inject(
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
       console.log("******** USE EFFECT *********");
-      //console.log(props.ScheduleStore.computedList);
+      console.log("-->>", props.ScheduleStore.computedList);
     }, []);
 
     const handleClickDayname = (ev) => {
@@ -48,7 +49,6 @@ const Schedule = inject(
       scheduleInfo = {
         userId: props.LogInStore.userId,
         scheduleId: ev.schedule.id,
-        calendarId: ev.schedule.calendarId,
         start: new Date(ev.schedule.start._date).toISOString(),
         end: new Date(ev.schedule.end._date).toISOString(),
         title: ev.schedule.title,
@@ -133,26 +133,8 @@ const Schedule = inject(
         props.ScheduleStore.createNewSchedule(newSchedule);
       }
       //   if (triggerEventName === "click") {
-      //     const title = prompt("Schedule", "Party");
-      //     const schedule = {
-      //       id: +new Date(),
-      //       calendarId: "1",
-      //       title: title, // title!!!!!!!!
-      //       isAllDay: false,
-      //       start: event.start,
-      //       end: event.end,
-      //       category: "time",
-      //     };
-      //   } else if (triggerEventName === "dblclick") {
-      //     // open writing detail schedule popup
-      //   }
-      //   //  calendar.createSchedules([schedule]);
     };
-    // const changeScheduleColor = () => {
-    //   // tawfiq new changes
-    //   let userId = props.LogInStore.userId;
-    //   props.ScheduleStore.changeScheduleColor(userId);
-    // };
+
     return (
       <div>
         {
@@ -163,38 +145,32 @@ const Schedule = inject(
               {
                 id: "0",
                 name: "user",
-                bgColor: "#40dfa0",
+                bgColor: "#d1d8e0",
                 borderColor: "#9e5fff",
               },
               {
                 id: "1",
-                name: "Private",
-                bgColor: "#9e5fff",
-                borderColor: "#9e5fff",
+                name: "MMA Mixed Martil art",
+                bgColor: "#40dfa0",
+                borderColor: "#303030",
               },
               {
                 id: "2",
-                name: "Company",
-                bgColor: "#0E4BBF",
-                borderColor: "#0E4BBF",
+                name: "classic boxing",
+                bgColor: "#487eb0",
+                borderColor: "#303030",
               },
               {
                 id: "3",
-                name: "mma",
-                bgColor: "#2ABF0E",
-                borderColor: "#2ABF0E",
+                name: "brazlian jijutsu",
+                bgColor: "#e84118",
+                borderColor: "#303030",
               },
               {
                 id: "4",
-                name: "InCourceColor",
-                bgColor: "#3CD371",
-                borderColor: "#3CD371",
-              },
-              {
-                id: "5",
-                name: "NotInCourcColor",
-                bgColor: "#FF5800",
-                borderColor: "#FF5800",
+                name: "general for testing",
+                bgColor: "#6D214F",
+                borderColor: "#303030",
               },
             ]}
             disableDblClick={true}
