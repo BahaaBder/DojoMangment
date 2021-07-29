@@ -69,6 +69,7 @@ class Coachs extends Component {
                 <span className="coach-item">
                   <Coach key={ind}
                     coach={coach}
+                    showDetails={true}
                   />
                 </span>
               );

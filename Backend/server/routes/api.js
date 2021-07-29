@@ -131,9 +131,11 @@ router.get("/coachs", function (req, res) {
     sequelize
       .query(
         `
-      SELECT * 
+      SELECT coach.id,coach.*,department.name as departmentName
       FROM 
-      coach
+      coach, department
+      where coach.department_id=department.id
+      
     `
       )
       .then(function ([coachs, metadata]) {
@@ -154,8 +156,8 @@ router.post("/coachs", function (req, res) {
          VALUES(
              ${null},
             '${coach.name}',
-            '${coach.type}',
-             ${coach.year},
+            '${coach.department_id}',
+             ${coach.age},
             '${coach.img}',
             '${coach.descShort}',
              ${coach.dojo_id}
@@ -168,8 +170,29 @@ router.post("/coachs", function (req, res) {
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
+});
 
+router.put("/coachs", function (req, res) {
+  const coach = req.body.data;
+  console.log(coach);
+  try {
+    sequelize
+      .query(
+        `
+        UPDATE coach
+         SET id=${coach.id}, name='${coach.name}',department_id=${coach.department_id},
+             age=${coach.age}, img='${coach.img}', descrShort='${coach.descShort}',
+             dojo_id=${coach.dojo_id}
+             WHERE id=${coach.id}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send("added ok ");
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+})
 
 router.get("/about", function(req, res){
   sequelize.query(`SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `)
@@ -266,11 +289,50 @@ router.get("/userInSchedule", function (req, res) {
     res.status(400).send(error.message);
   }
 })
-// router.update("/userDepartment",function(req,res){
-//   const data = req.body.data;
-//   sequelize.query(`update schedule set calender = ${data.info.userId} WHERE ${data.info.id}=${data.userId} `)
-//   .then(function ([results, metadata]) {
-//     res.send(results);
-//   })
-// })
+
+
+router.get("/allUsers", function (req, res) {
+  let user = req.query;
+  sequelize
+    .query(
+      `SELECT * FROM
+       profile`
+    )
+    .then(function ([results]) {
+        res.send(results)
+    });
+});
+
+router.get("/alldepartments", function (req, res) {
+  let user = req.query;
+  sequelize
+    .query(
+      `SELECT * FROM
+       department`
+    )
+    .then(function ([results]) {
+        res.send(results)
+    });
+});
+
+router.get("/userPerDepartment", async function (req, res) {
+  try{
+    dataQuery = `SELECT user.id as user, COUNT(ud.department_id) AS cnt  FROM user, user_department as ud
+    WHERE  user.id = ud.user_id GROUP BY ud.department_id `;   
+    let usersPerDepartment = await sequelize.query(dataQuery);
+  
+    // usersPerDepartment[0];
+    res.send(usersPerDepartment[0]);
+  }    
+  catch(error){
+    res.status(401).send(error.message);
+}
+
+});
+
+
 module.exports = router;
+
+
+
+

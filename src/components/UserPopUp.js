@@ -19,23 +19,27 @@ import axios from "axios";
   const handleJoin = () => {
     // setIsJoined(true);
     sethaveACource(true);
-    props.ScheduleStore.JoinToCours(props.scheduleInfo)
-    props.ScheduleStore.changeScheduleColor({
-        scheduleId : props.scheduleInfo.scheduleId,
-        userId : props.scheduleInfo.userId,
-        isJoin:true
-    }); // tawfiq new changes
+    props.ScheduleStore.JoinToCours(props.scheduleInfo);
+    props.ScheduleStore.addCoursJoin({
+      scheduleId : props.scheduleInfo.scheduleId,
+      userId : props.scheduleInfo.userId,
+      isJoin:true
+  });
+  props.ScheduleStore.changeScheduleColor()
+
   };
 
   const handleLeave = () => {
     // setIsJoined(false);
     sethaveACource(false);
     props.ScheduleStore.exitFromCource(props.scheduleInfo);
-    props.ScheduleStore.changeScheduleColor({
-        scheduleId : props.scheduleInfo.scheduleId,
-        userId : props.scheduleInfo.userId,
-        isJoin:false
-    }); // tawfiq new changes
+    props.ScheduleStore.addCoursJoin({
+      scheduleId : props.scheduleInfo.scheduleId,
+      userId : props.scheduleInfo.userId,
+      isJoin:false
+  });
+    props.ScheduleStore.changeScheduleColor();
+ 
   };
   return (
     <Modal show={show} onHide={handleClose}>

@@ -11,9 +11,12 @@ import LogIn from "./LogInComponent/LogIn";
 import Register from "./LogInComponent/Register";
 import About from './about/About';
 import { observer, inject } from 'mobx-react';
+import Admin from './Admin/Admin';
+import DashBoard from './Admin/DashBoard';
 
 const NavBar = inject("LogInStore")(
     observer((props) => {
+        let isAdmin = true;
         return (
             <Router>
                 <nav className="navbar navbar-dark bg-dark">
@@ -39,11 +42,6 @@ const NavBar = inject("LogInStore")(
                                     <Link to="/register"> register </Link>
                                 </Col>
                                 <Col>
-                                    <Link to="/addCoachs">
-                                        Add Coach
-                                    </Link>
-                                </Col>
-                                <Col>
                                     <Link to="/LogIn">
                                         LogIn
                                     </Link>
@@ -52,23 +50,54 @@ const NavBar = inject("LogInStore")(
                             </Row>
 
                             :
-                            <Row>
-                                <Col>
-                                    <Link to="/schedules">
-                                        schedules
-                                    </Link>
-                                </Col>
-                                <Col>
+                            isAdmin ?
+                                <Row>
+                                    {/* <Col>
+                                        <Link to="/Admin">
+                                            Admin
+                                        </Link>
+                                    </Col> */}
+                                    <Col>
+                                        <Link to="/schedules">
+                                            schedules
+                                        </Link>
+                                    </Col>
+                                    <Col>
+                                        <Link to="/coach">
+                                            Coach
+                                        </Link>
+                                    </Col>
+
+                                    <Col>
+                                        <Link to="dashBoard">DashBoard</Link>
+                                    </Col>
+                                    <Col>
+                                        <Link to="/" onClick={() => { props.LogInStore.updateSign(false) }}>
+                                            Exit
+                                        </Link>
+                                    </Col>
+                                </Row>
+                                :
+                                <Row>
+                                    <Col>
+                                        <Link to="/schedules">
+                                            schedules
+                                        </Link>
+                                    </Col>
+                                    {/* <Col>
                                     <Link to="/addCoachs">
                                         Add Coach
                                     </Link>
-                                </Col>
-                                <Col>
-                                    <Link to="/" onClick={() => { props.LogInStore.updateSign(false) }}>
-                                        Exit
-                                    </Link>
-                                </Col>
-                            </Row>
+                                </Col> */}
+                                    <Col>
+                                        <Link to="/" onClick={() => { props.LogInStore.updateSign(false) }}>
+                                            Exit
+                                        </Link>
+                                    </Col>
+
+                                </Row>
+
+
                         }
 
                     </Container>
@@ -100,6 +129,16 @@ const NavBar = inject("LogInStore")(
                     path="/LogIn"
                     exact
                     render={() => <LogIn />}
+                />
+                <Route
+                    path="/coach"
+                    exact
+                    render={() => <Admin />}
+                />
+                <Route
+                    path="/dashBoard"
+                    exact
+                    render={() => <DashBoard />}
                 />
                 {
                     //  <Route path="/coaches" exact

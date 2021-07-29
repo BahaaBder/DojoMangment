@@ -34,10 +34,7 @@ const Schedule = inject("ScheduleStore","LogInStore")(
       console.groupEnd();
     };
 
-    const changeScheduleColor = () =>{   // tawfiq new changes
-        let userId = props.LogInStore.userId
-        props.ScheduleStore.changeScheduleColor(userId)
-    }
+
     const handleClickSchedule = (ev) => {
       console.log("************Click Schedule****************");
       console.log("%%%", ev);
@@ -220,7 +217,7 @@ const Schedule = inject("ScheduleStore","LogInStore")(
           />
         }
         {clickedOnSchedule ? (
-          <UserPopUp scheduleInfo={scheduleInfo} changeScheduleColor={changeScheduleColor}></UserPopUp>
+          <UserPopUp scheduleInfo={scheduleInfo} ></UserPopUp>
         ) : null}
         <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>

@@ -11,7 +11,7 @@ class CoachStore {
       coachs: observable,
       getAllCoachs: action,
       saveCoach: action,
-
+      UpdateCoach: action ,
     });
   }
 
@@ -26,6 +26,10 @@ class CoachStore {
      console.log(req);
   };
 
+  UpdateCoach = async (coachData) => {
+    let req = await axios.put(`${serverApi}/coachs`,{data: coachData})
+    console.log(req);
+  }
 }
 
 export default CoachStore;
