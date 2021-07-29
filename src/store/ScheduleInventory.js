@@ -37,6 +37,7 @@ class ScheduleInventory {
     await axios.delete(serverApi + "/schedules", { data: schedule });
     this.getSchedule();
   };
+
   filterDepartmentForUser = (departmentOfUser) => {
     console.log(" inside=======filterdepartment");
     const tempList = [];
@@ -56,6 +57,7 @@ class ScheduleInventory {
     const tempList = [];
     list.forEach((s) => {
       if (s.userId === this.userId) {
+        console.log("if");
         const object2 = Object.assign(
           {},
           s,
@@ -64,6 +66,7 @@ class ScheduleInventory {
         );
         tempList.push(object2);
       } else {
+        console.log("else");
         const object2 = Object.assign(
           {},
           s,
@@ -85,15 +88,14 @@ class ScheduleInventory {
     });
     return departmentForUser;
   };
-  //Tawfiq
 
   filterByUserDepartment = async () => {
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
-
     let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
     this.filterDepartmentForUser(departmentArray);
-    console.log(this.computedList);
   };
+  //Tawfiq
+
   JoinToCourse = async (data) => {
     try {
       let res = await axios.post(`${serverApi}/userDepartment`, {
@@ -181,7 +183,7 @@ class ScheduleInventory {
         console.log("-----list------", response.data);
         const temp = this.mapScheduleToStr(response.data);
         Object.assign(this.listSchedule, temp);
-        this.filterByUserDepartment();
+        //this.filterByUserDepartment();
       })
       .catch(function (error) {
         console.log(error);

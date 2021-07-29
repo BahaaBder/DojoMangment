@@ -27,6 +27,8 @@ const Schedule = inject(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
+      console.log("******** USE EFFECT *********");
+      //console.log(props.ScheduleStore.computedList);
     }, []);
 
     const handleClickDayname = (ev) => {
@@ -146,11 +148,11 @@ const Schedule = inject(
       //   }
       //   //  calendar.createSchedules([schedule]);
     };
-    const changeScheduleColor = () => {
-      // tawfiq new changes
-      let userId = props.LogInStore.userId;
-      props.ScheduleStore.changeScheduleColor(userId);
-    };
+    // const changeScheduleColor = () => {
+    //   // tawfiq new changes
+    //   let userId = props.LogInStore.userId;
+    //   props.ScheduleStore.changeScheduleColor(userId);
+    // };
     return (
       <div>
         {
