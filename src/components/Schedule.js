@@ -28,6 +28,7 @@ const Schedule = inject(
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
     }, []);
+
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
       // view : week, day
@@ -53,15 +54,19 @@ const Schedule = inject(
       console.log("%%%", scheduleInfo);
       if (isAdmin) {
         console.log(" admin clicled schedule ===> ");
-        // pop up
         console.log(ev);
       } else {
         console.log(" trainee clicled schedule ===> ");
         setClickedOnSchedule(!clickedOnSchedule);
-        /// popo
         console.log(ev);
       }
     };
+    const changeScheduleColor = () => {
+      // tawfiq new changes
+      let userId = props.LogInStore.userId;
+      props.ScheduleStore.changeScheduleColor(userId);
+    };
+
     const handleClickMore = (event) => {
       console.log("************Click More***************");
       console.log("clickMore", event.date, event.target);
@@ -154,6 +159,12 @@ const Schedule = inject(
             height="900px"
             calendars={[
               {
+                id: "0",
+                name: "user",
+                bgColor: "#40dfa0",
+                borderColor: "#9e5fff",
+              },
+              {
                 id: "1",
                 name: "Private",
                 bgColor: "#9e5fff",
@@ -173,7 +184,7 @@ const Schedule = inject(
               },
               {
                 id: "4",
-                name: "InCourcColor",
+                name: "InCourceColor",
                 bgColor: "#3CD371",
                 borderColor: "#3CD371",
               },

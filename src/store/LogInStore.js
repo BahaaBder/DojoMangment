@@ -4,7 +4,7 @@ class LogInStore {
     constructor() {
   
       this.isSign = false;
-      this.userId=0;
+      this.userId=1;
       makeObservable(this, {
         isSign: observable,
         userId:observable,

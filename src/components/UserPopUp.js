@@ -21,12 +21,9 @@ const UserPopUp = inject("ScheduleStore")(
     const handleJoin = () => {
       // setIsJoined(true);
       sethaveACource(true);
-      props.ScheduleStore.JoinToCours(props.scheduleInfo);
-      props.ScheduleStore.changeScheduleColor({
-        scheduleId: props.scheduleInfo.scheduleId,
-        userId: props.scheduleInfo.userId,
-        isJoined: true,
-      });
+
+      props.ScheduleStore.JoinToCourse(props.scheduleInfo);
+      // props.ScheduleStore.changeScheduleColor();
     };
 
     const handleLeave = () => {
