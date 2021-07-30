@@ -1,53 +1,30 @@
 -- create database dojo;
 -- USE dojo;
 
+
+
+
+
+
 use dojo;
 CREATE TABLE dojoTable(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20)
 );
 
+
+use dojo;
 INSERT INTO dojoTable VALUES(null,"dojo2")
 
-​USE dojo;
+use dojo;
 CREATE TABLE permission(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     admin BOOLEAN,
     coach BOOLEAN,
     trainee BOOLEAN
 );
--- ​
+--/////////////////////​
 
-
-CREATE TABLE schedule(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    calendarId INT,
-    title VARCHAR(40),
-    category VARCHAR(40),
-    duDateClass VARCHAR(40),
-    start VARCHAR(40),
-    end VARCHAR(40),
-    departmentID INT,
-    FOREIGN KEY(departmentID) REFERENCES department(id)
-);
---========================== department =====================
-
-INSERT INTO department VALUES (null,"MMA Mixed Martil art ");
-INSERT INTO department VALUES (null,"classic boxing ");
-INSERT INTO department VALUES (null,"brazlian jijutsu ");
-use dojo;
-INSERT INTO department VALUES (null,"general for testing");
-
-
-
-CREATE TABLE department(
-    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20) 
-);
--- ​
-drop table department;
-
--- =======================profile=================================\
 use dojo;
 CREATE TABLE profile(
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -58,12 +35,9 @@ CREATE TABLE profile(
      phoneNumber VARCHAR(40),
      age INT
 );
--- ​
--- ​
-​USE dojo;
---==============================user =======================================
-​USE dojo;
 
+--////////////////////////////////
+use dojo;
 CREATE TABLE user(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     permission_id INT,
@@ -72,35 +46,33 @@ CREATE TABLE user(
     FOREIGN KEY(permission_id) REFERENCES permission(id),
     FOREIGN KEY(dojo_id) REFERENCES dojoTable(id)
 );
-​USE dojo;
-INSERT INTO permission VALUES (null,1,1,1);
-INSERT INTO permission VALUES (null,1,1,1);
-
-INSERT INTO user VALUES (1,1,1);
-INSERT INTO user VALUES (2,1,1);
-
---
+--/////////////////////////////////
 use dojo;
-DELETE FROM user_department WHERE user_id=1;
-
-insert into user_department VALUES(1,1);
-insert into user_department VALUES(1,2);
-insert into user_department VALUES(1,3);
-
-
-
-
-
+CREATE TABLE department(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) 
+);
+--/////////////////////////////////
+use dojo;
+CREATE TABLE schedule(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(40),
+    category VARCHAR(40),
+    duDateClass VARCHAR(40),
+    start VARCHAR(40),
+    end VARCHAR(40),
+    department_id INT,
+    FOREIGN KEY(department_id) REFERENCES department(id)
+);
+--/////////////////////////////////////////
+use dojo;
 CREATE TABLE user_department(
     user_id INT,
     department_id INT,
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(department_id) REFERENCES department(id)
 );
-​
-
-
-
+--/////////////////////////////////////////////////////
 Create TABLE coach(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(40),
@@ -112,121 +84,75 @@ Create TABLE coach(
     FOREIGN KEY(dojo_id) REFERENCES dojoTable(id)
 
 );
--- ​
-
-
-////
-use dojo; 
-
-SET FOREIGN_KEY_CHECKS=0;
-drop TABLE schedule;
-
--- ==============================MMA =================================
-INSERT INTO schedule VALUES (null,1,"MMA Mixed Martil art ","time","","2021-07-25T19:30:00+01:00","2021-07-25T19:30:00+01:00",1);
-INSERT INTO schedule VALUES (null,1,"MMA Mixed Martil art ","time","","2021-07-27T19:30:00+01:00","2021-07-27T21:30:00+01:00",1);
-INSERT INTO schedule VALUES (null,1,"MMA Mixed Martil art ","time","","2021-07-29T19:30:00+01:00","2021-07-29T21:30:00+01:00",1);
-INSERT INTO schedule VALUES (null,2,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T19:30:00+01:00',2);
-INSERT INTO schedule VALUES (null,2,"Classic Mma boxing","time","",'2021-07-28T21:30:00+01:00','2021-07-28T23:30:00+01:00',2);
-INSERT INTO schedule VALUES (null,2,"Classic MMA boxing","time","","2021-07-26T16:30:00+01:00","2021-07-26T20:30:00+01:00",2);
+--////////////////// INSERTING //////////////////////////////
 use dojo;
-INSERT INTO schedule VALUES (null,3,"bjj ","time","","2021-07-29T12:30:00+01:00","2021-07-29T20:30:00+01:00",3);
-INSERT INTO schedule VALUES (null,3,"bjj","time","","2021-07-29T12:30:00+01:00","2021-07-29T20:30:00+01:00",3);
-
-INSERT INTO schedule VALUES (null,4,"general for testing ","time","","2021-07-29T12:30:00+01:00","2021-07-29T20:30:00+01:00",4);
-
-INSERT INTO schedule VALUES (null,3,"Classic boxing","time","",'2021-07-26T19:30:00+01:00','2021-07-26T19:30:00+01:00'3);
-INSERT INTO schedule VALUES (null,3,"Classic boxing","time","",'2021-07-28T19:30:00+01:00','2021-07-28T19:30:00+01:00'3);
-INSERT INTO schedule VALUES (null,3,"Classic boxing","time","",'2021-07-28T21:30:00+01:00','2021-07-28T23:30:00+01:00'3);
--- ==============================Boxing =================================
+INSERT INTO department VALUES (null,"MMA Mixed Martil art ");
+INSERT INTO department VALUES (null,"classic boxing ");
+INSERT INTO department VALUES (null,"brazlian jijutsu ");
+INSERT INTO department VALUES (null,"general for testing");
+--
 use dojo;
-    -- {
-    --     id: '5',
-    --     calendarId: '2',
-    --     title: boxing,
-    --     category: 'time',
-    --     dueDateClass: '',
-    --     start: '2021-07-28T16:30:00+01:00',
-    --     end: '2021-07-28T20:30:00+01:00',
-    -- },
-    -- /// bjj
-    -- {
-    --     id: '6',
-    --     calendarId: '3',
-    --     title: bjj,
-    --     category: 'time',
-    --     dueDateClass: '',
-    --     start: '2021-07-30T16:30:00+01:00',
-    --     end: '2021-07-30T20:30:00+01:00',
-    --     ///// this determine  the color of event background 
-    --     bgColor:'#BF0E13'
-    -- },
-    -- ///
-    -- {
-    --     id: '7',
-    --     calendarId: '4',
-    --     title: " takewondo ",
-    --     category: 'time',
-    --     dueDateClass: '',
-    --     start: '2021-07-25T09:30:00+01:00',
-    --     end: '2021-07-25T11:30:00+01:00'
-    -- },
-    -- {
-    --     id: '8',
-    --     calendarId: '4',
-    --     title: " taekwondo  ",
-    --     category: 'time',
-    --     dueDateClass: '',
-    --     start: '2021-07-26T09:30:00+01:00',
-    --     end: '2021-07-26T11:30:00+01:00'
-    -- },
-    -- {
-    --     id: '9',
-    --     calendarId: '4',
-    --     title: " taekwondo  ",
-    --     category: 'time',
-    --     dueDateClass: '',
-    --     start: '2021-07-28T09:30:00+01:00',
-    --     end: '2021-07-28T12:30:00+01:00'
-    -- },
--- ==============================Brazlian=================================
+INSERT INTO permission VALUES (null,0,0,1);
+INSERT INTO permission VALUES (null,1,1,0);
+--
+use dojo;
+INSERT INTO dojoTable VALUES(null,"dojo1")
+--
+use dojo;
+INSERT INTO profile VALUES (null,"Tranee","t@gmail.com","123","somthing","0566",25);--trainee
+INSERT INTO profile VALUES (null,"admin","a@gmail.com","123","somthing","0566",25);--admin
+--
+use dojo;
+INSERT INTO user VALUES (1,1,1); --trainee
+INSERT INTO user VALUES (2,2,1); --admin/coach
+--
+use dojo;
+insert into user_department VALUES(1,1);
+insert into user_department VALUES(1,2);
+insert into user_department VALUES(1,3);
 
 
-
-
-
-
--- USE dojo;
+use dojo;
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-25T12:00:00+01:00","2021-07-25T19:30:00+01:00",1);
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-27T13:30:00+01:00","2021-07-27T14:30:00+01:00",1);
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","","2021-07-29T19:30:00+01:00","2021-07-29T21:30:00+01:00",1);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","","2021-07-25T19:30:00+01:00",'2021-07-25T20:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-26T19:30:00+01:00','2021-07-26T20:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T19:30:00+01:00','2021-07-28T21:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T21:30:00+01:00','2021-07-28T23:30:00+01:00',2);
+INSERT INTO schedule VALUES (null,"Japan","time","",'2021-07-29T21:30:00+01:00','2021-07-29T23:30:00+01:00',4);
+INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00+01:00','2021-07-30T20:00:00+01:00',3);
+   
+--use dojo;
 -- CREATE TABLE DepartmentDetails (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     department_name TEXT,
 --     descreption TEXT
 -- );
 
--- CREATE TABLE About (
+
+--use dojo;
+-- CREATE TABLE About
+--  (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     motivations TEXT,
 --     overview TEXT,
 --     dojo_id int,
 --     dep_details_id int,
-
 --     FOREIGN KEY(dojo_id) REFERENCES dojoTable(id),
 --     FOREIGN KEY(dep_details_id) REFERENCES DepartmentDetails(id)
 -- );
 
--- USE dojo;
--- drop table About, DepartmentDetails
 
--- USE dojo;
+--use dojo;
 -- INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
 -- INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
 
 -- INSERT INTO About VALUES(null, "motivation1", "overview1", null, 1);
 -- INSERT INTO About VALUES(null, "motivation2", "overview2", null, 2);
 
--- ​USE dojo;
--- INSERT INTO dojoTable VALUES(null, "dojo1");
 
--- ​USE dojo;
+--use dojo;
 -- INSERT INTO coach
 --  VALUES (null,"Wolf","Boxing",1998,
 --             "https://i.pinimg.com/originals/2f/52/22/2f5222ae1b29f92873e17c8753bda5fe.jpg", 
@@ -248,10 +174,3 @@ use dojo;
 --             "https://cdn1.vectorstock.com/i/1000x1000/79/65/panda-muay-thai-vector-3527965.jpg",
 --             "Banda is a proffessional Muay Thai fighter, he start traing befor 13 years, his first professional boxing fight was before 6 years",1);
             
--- INSERT INTO contacts VALUES (null,"A","B","A","A","A","A")
--- INSERT INTO permission VALUES (null,true,true,true)
--- INSERT INTO permission VALUES (null,false,false,false)
--- INSERT INTO permission VALUES (null,false,true,false)
-
-
--- INSERT INTO dojoTable VALUES(null,"dojo1")

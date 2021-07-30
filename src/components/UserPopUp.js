@@ -1,59 +1,59 @@
-import { React, useState,useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import axios from "axios";
- const UserPopUp = inject("ScheduleStore")(
-    observer((props) =>  {
-  const [show, setshow] = useState(true);
-  const [isJoined, setIsJoined] = useState(false);
-  const handleClose = () => setshow(false);
-  const [haveACource, sethaveACource] = useState(false);
+const UserPopUp = inject("ScheduleStore")(
+  observer((props) => {
+    const [show, setshow] = useState(true);
+    const [isJoined, setIsJoined] = useState(false);
+    const handleClose = () => setshow(false);
+    const [haveACource, sethaveACource] = useState(false);
 
-  useEffect( async () => {
-    let isExist = await axios.get(`http://localhost:8080/userSchedule?userId=${props.scheduleInfo.userId}&scheduleId=${props.scheduleInfo.scheduleId}`);
-    sethaveACource(isExist.data);
-  }, [])
+    useEffect(async () => {
+      const IsExist = await props.ScheduleStore.checkIfAlreadyJoin(
+        props.scheduleInfo
+      );
+      sethaveACource(IsExist);
+    }, []);
 
-  const handleJoin = () => {
-    // setIsJoined(true);
-    sethaveACource(true);
+    const handleJoin = () => {
+      sethaveACource(true);
+      props.ScheduleStore.JoinToCourse(props.scheduleInfo);
+      setshow(false);
+    };
 
-    props.ScheduleStore.JoinToCourse(props.scheduleInfo)
-    // props.ScheduleStore.changeScheduleColor();
+    const handleLeave = () => {
+      sethaveACource(false);
+      props.ScheduleStore.exitFromCource(props.scheduleInfo);
+      setshow(false);
+    };
 
-
-  };
-
-  const handleLeave = () => {
-    // setIsJoined(false);
-    sethaveACource(false);
-    props.ScheduleStore.exitFromCource(props.scheduleInfo)
-  };
-  return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>{props.scheduleInfo.title}</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        start: {props.scheduleInfo.start}
-        <br />
-        end: {props.scheduleInfo.end}
-      </Modal.Body>
-      <Modal.Footer>
-        {!haveACource ? (
-          <Button variant="secondary" onClick={handleJoin}>
-            Join
-          </Button>
-        ) : (
-          <Button variant="secondary" onClick={handleLeave}>
-            Leave
-          </Button>
-        )}
-      </Modal.Footer>
-    </Modal>
-  );
-}));
+    return (
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>{props.scheduleInfo.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4> start: {props.scheduleInfo.start}</h4>
+          <br />
+          <h4> end: {props.scheduleInfo.end}</h4>
+        </Modal.Body>
+        <Modal.Footer>
+          {!haveACource ? (
+            <Button variant="secondary" onClick={handleJoin}>
+              Join
+            </Button>
+          ) : (
+            <Button variant="secondary" onClick={handleLeave}>
+              Leave
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>
+    );
+  })
+);
 
 export default UserPopUp;

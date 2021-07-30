@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
@@ -11,15 +10,10 @@ sequelize
   .catch((err) => {
     console.error("Unable to connect to the database:", err);
   });
-
-
-
-  router.post("/registrations", async function (req, res) {
-    await addToContacts(req.body);
-    res.send("adding successfuly !");
-  });
-  
-
+router.post("/registrations", async function (req, res) {
+  await addToContacts(req.body);
+  res.send("adding successfuly !");
+});
 router.get("/test", function (req, res) {
   res.send("test ok ");
 });
@@ -64,7 +58,7 @@ router.get("/users", function (req, res) {
     .then(function ([results]) {
       if (results.length > 0) {
         console.log(results[0].id);
-         res.send(results[0]);
+        res.send(results[0]);
       } else {
         res.send(undefined);
       }
@@ -94,12 +88,12 @@ router.post("/schedules", (req, res) => {
         INSERT INTO schedule
          VALUES(
             ${newSchedule.id},
-            ${newSchedule.calendarId},
             '${newSchedule.title}',
             '${newSchedule.category}',
             '${newSchedule.dueDateClass}',
             '${newSchedule.start}',
-            '${newSchedule.end}'
+            '${newSchedule.end}',
+            ${newSchedule.department_id}
             )
         `
       )
@@ -116,9 +110,7 @@ router.delete("/schedules", function (req, res) {
       .query(
         `
          DELETE FROM schedule
-         WHERE id=${schedule.id} 
-         AND 
-         calendarId=${schedule.calendarId}
+         WHERE id=${schedule.schedule_id} 
         `
       )
       .then(function ([results, metadata]) {
@@ -168,19 +160,19 @@ router.post("/coachs", function (req, res) {
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
-
-
-router.get("/about", function(req, res){
-  sequelize.query(`SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `)
-  .then(function ([results, metadata]) {
-    res.send(results);
-  })
-})
-
+});
+router.get("/about", function (req, res) {
+  sequelize
+    .query(
+      `SELECT * FROM about, departmentdetails WHERE about.dep_details_id = departmentdetails.id `
+    )
+    .then(function ([results, metadata]) {
+      res.send(results);
+    });
+});
 //tawfiq
 
-router.get("/userDepartment",function(req,res){
+router.get("/userDepartment", function (req, res) {
   try {
     sequelize
       .query(
@@ -195,56 +187,50 @@ router.get("/userDepartment",function(req,res){
   } catch (error) {
     res.status(400).send(error.message);
   }
-
-})
-
-
+});
 
 router.post("/userDepartment", function (req, res) {
   const user_schedule = req.body;
-  console.log("==userDepartment post ==",user_schedule)
+  console.log("==userDepartment post ==", user_schedule);
   try {
-
-      sequelize.query(`
-    select * from user_department 
-    where user_id=${user_schedule.user_id} and 
-    department_id=${user_schedule.department_id}
-
-    `)  .then(function ([results, metadata]) {
-      console.log(" user  outside if department already exist ",results)
-
-
-    if(results.length>0){
-      console.log(" user department already exist ")
-      res.send(" already there ")
-    }else{
-      sequelize
+    sequelize
       .query(
         `
-        INSERT INTO user_department
-         VALUES(
-             ${user_schedule.user_id},
-             ${user_schedule.department_id})
-        `
+    select * from user_department 
+    where user_id=${user_schedule.userId} and 
+    department_id=${user_schedule.departmentId}
+
+    `
       )
       .then(function ([results, metadata]) {
-        res.send("added ok ");
+        console.log(" user  outside if department already exist ", results);
+
+        if (results.length > 0) {
+          console.log(" user department already exist ");
+          res.send(" already there ");
+        } else {
+          sequelize
+            .query(
+              `
+        INSERT INTO user_department
+         VALUES(
+             ${user_schedule.userId},
+             ${user_schedule.departmentId})
+        `
+            )
+            .then(function ([results, metadata]) {
+              res.send("added ok ");
+            });
+        }
       });
-
-    }
-
-    
-    });
-
-  
-  }catch (error) {
+  } catch (error) {
     res.status(400).send(error.message);
   }
-})
+});
 
 router.post("/userSchedule", function (req, res) {
   const user_schedule = req.body;
-  console.log("==userSchedule post ==",user_schedule)
+  console.log("==userSchedule post ==", user_schedule);
   try {
     sequelize
       .query(
@@ -262,18 +248,17 @@ router.post("/userSchedule", function (req, res) {
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
-
-router.delete("/userSchedule", function (req, res) {
-  const user_schedule = req.body;
+});
+router.delete("/userDepartment", function (req, res) {
+  const user_department = req.body;
   try {
     sequelize
       .query(
         `
-         DELETE FROM user_schedule
+         DELETE FROM user_department
          WHERE
-             userId=${user_schedule.userId} AND
-             schedule_id=${user_schedule.scheduleId}
+             user_id=${user_department.user_id} AND
+             department_id=${user_department.department_id}
         `
       )
       .then(function ([results, metadata]) {
@@ -282,7 +267,7 @@ router.delete("/userSchedule", function (req, res) {
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
+});
 
 router.get("/userInSchedule", function (req, res) {
   try {
@@ -295,12 +280,12 @@ router.get("/userInSchedule", function (req, res) {
         `
       )
       .then(function ([results, metadata]) {
-          res.send(results)
+        res.send(results);
       });
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
+});
 
 router.get("/userSchedule", function (req, res) {
   let user_schedule = req.query;
@@ -313,24 +298,38 @@ router.get("/userSchedule", function (req, res) {
     sequelize
       .query(
         `
-         SELECT *  FROM user_schedule
+         SELECT *  FROM user_department
          WHERE
              userId=${userId} AND
              schedule_id=${scheduleID}
         `
       )
       .then(function ([results, metadata]) {
-          if(results.length > 0){
-            res.send(true);
-          }
-          else{
-            res.send(false);
-          }
+        if (results.length > 0) {
+          res.send(true);
+        } else {
+          res.send(false);
+        }
       });
   } catch (error) {
     res.status(400).send(error.message);
   }
-})
+});
+router.get("/userInSchedule", function (req, res) {
+  try {
+    sequelize
+      .query(
+        `
+         SELECT *  FROM user_schedule
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 // router.update("/userDepartment",function(req,res){
 //   const data = req.body.data;
 //   sequelize.query(`update schedule set calender = ${data.info.userId} WHERE ${data.info.id}=${data.userId} `)
@@ -338,4 +337,92 @@ router.get("/userSchedule", function (req, res) {
 //     res.send(results);
 //   })
 // })
+router.get("/departmentOfSchedule/:scheduleId", function (req, res) {
+  const s_id = req.params.scheduleId;
+  console.log(s_id);
+  const dep = "department_id";
+  try {
+    sequelize
+      .query(
+        `
+         SELECT ${dep}
+          FROM
+           schedule where id=${s_id}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.get("/permissions", function (req, res) {
+  const type = req.query.type;
+  const user_id = parseInt(req.query.user_id);
+  console.log(user_id);
+  console.log(type);
+  try {
+    sequelize
+      .query(
+        `
+         SELECT ${type}
+          FROM user as u,permission as p
+            where
+             u.id=${user_id}
+             and u.id=p.id
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.put("/updateSchedule", function (req, res) {
+  let updatedSchedule = req.body;
+  try {
+    sequelize
+      .query(
+        `
+    UPDATE schedule
+    SET 
+    title='${updatedSchedule.title}',
+    category='${updatedSchedule.category}',
+    duDateClass='${updatedSchedule.dueDateClass}',
+    start='${updatedSchedule.start}',
+    end='${updatedSchedule.end}',
+    department_id=${updatedSchedule.department_id}
+    WHERE
+    id=${updatedSchedule.schedule_id}
+    `
+      )
+      .then(function ([results, metadata]) {
+        res.send(" Updated Success !! ");
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.get("/departments", function (req, res) {
+  try {
+    sequelize
+      .query(
+        `
+         SELECT *
+          FROM 
+          department
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 module.exports = router;
