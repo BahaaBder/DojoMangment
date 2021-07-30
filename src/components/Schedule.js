@@ -24,6 +24,7 @@ const Schedule = inject("ScheduleStore","LogInStore")(
     };
     useEffect(async () => {
       await props.ScheduleStore.getSchedule();
+      
     }, []);
  
     const handleClickDayname = (ev) => {
