@@ -5,7 +5,7 @@ class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId = 1;
+    this.userId = 2;
     this.isHaveACource = false;
     this.arrayOfUserDepartment = [];
     makeObservable(this, {
@@ -22,6 +22,7 @@ class ScheduleInventory {
       JoinToCourse: action,
       arrayOfUserDepartment: observable,
       checkIfAlreadyJoin: action,
+      checkPermission: action,
     });
   }
 
@@ -35,9 +36,10 @@ class ScheduleInventory {
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };
-  deleteSchedule = async (schedule) => {
-    await axios.delete(serverApi + "/schedules", { data: schedule });
-    this.getSchedule();
+  deleteSchedule = (schedule) => {
+    axios.delete(serverApi + "/schedules", { data: schedule }).then(() => {
+      this.getSchedule();
+    });
   };
 
   filterDepartmentForUser = (departmentOfUser) => {
@@ -58,11 +60,8 @@ class ScheduleInventory {
   mapScheduleToStr = async (list) => {
     const tempList = [];
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
-
     let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
-    console.log("++++", departmentArray);
     list.forEach((s) => {
-      console.log("--##", s);
       if (departmentArray.includes(s.department_id)) {
         const object2 = Object.assign({}, s, { calendarId: "1" });
         tempList.push(object2);
@@ -74,7 +73,6 @@ class ScheduleInventory {
     return tempList;
   };
   getUserDepartments = (users_departments, user_id) => {
-    console.log(" insid function ", users_departments);
     let departmentForUser = [];
     users_departments.forEach((user_department) => {
       if (user_department.user_id == user_id) {
@@ -112,6 +110,7 @@ class ScheduleInventory {
         userId: data.userId,
         departmentId: dep_id,
       });
+      this.getSchedule();
     } catch (error) {
       console.log(error.message);
     }
@@ -134,6 +133,7 @@ class ScheduleInventory {
       let res = await axios.delete(`${serverApi}/userDepartment`, {
         data: { department_id: dep_id, user_id: data.userId },
       });
+      this.getSchedule();
       console.log(res);
     } catch (error) {
       console.log(error.message);
@@ -187,16 +187,24 @@ class ScheduleInventory {
     axios
       .get(`${serverApi}/schedules`)
       .then(async (response) => {
-        console.log("-----list------", response.data);
         const temp = await this.mapScheduleToStr(response.data);
         Object.assign(this.listSchedule, temp);
-        console.log("$ ", this.computedList);
-        //this.filterByUserDepartment();
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+  checkPermission = async (type) => {
+    let is_admin = await axios.get(
+      `${serverApi}/permissions/?type=${type}&user_id=${this.userId}`
+    );
+    console.log(is_admin.data[0][type] == 1);
+    return is_admin.data[0][type] == 1;
+  };
+  updateSchedule = (schedule) => {
+    axios.put(`${serverApi}/updateSchedule`, schedule).then(() => {
+      this.getSchedule();
+    });
+  };
 }
-
 export default ScheduleInventory;

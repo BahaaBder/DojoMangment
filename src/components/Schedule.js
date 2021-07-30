@@ -6,8 +6,9 @@ import moment from "moment";
 import { useState, useRef } from "react";
 import { observer, inject } from "mobx-react";
 import UserPopUp from "./UserPopUp";
+import dayjs from "dayjs";
+import axios from "axios";
 const calendarRef = createRef();
-const isAdmin = false;
 let scheduleInfo = {};
 //ScheduleStore
 const serverApi = "http://localhost:8080";
@@ -22,14 +23,16 @@ const Schedule = inject(
     const [event, setEvent] = useState(null);
     const [list, setList] = useState([]);
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(true);
     const toggle = (e) => {
       setShowModal(!e);
       console.log(showModal);
     };
     useEffect(async () => {
-      await props.ScheduleStore.getSchedule();
       console.log("******** USE EFFECT *********");
-      console.log("-->>", props.ScheduleStore.computedList);
+      let has_permissoin = await props.ScheduleStore.checkPermission("admin");
+      setIsAdmin(has_permissoin);
+      await props.ScheduleStore.getSchedule();
     }, []);
 
     const handleClickDayname = (ev) => {
@@ -40,27 +43,25 @@ const Schedule = inject(
       console.groupEnd();
     };
 
-    // const changColor = () =>{
-
-    // }
     const handleClickSchedule = (ev) => {
       console.log("************Click Schedule****************");
-      console.log("%%%", ev);
       scheduleInfo = {
         userId: props.LogInStore.userId,
         scheduleId: ev.schedule.id,
-        start: new Date(ev.schedule.start._date).toISOString(),
-        end: new Date(ev.schedule.end._date).toISOString(),
+        start: dayjs(ev.schedule.start._date.toString()).format(
+          "dddd, MMMM D, YYYY h:mm A"
+        ),
+        end: dayjs(ev.schedule.end._date.toString()).format(
+          "dddd, MMMM D, YYYY h:mm A"
+        ),
         title: ev.schedule.title,
       };
       console.log("%%%", scheduleInfo);
       if (isAdmin) {
         console.log(" admin clicled schedule ===> ");
-        console.log(ev);
       } else {
         console.log(" trainee clicled schedule ===> ");
         setClickedOnSchedule(!clickedOnSchedule);
-        console.log(ev);
       }
     };
     const changeScheduleColor = () => {
@@ -80,16 +81,26 @@ const Schedule = inject(
       console.log("delete handle ", ev);
       console.log("->", scheduleID, "|", scheduleCalendarID);
       props.ScheduleStore.deleteSchedule({
-        id: scheduleID,
-        calendarId: scheduleCalendarID,
+        schedule_id: ev.schedule.id,
       });
     };
     const handleafterRenderSchedule = (ev) => {
-      console.log("************After Render***************");
+      console.log("************After Render***************", ev);
     };
     const handlebeforeUpdateSchedule = (ev) => {
       console.log("************BEFORE UPDATE***************");
-      console.log(ev);
+      console.log("$ BF : ", ev);
+      let updatedSchedule = {
+        schedule_id: ev.schedule.id,
+        department_id: parseInt(ev.changes.calendarId),
+        start: new Date(ev.start._date).toISOString(),
+        end: new Date(ev.end._date).toISOString(),
+        title: ev.changes.title,
+        dueDateClass: ev.schedule.dueDateClass,
+        category: ev.schedule.category,
+      };
+      console.log("object :", updatedSchedule);
+      props.ScheduleStore.updateSchedule(updatedSchedule);
     };
     const handleClickTimezonesCollapseBtn = (ev) => {};
     const handleClickNextButton = () => {
@@ -116,11 +127,7 @@ const Schedule = inject(
         var guide = event.guide;
         var triggerEventName = event.triggerEventName;
         console.log(startTime, endTime, isAllDay, guide, triggerEventName);
-        // var schedule;
-        // console.log("-----<<<<<<", event);
         console.log("---startTime--<<<<<", event);
-        // console.log("--- endTime--<<<<<<", endTime);
-        console.log(new Date(startTime._date).toISOString());
         const newSchedule = {
           id: null,
           title: event.title,
@@ -128,11 +135,10 @@ const Schedule = inject(
           dueDateClass: "",
           start: new Date(startTime._date).toISOString(),
           end: new Date(endTime._date).toISOString(),
-          calendarId: parseInt(event.calendarId),
+          department_id: parseInt(event.calendarId),
         };
         props.ScheduleStore.createNewSchedule(newSchedule);
       }
-      //   if (triggerEventName === "click") {
     };
 
     return (

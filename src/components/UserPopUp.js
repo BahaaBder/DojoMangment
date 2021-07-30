@@ -19,25 +19,26 @@ const UserPopUp = inject("ScheduleStore")(
     }, []);
 
     const handleJoin = () => {
-      // setIsJoined(true);
       sethaveACource(true);
       props.ScheduleStore.JoinToCourse(props.scheduleInfo);
+      setshow(false);
     };
 
     const handleLeave = () => {
-      // setIsJoined(false);
       sethaveACource(false);
       props.ScheduleStore.exitFromCource(props.scheduleInfo);
+      setshow(false);
     };
+
     return (
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{props.scheduleInfo.title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          start: {props.scheduleInfo.start}
+          <h4> start: {props.scheduleInfo.start}</h4>
           <br />
-          end: {props.scheduleInfo.end}
+          <h4> end: {props.scheduleInfo.end}</h4>
         </Modal.Body>
         <Modal.Footer>
           {!haveACource ? (

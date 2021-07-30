@@ -88,12 +88,12 @@ router.post("/schedules", (req, res) => {
         INSERT INTO schedule
          VALUES(
             ${newSchedule.id},
-            ${newSchedule.calendarId},
             '${newSchedule.title}',
             '${newSchedule.category}',
             '${newSchedule.dueDateClass}',
             '${newSchedule.start}',
-            '${newSchedule.end}'
+            '${newSchedule.end}',
+            ${newSchedule.department_id}
             )
         `
       )
@@ -110,9 +110,7 @@ router.delete("/schedules", function (req, res) {
       .query(
         `
          DELETE FROM schedule
-         WHERE id=${schedule.id} 
-         AND 
-         calendarId=${schedule.calendarId}
+         WHERE id=${schedule.schedule_id} 
         `
       )
       .then(function ([results, metadata]) {
@@ -354,6 +352,56 @@ router.get("/departmentOfSchedule/:scheduleId", function (req, res) {
       )
       .then(function ([results, metadata]) {
         res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.get("/permissions", function (req, res) {
+  const type = req.query.type;
+  const user_id = parseInt(req.query.user_id);
+  console.log(user_id);
+  console.log(type);
+  try {
+    sequelize
+      .query(
+        `
+         SELECT ${type}
+          FROM user as u,permission as p
+            where
+             u.id=${user_id}
+             and u.id=p.id
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+router.put("/updateSchedule", function (req, res) {
+  let updatedSchedule = req.body;
+  try {
+    sequelize
+      .query(
+        `
+    UPDATE schedule
+    SET 
+    title='${updatedSchedule.title}',
+    category='${updatedSchedule.category}',
+    duDateClass='${updatedSchedule.dueDateClass}',
+    start='${updatedSchedule.start}',
+    end='${updatedSchedule.end}',
+    department_id=${updatedSchedule.department_id}
+    WHERE
+    id=${updatedSchedule.schedule_id}
+    `
+      )
+      .then(function ([results, metadata]) {
+        res.send(" Updated Success !! ");
       });
   } catch (error) {
     res.status(400).send(error.message);
