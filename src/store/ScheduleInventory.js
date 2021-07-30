@@ -5,7 +5,7 @@ class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId = 1;
+    this.userId = 2;
     this.isHaveACource = false;
 
     makeObservable(this, {
