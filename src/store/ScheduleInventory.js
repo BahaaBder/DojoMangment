@@ -5,9 +5,10 @@ class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId = 2;
+    this.userId = 1;
     this.isHaveACource = false;
     this.arrayOfUserDepartment = [];
+    this.listDepartments = [];
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
@@ -17,17 +18,23 @@ class ScheduleInventory {
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
+      computedListDepartment: computed,
+
       createNewSchedule: action,
       haveACourse: action,
       JoinToCourse: action,
       arrayOfUserDepartment: observable,
       checkIfAlreadyJoin: action,
       checkPermission: action,
+      getDepartments: action,
     });
   }
 
   get computedList() {
     return toJS(this.listSchedule);
+  }
+  get computedListDepartment() {
+    return toJS(this.listDepartments);
   }
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
@@ -63,10 +70,14 @@ class ScheduleInventory {
     let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
     list.forEach((s) => {
       if (departmentArray.includes(s.department_id)) {
-        const object2 = Object.assign({}, s, { calendarId: "1" });
+        const object2 = Object.assign({}, s, {
+          calendarId: s.department_id.toString(),
+        });
         tempList.push(object2);
       } else {
-        const object2 = Object.assign({}, s, { calendarId: "0" });
+        const object2 = Object.assign({}, s, {
+          calendarId: "0",
+        });
         tempList.push(object2);
       }
     });
@@ -205,6 +216,10 @@ class ScheduleInventory {
     axios.put(`${serverApi}/updateSchedule`, schedule).then(() => {
       this.getSchedule();
     });
+  };
+  getDepartments = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data;
   };
 }
 export default ScheduleInventory;

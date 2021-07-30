@@ -8,12 +8,13 @@ import { observer, inject } from "mobx-react";
 import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";
 import axios from "axios";
+
 const calendarRef = createRef();
 let scheduleInfo = {};
 //ScheduleStore
 const serverApi = "http://localhost:8080";
-const daysOfWeek = ["ראשון", "שני", "שליש", "רבעי", "חמישי", "שיש", "שבת"];
 
+let isAdminTemp = false;
 const Schedule = inject(
   "ScheduleStore",
   "LogInStore"
@@ -24,6 +25,8 @@ const Schedule = inject(
     const [list, setList] = useState([]);
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
+    const [calendarsArray, setCalendarsArray] = useState([]);
+    const [isForAdmin, setIsForAdmin] = useState(true);
     const toggle = (e) => {
       setShowModal(!e);
       console.log(showModal);
@@ -31,9 +34,14 @@ const Schedule = inject(
     useEffect(async () => {
       console.log("******** USE EFFECT *********");
       let has_permissoin = await props.ScheduleStore.checkPermission("admin");
-      setIsAdmin(has_permissoin);
       await props.ScheduleStore.getSchedule();
+      let departments = await props.ScheduleStore.getDepartments();
+      setCalendarsArray(getCalenders(departments, has_permissoin));
+      setIsAdmin(has_permissoin);
     }, []);
+    useEffect(() => {
+      setIsForAdmin(!isForAdmin);
+    }, [isAdmin]);
 
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
@@ -63,11 +71,6 @@ const Schedule = inject(
         console.log(" trainee clicled schedule ===> ");
         setClickedOnSchedule(!clickedOnSchedule);
       }
-    };
-    const changeScheduleColor = () => {
-      // tawfiq new changes
-      let userId = props.LogInStore.userId;
-      props.ScheduleStore.changeScheduleColor(userId);
     };
 
     const handleClickMore = (event) => {
@@ -141,44 +144,43 @@ const Schedule = inject(
       }
     };
 
+    // id: "1",
+    //             name: "MMA Mixed Martil art",
+    //             bgColor: "#40dfa0",
+    //             borderColor: "#303030",
+
+    const getCalenders = (departments, has_permissoin) => {
+      let calendarsArray = [];
+      const userCalender = {
+        id: "0",
+        name: "user",
+        bgColor: "#d1d8e0",
+        borderColor: "#2c3e50",
+      };
+      if (!has_permissoin) {
+        calendarsArray.push(userCalender);
+      }
+
+      departments.forEach((d) => {
+        const calendar = {};
+        calendar.id = d.id.toString();
+        calendar.name = d.name;
+        calendar.bgColor =
+          "#" + Math.floor(Math.random() * 16777215).toString(16);
+        calendar.borderColor = "#2c3e50";
+        calendarsArray.push(calendar);
+      });
+
+      return calendarsArray;
+    };
+
     return (
       <div>
         {
           <Calendar
             ref={calendarRef}
             height="900px"
-            calendars={[
-              {
-                id: "0",
-                name: "user",
-                bgColor: "#d1d8e0",
-                borderColor: "#9e5fff",
-              },
-              {
-                id: "1",
-                name: "MMA Mixed Martil art",
-                bgColor: "#40dfa0",
-                borderColor: "#303030",
-              },
-              {
-                id: "2",
-                name: "classic boxing",
-                bgColor: "#487eb0",
-                borderColor: "#303030",
-              },
-              {
-                id: "3",
-                name: "brazlian jijutsu",
-                bgColor: "#e84118",
-                borderColor: "#303030",
-              },
-              {
-                id: "4",
-                name: "general for testing",
-                bgColor: "#6D214F",
-                borderColor: "#303030",
-              },
-            ]}
+            calendars={calendarsArray}
             disableDblClick={true}
             disableClick={false}
             isReadOnly={false}
@@ -197,22 +199,8 @@ const Schedule = inject(
             onAfterRenderSchedule={handleafterRenderSchedule}
             onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
             onBeforeCreateSchedule={handlebeforeCreateSchedule}
-            template={{
-              milestone(schedule) {
-                return `<span style="color:#fff;background-color: ${schedule.bgColor};">${schedule.title}</span>`;
-              },
-              milestoneTitle() {
-                return "Milestone";
-              },
-              allday(schedule) {
-                return `${schedule.title}<i class="fa fa-refresh"></i>`;
-              },
-              alldayTitle() {
-                return "All Day";
-              },
-            }}
-            useDetailPopup={isAdmin}
-            useCreationPopup={isAdmin}
+            useDetailPopup={isForAdmin}
+            useCreationPopup={isForAdmin}
             view={"week"} // You can also set the `defaultView` option.
             week={{
               showTimezoneCollapseButton: true,

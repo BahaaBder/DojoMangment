@@ -407,4 +407,22 @@ router.put("/updateSchedule", function (req, res) {
     res.status(400).send(error.message);
   }
 });
+
+router.get("/departments", function (req, res) {
+  try {
+    sequelize
+      .query(
+        `
+         SELECT *
+          FROM 
+          department
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(results);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 module.exports = router;
