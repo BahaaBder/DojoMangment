@@ -59,8 +59,8 @@ CREATE TABLE schedule(
     title VARCHAR(40),
     category VARCHAR(40),
     duDateClass VARCHAR(40),
-    start VARCHAR(40),
-    end VARCHAR(40),
+    start DATETIME ,
+    end DATETIME ,
     department_id INT,
     FOREIGN KEY(department_id) REFERENCES department(id)
 );
@@ -110,6 +110,7 @@ INSERT INTO user VALUES (2,2,1); --admin/coach
 --
 use dojo;
 insert into user_department VALUES(1,1);
+insert into user_department VALUES(2,1);
 insert into user_department VALUES(1,2);
 insert into user_department VALUES(1,3);
 

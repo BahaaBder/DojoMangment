@@ -42,7 +42,7 @@ const DashBoard = inject("ScheduleStore")(
                 <CartesianGrid strokeDasharray="3 3" />
                 <YAxis  dataKey="cnt" />
                 <Tooltip/>
-                <XAxis  dataKey="user"  />
+                <XAxis  dataKey="department"  />
                 <Bar  dataKey="cnt" fill={"rgba(120,99,132,1)"} />
               </BarChart>
                 {/* <Link to="/UpdateHomePage">

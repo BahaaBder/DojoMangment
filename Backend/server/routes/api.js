@@ -271,8 +271,8 @@ router.get("/alldepartments", function (req, res) {
 
 router.get("/userPerDepartment", async function (req, res) {
   try{
-    dataQuery = `SELECT user.id as user, COUNT(ud.department_id) AS cnt  FROM user, user_department as ud
-    WHERE  user.id = ud.user_id GROUP BY ud.department_id `;   
+    dataQuery = `SELECT department.name as department,ud.department_id, COUNT(ud.department_id) AS cnt  FROM user, user_department as ud,department
+    WHERE  user.id = ud.user_id AND ud.department_id=department.id GROUP BY ud.department_id `;   
     let usersPerDepartment = await sequelize.query(dataQuery);
   
     // usersPerDepartment[0];
@@ -335,7 +335,7 @@ router.get("/users", function (req, res) {
     .then(function ([results]) {
       if (results.length > 0) {
         console.log(results[0].id);
-        res.send(results[0]);
+        res.send(results[1]);
       } else {
         res.send(undefined);
       }
@@ -663,6 +663,36 @@ router.get("/departments", function (req, res) {
   }
 });
 
+router.put("/schedulesNewDate", async function (req, res) {
+  sequelize
+    .query(
+      `
+  SELECT * 
+  FROM 
+  schedule
+  `
+    )
+    .then(function ([schedules, metadata]) {
+      const array = UpdateSchedulesDate(schedules);
+      res.send(array)
+       array.forEach(e=>{
+         console.log(" snew = ",e)
+         sequelize.query(`
+         insert into schedule values(
+           null,
+           '${e.title}',
+           '${e.category}',
+           '${e.duDateClass}',
+           '${e.start}',
+           '${e.end}',
+           ${e.department_id}
+         )
+         `).then(function ([schedules, metadata]) {
+        });
+       })
+       res.send("finished")
+    });
+})
 module.exports = router;
 
 
