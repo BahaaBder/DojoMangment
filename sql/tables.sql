@@ -1,11 +1,11 @@
 create database dojo;
 USE dojo;
 
--- CREATE TABLE dojoTable(
---     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     name VARCHAR(20)
--- );
-​USE dojo;
+CREATE TABLE dojoTable(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20)
+);
+
 CREATE TABLE permission(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     admin BOOLEAN,
@@ -19,7 +19,6 @@ CREATE TABLE department(
 );
 -- ​
 
-​USE dojo;
 CREATE TABLE profile(
      id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
      name VARCHAR(40),
@@ -31,7 +30,6 @@ CREATE TABLE profile(
 );
 -- ​
 -- ​
-​USE dojo;
 CREATE TABLE user(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     permission_id INT,
@@ -42,22 +40,19 @@ CREATE TABLE user(
 );
 
 -- ​
--- CREATE TABLE schedule(
---     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     calenderId INT,
---     title VARCHAR(40),
---     category VARCHAR(40),
---     duDateClass VARCHAR(40),
---     start VARCHAR(40),
---     end VARCHAR(40),
---     isReadOnly BOOLEAN,
---     user_id INT,
---     FOREIGN KEY(user_id) REFERENCES user(id)
--- );
+CREATE TABLE schedule(
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    calenderId INT,
+    title VARCHAR(40),
+    category VARCHAR(40),
+    duDateClass VARCHAR(40),
+    start VARCHAR(40),
+    end VARCHAR(40),
+    isReadOnly BOOLEAN,
+    user_id INT,
+    FOREIGN KEY(user_id) REFERENCES user(id)
+);
 
-​USE dojo;
-drop table user_department;
-​USE dojo;
 CREATE TABLE user_department(
     user_id INT,
     department_id INT,
@@ -77,38 +72,31 @@ Create TABLE coach(
 );
 -- ​
 
--- USE dojo;
--- CREATE TABLE DepartmentDetails (
---     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     department_name TEXT,
---     descreption TEXT
--- );
+CREATE TABLE DepartmentDetails (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    department_name TEXT,
+    descreption TEXT
+);
 
--- CREATE TABLE About (
---     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
---     motivations TEXT,
---     overview TEXT,
---     dojo_id int,
---     dep_details_id int,
+CREATE TABLE About (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    motivations TEXT,
+    overview TEXT,
+    dojo_id int,
+    dep_details_id int,
 
---     FOREIGN KEY(dojo_id) REFERENCES dojoTable(id),
---     FOREIGN KEY(dep_details_id) REFERENCES DepartmentDetails(id)
--- );
+    FOREIGN KEY(dojo_id) REFERENCES dojoTable(id),
+    FOREIGN KEY(dep_details_id) REFERENCES DepartmentDetails(id)
+);
 
--- USE dojo;
--- drop table About, DepartmentDetails
+INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
+INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
 
--- USE dojo;
--- INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
--- INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
+INSERT INTO About VALUES(null, "motivation1", "overview1", null, 1);
+INSERT INTO About VALUES(null, "motivation2", "overview2", null, 2);
 
--- INSERT INTO About VALUES(null, "motivation1", "overview1", null, 1);
--- INSERT INTO About VALUES(null, "motivation2", "overview2", null, 2);
-
-​USE dojo;
 INSERT INTO dojoTable VALUES(null, "dojo1");
 
-​USE dojo;
 INSERT INTO coach
  VALUES (null,"Wolf","Boxing",1998,
             "https://i.pinimg.com/originals/2f/52/22/2f5222ae1b29f92873e17c8753bda5fe.jpg", 

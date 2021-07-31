@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button'
 import { observer, inject } from 'mobx-react'
 
 const ModalCustom=inject("ScheduleStore")(observer((props) => {
-  console.log(props)
-
   const [selectedCustomer, setSelectedCustomer] = useState({})
   const[showModal,setShowModal]=useState(true)
   useEffect(() => {

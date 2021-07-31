@@ -45,3 +45,12 @@
   margin: 10px ;
   padding: 8px;
 }
+img {
+  filter: brightness(0.8);
+}
+div.intro {
+  height: 70vh;
+}
+div.motivation {
+  height: 70vh;
+}

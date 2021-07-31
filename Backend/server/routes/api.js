@@ -83,6 +83,22 @@ router.get("/schedules", function (req, res) {
     });
 });
 
+router.post("/about", (req, res) => {
+  console.log("////////body///////")
+  console.log(req.body)
+  console.log("/////////////////")
+
+  sequelize.query(
+  `UPDATE departmentdetails
+  SET department_name = ${req.body.dep_name}
+  WHERE id = ${parseInt(req.body.id)}`
+  ).then(function ([results]) {
+    res.send("added ok ")
+  }).catch(err => {
+    console.log("error")
+  })
+})
+
 router.post("/schedules", (req, res) => {
   const newSchedule = req.body;
   console.log(newSchedule);

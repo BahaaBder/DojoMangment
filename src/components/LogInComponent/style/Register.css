@@ -1,19 +1,6 @@
 .page-content {
   background-color: #ededed;
-  position: relative;
-}
-
-.form-sheet {
-  width: 400px;
-  background-color: #f5f6fa;
-  padding: 20px;
-  border: 1px solid black;
-  border-style: dashed;
-  display: inline-block;
-  margin-left: 15px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
+} 
 .user-input {
   margin-bottom: 15px;
 }
@@ -22,38 +9,6 @@
 }
 .select-box {
   margin-bottom: 10px;
-}
-.info-box {
-  width: 200px;
-  height: 324px;
-  display: inline-grid;
-  grid-template-rows: 3fr 8fr;
-  grid-template-areas: "i" "t";
-  background-color: #f5f6fa;
-  margin: 20px;
-  border: 1px solid black;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 15px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-.image {
-  width: 50px;
-  height: 50px;
-  margin-top: 10px;
-}
-.icon-image {
-  text-align: center;
-  border-bottom: 1px solid black;
-}
-.info-page {
-  position: absolute;
-  display: inline-block;
-  margin-top: 10px;
-  margin-left: 88px;
-}
-.info-content {
-  text-align: center;
-  margin-top: 23px;
 }
 
 .txtfild{
