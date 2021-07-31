@@ -16,11 +16,13 @@ class ScheduleInventory {
       isHaveACource: observable,
       getSchedule: observable,
       isAdmin: observable,
+      userId: observable,
       handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
       computedListDepartment: computed,
+      computedIsAdmin: computed,
 
       createNewSchedule: action,
       haveACourse: action,
@@ -29,6 +31,7 @@ class ScheduleInventory {
       checkIfAlreadyJoin: action,
       checkPermission: action,
       getDepartments: action,
+      updateId: action,
     });
   }
 
@@ -41,6 +44,11 @@ class ScheduleInventory {
   get computedListDepartment() {
     return toJS(this.listDepartments);
   }
+
+  updateId= (userId) => {
+    this.userId = userId;
+ };
+
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
   };
@@ -86,7 +94,7 @@ class ScheduleInventory {
         tempList.push(object2);
       }
     });
-    return temp;
+    return tempList;
   };
   getUserDepartments = (users_departments, user_id) => {
     let departmentForUser = [];
@@ -229,4 +237,4 @@ class ScheduleInventory {
     return departments.data;
   };
 }
-export default ScheduleInventory;
+export default ScheduleInventory

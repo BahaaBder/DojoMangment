@@ -308,7 +308,7 @@ addToContacts = (userInfo) => {
     )`
     )
     .then(function ([id]) {
-      sequelize.query(`INSERT INTO user VALUES(${id},2,1)`);
+      sequelize.query(`INSERT INTO user VALUES(${id},1,1)`);
     });
 };
 emailIsExists = (email) => {

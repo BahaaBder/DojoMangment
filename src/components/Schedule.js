@@ -8,6 +8,9 @@ import { observer, inject } from "mobx-react";
 import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";
 import axios from "axios";
+import "./../App.css";
+
+const themeConfig = require("./ThemConfig");
 
 const calendarRef = createRef();
 let scheduleInfo = {};
@@ -39,6 +42,7 @@ const Schedule = inject(
         setIsAdmin(has_permissoin);
       }
       fecthMyApi();
+      handleHide()
     }, []);
     useEffect(() => {}, [isAdmin]);
 
@@ -151,9 +155,14 @@ const Schedule = inject(
     //             bgColor: "#40dfa0",
     //             borderColor: "#303030",
 
+    const isGuest = () =>{
+        let isGuest = props.LogInStore.isSign;
+        return !isGuest;
+    }
     const getCalenders = (departments, has_permissoin) => {
       let calendarsArray = [];
       const userCalender = {
+        isAllDay:false,
         id: "0",
         name: "user",
         bgColor: "#d1d8e0",
@@ -164,9 +173,11 @@ const Schedule = inject(
       }
 
       departments.forEach((d) => {
+        
         const calendar = {};
         calendar.id = d.id.toString();
         calendar.name = d.name;
+        calendar.isAllDay = false;
         calendar.bgColor =
           "#" + Math.floor(Math.random() * 16777215).toString(16);
         calendar.borderColor = "#2c3e50";
@@ -176,18 +187,21 @@ const Schedule = inject(
       return calendarsArray;
     };
     console.log("----", isAdmin);
+    
     return (
-      <div>
+      <div className="calendar">
         {isAdmin === true ? (
           <Calendar
             ref={calendarRef}
             height="900px"
+            theme={themeConfig}
+            
             calendars={calendarsArray}
-            disableDblClick={true}
-            disableClick={false}
-            isReadOnly={false}
-            useDetailPopup={true}
-            useCreationPopup={true}
+            disableDblClick={!isGuest()}
+            disableClick={isGuest()}
+            isReadOnly={isGuest()}
+            useDetailPopup={!isGuest()}
+            useCreationPopup={!isGuest()}
             Z
             month={{
               startDayOfWeek: 0,
@@ -203,22 +217,31 @@ const Schedule = inject(
             onAfterRenderSchedule={handleafterRenderSchedule}
             onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
             onBeforeCreateSchedule={handlebeforeCreateSchedule}
-            view={"week"} // You can also set the `defaultView` option.
+            views={['week', 'day']}
             week={{
               showTimezoneCollapseButton: true,
               timezonesCollapsed: true,
             }}
+            timezones={[
+              {
+                timezoneOffset:'UTC +3',
+                displayLabel: 'GMT+09:00',
+                tooltip: 'Seoul'
+              }]}
+              
           />
         ) : (
           <Calendar
             ref={calendarRef}
             height="900px"
+            theme={themeConfig}
+        
             calendars={calendarsArray}
-            disableDblClick={true}
-            disableClick={false}
-            isReadOnly={false}
-            useDetailPopup={false}
-            useCreationPopup={false}
+            disableDblClick={!isGuest()}
+            disableClick={isGuest()}
+            isReadOnly={isGuest()}
+            useDetailPopup={isGuest()}
+            useCreationPopup={isGuest()}
             Z
             month={{
               startDayOfWeek: 0,
@@ -234,11 +257,17 @@ const Schedule = inject(
             onAfterRenderSchedule={handleafterRenderSchedule}
             onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
             onBeforeCreateSchedule={handlebeforeCreateSchedule}
-            view={"week"} // You can also set the `defaultView` option.
+            views={['week', 'day']}
             week={{
               showTimezoneCollapseButton: true,
               timezonesCollapsed: true,
             }}
+            timezones={[
+              {
+                timezoneOffset:'UTC +3',
+                displayLabel: 'GMT+09:00',
+                tooltip: 'Seoul'
+              }]}
           />
         )}
         {clickedOnSchedule ? (

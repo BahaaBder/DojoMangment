@@ -45,3 +45,38 @@
   margin: 10px ;
   padding: 8px;
 }
+.calendar{
+  margin: 10px;
+  max-height: max-content;
+  border: 1px solid black;
+}
+.rbc-time-view .rbc-row {
+  min-height: 0px;
+}
+.tui-full-calendar-weekday-schedules {
+border: 10px solid green;
+}
+.rbc-time-view .rbc-row div:nth-child(1) {
+  height: 0px !important;
+}
+.fc-list-item-time {
+  display:none;
+}
+.tui-view-428{
+  background-color: aqua;
+  display: none;
+}
+.tui-full-calendar-vlayout-area .tui-view-426 .tui-full-calendar-vlayout-container{
+background-color: green;
+}
+.tui-full-calendar-layout{
+ 
+}
+/* .tui-view-430{
+  background-color: white;
+  height: 2000px;
+}
+.tui-full-calendar-time-date-schedule-block-wrap{
+  width: 1px;
+  background-color: red;
+} */
