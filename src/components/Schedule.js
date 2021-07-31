@@ -20,28 +20,27 @@ const Schedule = inject(
   "LogInStore"
 )(
   observer((props) => {
-    const [showModal, setShowModal] = useState(false);
-    const [event, setEvent] = useState(null);
-    const [list, setList] = useState([]);
+    // const [showModal, setShowModal] = useState(false);
+    // const [event, setEvent] = useState(null);
+    // const [list, setList] = useState([]);
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
     const [calendarsArray, setCalendarsArray] = useState([]);
-    const [isForAdmin, setIsForAdmin] = useState(true);
-    const toggle = (e) => {
-      setShowModal(!e);
-      console.log(showModal);
-    };
-    useEffect(async () => {
-      console.log("******** USE EFFECT *********");
-      let has_permissoin = await props.ScheduleStore.checkPermission("admin");
-      await props.ScheduleStore.getSchedule();
-      let departments = await props.ScheduleStore.getDepartments();
-      setCalendarsArray(getCalenders(departments, has_permissoin));
-      setIsAdmin(has_permissoin);
-    }, []);
+
     useEffect(() => {
-      setIsForAdmin(!isForAdmin);
-    }, [isAdmin]);
+      console.log("******** USE EFFECT *********");
+
+      async function fecthMyApi() {
+        let has_permissoin = await props.ScheduleStore.checkPermission("admin");
+        await props.ScheduleStore.getSchedule();
+        let departments = await props.ScheduleStore.getDepartments();
+        setCalendarsArray(getCalenders(departments, has_permissoin));
+
+        setIsAdmin(has_permissoin);
+      }
+      fecthMyApi();
+    }, []);
+    useEffect(() => {}, [isAdmin]);
 
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
@@ -65,7 +64,7 @@ const Schedule = inject(
         title: ev.schedule.title,
       };
       console.log("%%%", scheduleInfo);
-      if (isAdmin) {
+      if (props.ScheduleStore.computedIsAdmin) {
         console.log(" admin clicled schedule ===> ");
       } else {
         console.log(" trainee clicled schedule ===> ");
@@ -87,9 +86,7 @@ const Schedule = inject(
         schedule_id: ev.schedule.id,
       });
     };
-    const handleafterRenderSchedule = (ev) => {
-      console.log("************After Render***************", ev);
-    };
+    const handleafterRenderSchedule = (ev) => {};
     const handlebeforeUpdateSchedule = (ev) => {
       console.log("************BEFORE UPDATE***************");
       console.log("$ BF : ", ev);
@@ -131,6 +128,9 @@ const Schedule = inject(
         var triggerEventName = event.triggerEventName;
         console.log(startTime, endTime, isAllDay, guide, triggerEventName);
         console.log("---startTime--<<<<<", event);
+        if (event.title === undefined) {
+          return;
+        }
         const newSchedule = {
           id: null,
           title: event.title,
@@ -141,6 +141,8 @@ const Schedule = inject(
           department_id: parseInt(event.calendarId),
         };
         props.ScheduleStore.createNewSchedule(newSchedule);
+      } else {
+        alert(" user has no  premisssion ");
       }
     };
 
@@ -173,10 +175,10 @@ const Schedule = inject(
 
       return calendarsArray;
     };
-
+    console.log("----", isAdmin);
     return (
       <div>
-        {
+        {isAdmin === true ? (
           <Calendar
             ref={calendarRef}
             height="900px"
@@ -184,6 +186,8 @@ const Schedule = inject(
             disableDblClick={true}
             disableClick={false}
             isReadOnly={false}
+            useDetailPopup={true}
+            useCreationPopup={true}
             Z
             month={{
               startDayOfWeek: 0,
@@ -199,15 +203,44 @@ const Schedule = inject(
             onAfterRenderSchedule={handleafterRenderSchedule}
             onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
             onBeforeCreateSchedule={handlebeforeCreateSchedule}
-            useDetailPopup={isForAdmin}
-            useCreationPopup={isForAdmin}
             view={"week"} // You can also set the `defaultView` option.
             week={{
               showTimezoneCollapseButton: true,
               timezonesCollapsed: true,
             }}
           />
-        }
+        ) : (
+          <Calendar
+            ref={calendarRef}
+            height="900px"
+            calendars={calendarsArray}
+            disableDblClick={true}
+            disableClick={false}
+            isReadOnly={false}
+            useDetailPopup={false}
+            useCreationPopup={false}
+            Z
+            month={{
+              startDayOfWeek: 0,
+            }}
+            schedules={props.ScheduleStore.computedList}
+            scheduleView
+            taskView
+            onClickDayname={handleClickDayname}
+            onClickSchedule={handleClickSchedule}
+            onClickMore={handleClickMore}
+            onClickTimezonesCollapseBtn={handleClickTimezonesCollapseBtn}
+            onBeforeDeleteSchedule={handleBeforeDeleteSchedule}
+            onAfterRenderSchedule={handleafterRenderSchedule}
+            onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
+            onBeforeCreateSchedule={handlebeforeCreateSchedule}
+            view={"week"} // You can also set the `defaultView` option.
+            week={{
+              showTimezoneCollapseButton: true,
+              timezonesCollapsed: true,
+            }}
+          />
+        )}
         {clickedOnSchedule ? (
           <UserPopUp scheduleInfo={scheduleInfo}></UserPopUp>
         ) : null}
