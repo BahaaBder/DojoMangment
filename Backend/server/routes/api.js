@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
+const dayjs = require('dayjs')
+var utc = require('dayjs/plugin/utc')
+var timezone = require('dayjs/plugin/timezone') 
 const sequelize = new Sequelize("mysql://root:@localhost/dojo");
 sequelize
   .authenticate()
@@ -64,6 +67,46 @@ router.get("/users", function (req, res) {
       }
     });
 });
+/////// 
+router.put("/schedulesNewDate", async function (req, res) {
+
+
+  sequelize
+    .query(
+      `
+  SELECT * 
+  FROM 
+  schedule
+  `
+    )
+    .then(function ([schedules, metadata]) {
+
+      const array = UpdateSchedulesDate(schedules);
+      res.send(array)
+       array.forEach(e=>{
+         console.log(" snew = ",e)
+         sequelize.query(`
+         insert into schedule values(
+           null,
+           '${e.title}',
+           '${e.category}',
+           '${e.duDateClass}',
+           '${e.start}',
+           '${e.end}',
+           ${e.department_id}
+         )
+         `).then(function ([schedules, metadata]) {
+
+        });
+       })
+       res.send("finished")
+
+    });
+
+
+
+})
+
 router.get("/schedules", function (req, res) {
   sequelize
     .query(
@@ -100,7 +143,7 @@ router.post("/schedules", (req, res) => {
       .then(function ([results, metadata]) {
         res.send("added ok ");
       });
-  } catch (error) {}
+  } catch (error) { }
 });
 router.delete("/schedules", function (req, res) {
   console.log("--->>>", req.body);
@@ -116,7 +159,7 @@ router.delete("/schedules", function (req, res) {
       .then(function ([results, metadata]) {
         res.send("Deleting Schedule Success ");
       });
-  } catch (error) {}
+  } catch (error) { }
 });
 router.get("/coachs", function (req, res) {
   try {
@@ -425,4 +468,35 @@ router.get("/departments", function (req, res) {
     res.status(400).send(error.message);
   }
 });
+
+
+function UpdateSchedulesDate(array) {
+  const numWeeks = 1;
+  console.log(array)
+  const newArray = array.map(element => {
+
+    let now = new Date();
+    // now.setDate(element.start);
+    dayjs.extend(utc)
+    dayjs.extend(timezone)
+    // dayjs.tz.setDefault(dayjs.tz.guess())
+
+    // console.log(dayjs.tz.guess())
+    const start = dayjs(element.start)
+    const startNew = start.add("7", "day")
+    console.log(element.start," -----",start.utc().format('YYYY-MM-DDTHH:mmZ[Z]').toString())
+    const end = dayjs(element.end);
+    const endNew = end.add("7", "day")
+
+    // console.log(element.start, "====dayjs", "---", startNew.format(), "00", start.format());
+
+    return { ...element, start: startNew.utc().format('YYYY-MM-DDTHH:mm').toString(), end: endNew.utc().format('YYYY-MM-DDTHH:mm').toString() }
+    // console.log(element.start);
+
+
+  });
+
+  return newArray;
+
+}
 module.exports = router;

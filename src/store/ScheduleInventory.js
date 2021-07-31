@@ -40,6 +40,7 @@ class ScheduleInventory {
     this.showModal = !this.showModal;
   };
   createNewSchedule = async (schedule) => {
+    debugger;
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };

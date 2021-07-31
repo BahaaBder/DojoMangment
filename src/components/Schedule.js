@@ -20,28 +20,20 @@ const Schedule = inject(
   "LogInStore"
 )(
   observer((props) => {
-    const [showModal, setShowModal] = useState(false);
-    const [event, setEvent] = useState(null);
-    const [list, setList] = useState([]);
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
     const [calendarsArray, setCalendarsArray] = useState([]);
-    const [isForAdmin, setIsForAdmin] = useState(true);
-    const toggle = (e) => {
-      setShowModal(!e);
-      console.log(showModal);
-    };
+
     useEffect(async () => {
-      console.log("******** USE EFFECT *********");
       let has_permissoin = await props.ScheduleStore.checkPermission("admin");
+      setIsAdmin(has_permissoin);
       await props.ScheduleStore.getSchedule();
       let departments = await props.ScheduleStore.getDepartments();
       setCalendarsArray(getCalenders(departments, has_permissoin));
-      setIsAdmin(has_permissoin);
+     
+
     }, []);
-    useEffect(() => {
-      setIsForAdmin(!isForAdmin);
-    }, [isAdmin]);
+    
 
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
@@ -129,7 +121,7 @@ const Schedule = inject(
         var isAllDay = event.isAllDay;
         var guide = event.guide;
         var triggerEventName = event.triggerEventName;
-        console.log(startTime, endTime, isAllDay, guide, triggerEventName);
+        console.log(startTime, endTime, isAllDay);
         console.log("---startTime--<<<<<", event);
         const newSchedule = {
           id: null,
@@ -184,10 +176,19 @@ const Schedule = inject(
             disableDblClick={true}
             disableClick={false}
             isReadOnly={false}
+            taskView={false}
+            useDetailPopup={isAdmin}
+            useCreationPopup={isAdmin}
             Z
             month={{
               startDayOfWeek: 0,
             }}
+            timezones={[
+              {
+                timezoneOffset:'UTC +3',
+                displayLabel: 'GMT+09:00',
+                tooltip: 'Seoul'
+              }]}
             schedules={props.ScheduleStore.computedList}
             scheduleView
             taskView
@@ -199,8 +200,7 @@ const Schedule = inject(
             onAfterRenderSchedule={handleafterRenderSchedule}
             onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
             onBeforeCreateSchedule={handlebeforeCreateSchedule}
-            useDetailPopup={isForAdmin}
-            useCreationPopup={isForAdmin}
+          
             view={"week"} // You can also set the `defaultView` option.
             week={{
               showTimezoneCollapseButton: true,
