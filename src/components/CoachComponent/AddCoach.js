@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { observer, inject } from 'mobx-react';
-import { TextField } from '@material-ui/core';
+import { observer, inject } from "mobx-react";
+import { TextField } from "@material-ui/core";
 // import Button f
 import './style/Coach.css'
 import { Button, Alert } from "react-bootstrap";
@@ -55,7 +55,7 @@ class AddCoach extends Component {
       this.setState({ showError: false, showSuccess: true })
       this.setState({ name: "", department: "", age: "", img: "", descShort: "" });
     }
-  }
+  };
 
   componentDidMount = async () => {
     let allDepartments = await axios.get(serverApi + "/alldepartments");
@@ -63,15 +63,17 @@ class AddCoach extends Component {
   }
 
   render() {
-
     return (
       <div className="AddCoach">
         <h4>ADD Coach</h4>
         <div className="txtfild">
           <span>Name: </span>
-          <TextField className="text" id="name-input"
+          <TextField
+            className="text"
+            id="name-input"
             value={this.state.name}
-            onChange={this.change} />
+            onChange={this.change}
+          />
         </div>
         <div className="txtfild">
           <span>department: </span>
@@ -90,7 +92,9 @@ class AddCoach extends Component {
         </div>
         <div className="txtfild">
           <span>img: </span>
-          <TextField className="text" id="img-input"
+          <TextField
+            className="text"
+            id="img-input"
             label="img url"
             multiline
             maxRows={4}
@@ -108,7 +112,9 @@ class AddCoach extends Component {
             onChange={this.change}
           />
         </div>
-        <Button className="btn" onClick={this.AddCoach}>Add New Coach</Button>
+        <Button className="btn" onClick={this.AddCoach}>
+          Add New Coach
+        </Button>
         <Alert variant="danger" show={this.state.showError}>
           Check Your Inputs Again !
         </Alert>

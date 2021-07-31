@@ -1,10 +1,8 @@
-
-import { Container, Row, Col } from 'react-bootstrap';
-import Navbar from 'react-bootstrap/Navbar'
-import { BrowserRouter as Router, Route, Link }
-    from "react-router-dom";
-import React from 'react'
-import Schedule from './Schedule'
+import { Container, Row, Col } from "react-bootstrap";
+import Navbar from "react-bootstrap/Navbar";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React from "react";
+import Schedule from "./Schedule";
 import Coachs from "./CoachComponent/Coachs";
 import AddCoach from "./CoachComponent/AddCoach";
 import LogIn from "./LogInComponent/LogIn";
@@ -149,9 +147,21 @@ const NavBar = inject("LogInStore")(
 
 
 
-            </Router>
-        )
-    }))
+        <Route path="/schedules" exact component={Schedule} />
+        <Route path="/register" exact component={Register} />
 
-export default NavBar
+        <Route path="/about" exact component={About} />
+        <Route path="/coachs" exact render={() => <Coachs />} />
+        <Route path="/addCoachs" exact render={() => <AddCoach />} />
+        <Route path="/LogIn" exact render={() => <LogIn />} />
+        {
+          //  <Route path="/coaches" exact
+          //  component={Coaches}
+          //  />
+        }
+      </Router>
+    );
+  })
+);
 
+export default NavBar;

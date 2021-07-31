@@ -7,145 +7,226 @@ class ScheduleInventory {
     this.listSchedule = [];
     this.userId = 1;
     this.isHaveACource = false;
-    this.courcesUserJoin = [];
-
+    this.arrayOfUserDepartment = [];
+    this.listDepartments = [];
+    this.isAdmin = false;
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
       isHaveACource: observable,
       getSchedule: observable,
-      courcesUserJoin: observable,
+      isAdmin: observable,
       handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
+      computedListDepartment: computed,
+
       createNewSchedule: action,
-      haveACource: action,
-      changeScheduleColor: action,
-      addCoursJoin: action
+      haveACourse: action,
+      JoinToCourse: action,
+      arrayOfUserDepartment: observable,
+      checkIfAlreadyJoin: action,
+      checkPermission: action,
+      getDepartments: action,
     });
   }
+
   get computedList() {
     return toJS(this.listSchedule);
+  }
+  get computedIsAdmin() {
+    return this.isAdmin;
+  }
+  get computedListDepartment() {
+    return toJS(this.listDepartments);
   }
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
   };
   createNewSchedule = async (schedule) => {
     await axios.post(serverApi + "/schedules", schedule);
-    this.getSchedule()
-  }
-  deleteSchedule = async (schedule) => {
-    await axios.delete(serverApi + "/schedules", { data: schedule });
-    this.getSchedule()
+    this.getSchedule();
   };
-  mapScheduleToStr = (list) => {
-    const temp = [];
-    list.forEach((s) => {
-      if (s.userId === this.userId) {
-        const object2 = Object.assign({},
-          s,
-          { id: s.id.toString() },
-          { calendarId: this.userId.toString() })
-        temp.push(object2);
+  deleteSchedule = (schedule) => {
+    axios.delete(serverApi + "/schedules", { data: schedule }).then(() => {
+      this.getSchedule();
+    });
+  };
+
+  filterDepartmentForUser = (departmentOfUser) => {
+    console.log(" inside=======filterdepartment");
+    const tempList = [];
+    this.listSchedule.forEach((s) => {
+      if (departmentOfUser.includes(s.departmentID)) {
+        const object2 = Object.assign({}, s, { calendarId: "0" });
+        tempList.push(object2);
       } else {
-        const object2 = Object.assign(
-          {},
-          s,
-          { id: s.id.toString() },
-          { calendarId: s.calendarId.toString() }
-        );
-        temp.push(object2);
+        tempList.push(s);
+      }
+      this.listSchedule = tempList;
+      console.log(" ------ after filtring ", tempList);
+    });
+  };
+
+  mapScheduleToStr = async (list) => {
+    const tempList = [];
+    let getMyUser = await axios.get(`${serverApi}/userDepartment`);
+    let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
+    list.forEach((s) => {
+      if (departmentArray.includes(s.department_id)) {
+        const object2 = Object.assign({}, s, {
+          calendarId: s.department_id.toString(),
+        });
+        tempList.push(object2);
+      } else {
+        const object2 = Object.assign({}, s, {
+          calendarId: "0",
+        });
+        tempList.push(object2);
       }
     });
     return temp;
   };
+  getUserDepartments = (users_departments, user_id) => {
+    let departmentForUser = [];
+    users_departments.forEach((user_department) => {
+      if (user_department.user_id == user_id) {
+        departmentForUser.push(user_department.department_id);
+      }
+    });
+    this.arrayOfUserDepartment = departmentForUser;
+    return departmentForUser;
+  };
+
+  filterByUserDepartment = async () => {
+    let getMyUser = await axios.get(`${serverApi}/userDepartment`);
+    let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
+    this.filterDepartmentForUser(departmentArray);
+  };
 
   //Tawfiq
 
-  addCoursJoin = (courceUserJoin) => {
-    if(courceUserJoin.isJoin){
-      this.courcesUserJoin.push(courceUserJoin);
-    }
-    else{
-      let temp = toJS(this.courcesUserJoin);
-      let index = temp.findIndex((item)=>item.userId===courceUserJoin.userId && item.scheduleId === courceUserJoin.scheduleId)
-      temp.splice(index,1);
-      Object.assign(this.courcesUserJoin, temp);
-      console.log(this.courcesUserJoin);
-    }
-    
-  }
-
-  changeScheduleColor = () => {
-    let temp = [];
-    let cources = toJS(this.courcesUserJoin);
-    let schedule = toJS(this.listSchedule);
-    let isExist = false;
-    schedule.forEach((s) => {
-      isExist=false;
-      for (let userData of cources) {
-        if (s.userId === parseInt(userData.userId) && parseInt(s.id) === parseInt(userData.scheduleId)) {
-          isExist=true
-        }
-      }
-      if(isExist){
-        const object2 = Object.assign({},
-          s,
-          { calendarId: '4' })
-        temp.push(object2);
-      }
-      else{
-        const object2 = Object.assign(
-          {},
-          s,
-          { calendarId: '5' }
-        );
-        temp.push(object2);
-      }
-    });
-    Object.assign(this.listSchedule, temp);
-    console.log(this.listSchedule);
+  checkIfAlreadyJoin = async (data) => {
+    let departmentPromise = await axios.get(
+      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+    );
+    const dep_id = departmentPromise.data[0].department_id;
+    return this.arrayOfUserDepartment.includes(dep_id);
   };
-
-  JoinToCours = async (data) => {
+  JoinToCourse = async (data) => {
     try {
-      let res = await axios.post(`${serverApi}/userSchedule`, { scheduleId: parseInt(data.scheduleId), userId: data.userId })
-      console.log(res);
-    }
-    catch (error) {
+      let departmentPromise = await axios.get(
+        `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+      );
+      const dep_id = departmentPromise.data[0].department_id;
+      console.log("Join $ :", dep_id);
+
+      let res = await axios.post(`${serverApi}/userDepartment`, {
+        userId: data.userId,
+        departmentId: dep_id,
+      });
+      this.getSchedule();
+    } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
-  haveACource = async (data) => {
-    let isExist = await axios.get(`http://localhost:8080/userSchedule?userId=${data.userId}&scheduleId=${data.scheduleId}`);
-    this.isHaveACource = isExist.data;
-  }
+  haveACourse = async (data) => {
+    // let isExist = await axios.get(`http://localhost:8080/userSchedule?userId=${data.userId}&scheduleId=${data.scheduleId}`);
+    // this.isHaveACource = isExist.data;
+  };
 
   //Tawfiq
   exitFromCource = async (data) => {
+    let departmentPromise = await axios.get(
+      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+    );
+    const dep_id = departmentPromise.data[0].department_id;
+    console.log("Join $ :", dep_id);
+
     try {
-      let res = await axios.delete(`${serverApi}/userSchedule`, { data: { scheduleId: parseInt(data.scheduleId), userId: data.userId } })
+      let res = await axios.delete(`${serverApi}/userDepartment`, {
+        data: { department_id: dep_id, user_id: data.userId },
+      });
+      this.getSchedule();
       console.log(res);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error.message);
     }
-  }
+  };
+  changeScheduleColor = (userId) => {
+    let temp = [];
+    let schedule = toJS(this.listSchedule);
+    axios.get(`${serverApi}/userInSchedule`).then((response) => {
+      let usersInSchedule = response.data;
+      let isExist = false;
+      schedule.forEach((s) => {
+        usersInSchedule.forEach((user) => {
+          if (s.userId === user.userId && parseInt(s.id) === user.schedule_id) {
+            isExist = true;
+          }
+        });
+        if (isExist) {
+          const object2 = Object.assign(
+            {},
+            s,
+            { id: s.id.toString() },
+            { calendarId: "4" }
+          );
+          temp.push(object2);
+        } else {
+          const object2 = Object.assign(
+            {},
+            s,
+            { id: s.id.toString() },
+            { calendarId: "5" }
+          );
+          temp.push(object2);
+        }
+      });
+      Object.assign(this.listSchedule, temp);
+    });
+  };
 
+  changeScheduleColor = () => {
+    let temp = [];
+    let schedule = toJS(this.listSchedule);
+    axios.get(`${serverApi}/userInSchedule`).then((response) => {
+      let usersInSchedule = response.data;
+      let isExist = false;
+      schedule.forEach((s) => {});
+      Object.assign(this.listSchedule, temp);
+    });
+  };
   getSchedule = () => {
     axios
       .get(`${serverApi}/schedules`)
-      .then((response) => {
-        console.log("-----list------", response.data);
-        const temp = this.mapScheduleToStr(response.data);
-        console.log("temp mapeed ", temp);
+      .then(async (response) => {
+        const temp = await this.mapScheduleToStr(response.data);
         Object.assign(this.listSchedule, temp);
       })
       .catch(function (error) {
         console.log(error);
       });
+  };
+  checkPermission = async (type) => {
+    let is_admin = await axios.get(
+      `${serverApi}/permissions/?type=${type}&user_id=${this.userId}`
+    );
+    const result = is_admin.data[0][type] == 1;
+    console.log(is_admin.data[0][type] == 1);
+    this.isAdmin = result;
+    return result;
+  };
+  updateSchedule = (schedule) => {
+    axios.put(`${serverApi}/updateSchedule`, schedule).then(() => {
+      this.getSchedule();
+    });
+  };
+  getDepartments = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data;
   };
 }
 export default ScheduleInventory;
