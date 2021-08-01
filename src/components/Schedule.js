@@ -25,12 +25,13 @@ const Schedule = inject(
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
     const [calendarsArray, setCalendarsArray] = useState([]);
-    const [isSignin, setSignin] = useState(false);
-    // const [createSchedule, setCreateSchedule] = useState(false);
+    const [isSignin, setSignin] = useState(props.LogInStore.computeIsAdmin);
+    const [createSchedule, setCreateSchedule] = useState(false);
     const [showUpdatePopUp, setShowUpdatePopUp] = useState(false);
     const [selectedSchedule, setSelectedSchedule] = useState({});
     const [showCreatePopUp, setShowCreatePopUp] = useState(false);
     const [selectedDate, setSelectedDate] = useState({});
+    const [userSelctedDate, setUserSelectedDate] = useState({});
 
     useEffect(() => {
       console.log("******** USE EFFECT *********");
@@ -61,19 +62,6 @@ const Schedule = inject(
       if (isSignin) {
         const tempDepartmentId =
           await props.ScheduleStore.getScheduleDepartment(ev.schedule.id);
-        scheduleInfo = {
-          userId: props.LogInStore.userId,
-          schedule_id: ev.schedule.id,
-          start: dayjs(ev.schedule.start._date.toString()).format(
-            "dddd, MMMM D, YYYY h:mm A"
-          ),
-          end: dayjs(ev.schedule.end._date.toString()).format(
-            "dddd, MMMM D, YYYY h:mm A"
-          ),
-          title: ev.schedule.title,
-          department_id: tempDepartmentId,
-          category: "time",
-        };
         ////////-----------------------------------
         const scheduleInfoUpdate = {
           userId: props.LogInStore.userId,
@@ -95,7 +83,22 @@ const Schedule = inject(
           setSelectedSchedule(scheduleInfoUpdate);
           setShowUpdatePopUp(!showUpdatePopUp);
         } else {
+          scheduleInfo = {
+            userId: props.LogInStore.userId,
+            scheduleId: ev.schedule.id,
+            start: dayjs(ev.schedule.start._date.toString()).format(
+              "dddd, MMMM D, YYYY h:mm A"
+            ),
+            end: dayjs(ev.schedule.end._date.toString()).format(
+              "dddd, MMMM D, YYYY h:mm A"
+            ),
+            title: ev.schedule.title,
+            department_id: tempDepartmentId,
+            category: "time",
+          };
+          setUserSelectedDate(scheduleInfo);
           setClickedOnSchedule(!clickedOnSchedule);
+          console.log(clickedOnSchedule);
         }
       }
     };
@@ -151,16 +154,18 @@ const Schedule = inject(
       calendarInstance.toggleTaskView(false);
     };
     const handleBeforeCreateSchedule = (event) => {
+      if (!isSignin) {
+        return;
+      }
       if (isAdmin) {
         const scheduleInfo = {
           start: dayjs(event.start._date.toString()).format("YYYY-MM-DDThh:mm"),
           end: dayjs(event.end._date.toString()).format("YYYY-MM-DDThh:mm"),
         };
-
         setShowCreatePopUp(!showCreatePopUp);
         setSelectedDate(scheduleInfo);
       } else {
-        // alert(" user has no  premisssion ");
+        alert(" user has no  premisssion ");
       }
     };
 
@@ -232,6 +237,7 @@ const Schedule = inject(
             },
           ]}
         />
+
         {showUpdatePopUp ? (
           <AdminPopUp
             handleCloseModal={handleCloseModal}
@@ -246,23 +252,9 @@ const Schedule = inject(
             scheduleInfo={selectedDate}
           ></CreateSchedulePopUp>
         ) : null}
+
         {clickedOnSchedule ? (
           <UserPopUp scheduleInfo={userSelctedDate}></UserPopUp>
-        ) : null}
-        CreateSchedulePopUp
-        {showUpdatePopUp ? (
-          <AdminPopUp
-            handleCloseModal={handleCloseModal}
-            show={true}
-            scheduleInfo={selectedSchedule}
-          ></AdminPopUp>
-        ) : null}
-        {showCreatePopUp ? (
-          <CreateSchedulePopUp
-            handleCloseModal={handleCloseCreatePopUp}
-            show={true}
-            scheduleInfo={selectedDate}
-          ></CreateSchedulePopUp>
         ) : null}
         <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>

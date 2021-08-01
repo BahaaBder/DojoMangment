@@ -134,7 +134,7 @@ class ScheduleInventory {
       `${serverApi}/departmentOfSchedule/${data.scheduleId}`
     );
     const dep_id = departmentPromise.data[0].department_id;
-    debugger;
+
     return this.arrayOfUserDepartment.includes(dep_id);
   };
   JoinToCourse = async (data) => {
