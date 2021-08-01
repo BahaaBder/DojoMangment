@@ -335,7 +335,7 @@ router.get("/users", function (req, res) {
     .then(function ([results]) {
       if (results.length > 0) {
         console.log(results[0].id);
-        res.send(results[1]);
+        res.send(results[0]);
       } else {
         res.send(undefined);
       }
@@ -693,6 +693,21 @@ router.put("/schedulesNewDate", async function (req, res) {
        res.send("finished")
     });
 })
+
+router.get("/departmentInSchedules", async function (req, res) {
+  try{
+    dataQuery = `SELECT department.name as department,department.id, COUNT(schedule.department_id) AS cnt 
+     FROM schedule, department
+    WHERE   schedule.department_id=department.id GROUP BY schedule.department_id `;   
+    let usersPerDepartment = await sequelize.query(dataQuery);
+  
+    // usersPerDepartment[0];
+    res.send(usersPerDepartment[0]);
+  }    
+  catch(error){
+    res.status(401).send(error.message);
+}
+});
 module.exports = router;
 
 

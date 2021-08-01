@@ -195,13 +195,12 @@ const Schedule = inject(
             ref={calendarRef}
             height="900px"
             theme={themeConfig}
-            
             calendars={calendarsArray}
-            disableDblClick={!isGuest()}
-            disableClick={isGuest()}
-            isReadOnly={isGuest()}
-            useDetailPopup={!isGuest()}
-            useCreationPopup={!isGuest()}
+            disableDblClick={true}
+            disableClick={false}
+            isReadOnly={false}
+            useDetailPopup={true}
+            useCreationPopup={true}
             Z
             month={{
               startDayOfWeek: 0,
@@ -235,13 +234,12 @@ const Schedule = inject(
             ref={calendarRef}
             height="900px"
             theme={themeConfig}
-        
             calendars={calendarsArray}
-            disableDblClick={!isGuest()}
-            disableClick={isGuest()}
-            isReadOnly={isGuest()}
-            useDetailPopup={isGuest()}
-            useCreationPopup={isGuest()}
+            disableDblClick={true}
+            disableClick={false}
+            isReadOnly={false}
+            useDetailPopup={false}
+            useCreationPopup={false}
             Z
             month={{
               startDayOfWeek: 0,

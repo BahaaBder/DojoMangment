@@ -66,7 +66,7 @@ class Coachs extends Component {
         <div className="allCoaches">
             {coachs.map((coach,ind) => {
               return (
-                <span className="coach-item">
+                <span key={ind} className="coach-item">
                   <Coach key={ind}
                     coach={coach}
                     showDetails={true}

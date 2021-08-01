@@ -21,7 +21,7 @@ const CoachDetails = inject("CoachStore")(
             <div>
                 {coachs.map((coach, ind) => {
                     return (
-                        <span >
+                        <span key={ind}>
                             <Coach key={ind}
                                 coach={coach}
                                 showDetails={false}

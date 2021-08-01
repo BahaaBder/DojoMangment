@@ -79,7 +79,7 @@ class Coach extends Component {
             <Modal.Title className="coach-info">about {coach.name}</Modal.Title>
           </Modal.Header>
           <Modal.Body className="bodyModal">
-            <div class="onlyImg" >
+            <div className="onlyImg" >
               <img className="coachImg" src={coach.img} alt="" />
             </div>
             <div className="info">
