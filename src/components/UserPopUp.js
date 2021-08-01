@@ -10,7 +10,6 @@ const UserPopUp = inject("ScheduleStore")(
     const [isJoined, setIsJoined] = useState(false);
     const handleClose = () => setshow(false);
     const [haveACource, sethaveACource] = useState(false);
-
     useEffect(() => {
       async function chechIsExist() {
         let IsExist = await props.ScheduleStore.checkIfAlreadyJoin(
@@ -20,21 +19,17 @@ const UserPopUp = inject("ScheduleStore")(
       }
       chechIsExist();
     }, []);
-
     useEffect(() => {}, [haveACource]);
-
     const handleJoin = () => {
       sethaveACource(true);
       props.ScheduleStore.JoinToCourse(props.scheduleInfo);
       setshow(false);
     };
-
     const handleLeave = () => {
       sethaveACource(false);
       props.ScheduleStore.exitFromCource(props.scheduleInfo);
       setshow(false);
     };
-
     return (
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -60,5 +55,4 @@ const UserPopUp = inject("ScheduleStore")(
     );
   })
 );
-
 export default UserPopUp;

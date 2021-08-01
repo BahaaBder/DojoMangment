@@ -7,13 +7,11 @@ import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";
 import "./../App.css";
 import AdminPopUp from "./PupUp/AdminPopUp";
-
 import CreateSchedulePopUp from "./PupUp/CreateSchedulePopUp";
 const themeConfig = require("./ThemConfig");
 const calendarRef = createRef();
 let scheduleInfo = {};
 //ScheduleStore
-
 const Schedule = inject(
   "ScheduleStore",
   "LogInStore"
@@ -32,7 +30,6 @@ const Schedule = inject(
     const [showCreatePopUp, setShowCreatePopUp] = useState(false);
     const [selectedDate, setSelectedDate] = useState({});
     const [userSelctedDate, setUserSelectedDate] = useState({});
-
     useEffect(() => {
       console.log("******** USE EFFECT *********");
       async function fecthMyApi() {
@@ -41,13 +38,13 @@ const Schedule = inject(
         let departments = await props.ScheduleStore.getDepartments();
         setCalendarsArray(getCalenders(departments, has_permissoin));
         setSignin(props.LogInStore.isSign);
-        setIsAdmin(has_permissoin);
+        // setIsAdmin(has_permissoin);
+        setIsAdmin(props.LogInStore.computeIsAdmin === "true");
       }
       fecthMyApi();
       handleHide();
     }, []);
     useEffect(() => {}, [isAdmin]);
-
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
       // view : week, day
@@ -55,10 +52,8 @@ const Schedule = inject(
       console.log(ev.date);
       console.groupEnd();
     };
-
     const handleClickSchedule = async (ev) => {
       console.log("************Click Schedule****************");
-
       if (isSignin) {
         const tempDepartmentId =
           await props.ScheduleStore.getScheduleDepartment(ev.schedule.id);
@@ -66,11 +61,9 @@ const Schedule = inject(
         const scheduleInfoUpdate = {
           userId: props.LogInStore.userId,
           schedule_id: ev.schedule.id,
-
           start: dayjs(ev.schedule.start._date.toString()).format(
             "YYYY-MM-DDThh:mm"
           ),
-
           end: dayjs(ev.schedule.end._date.toString()).format(
             "YYYY-MM-DDThh:mm"
           ),
@@ -79,12 +72,12 @@ const Schedule = inject(
           category: "time",
           dueDateClass: "",
         };
-        if (isAdmin) {
+        if (props.LogInStore.computeIsAdmin === "true") {
           setSelectedSchedule(scheduleInfoUpdate);
           setShowUpdatePopUp(!showUpdatePopUp);
         } else {
           scheduleInfo = {
-            userId: props.LogInStore.userId,
+            userId: parseInt(props.LogInStore.computeId),
             scheduleId: ev.schedule.id,
             start: dayjs(ev.schedule.start._date.toString()).format(
               "dddd, MMMM D, YYYY h:mm A"
@@ -102,7 +95,6 @@ const Schedule = inject(
         }
       }
     };
-
     const handleClickMore = (event) => {
       console.log("************Click More***************");
       console.log("clickMore", event.date, event.target);
@@ -117,7 +109,6 @@ const Schedule = inject(
         schedule_id: ev.schedule.id,
       });
     };
-
     const handleCloseModal = () => {
       setShowUpdatePopUp(!showUpdatePopUp);
     };
@@ -135,7 +126,6 @@ const Schedule = inject(
       };
       console.log("object :", updatedSchedule);
     };
-
     const handleClickTimezonesCollapseBtn = (ev) => {};
     const handleClickNextButton = () => {
       const calendarInstance = calendarRef.current.getInstance();
@@ -168,7 +158,6 @@ const Schedule = inject(
         alert(" user has no  premisssion ");
       }
     };
-
     const getCalenders = (departments, has_permissoin) => {
       let calendarsArray = [];
       const userCalender = {
@@ -181,7 +170,6 @@ const Schedule = inject(
       if (!has_permissoin) {
         calendarsArray.push(userCalender);
       }
-
       departments.forEach((d) => {
         const calendar = {};
         calendar.id = d.id.toString();
@@ -192,14 +180,11 @@ const Schedule = inject(
         calendar.borderColor = "#2c3e50";
         calendarsArray.push(calendar);
       });
-
       return calendarsArray;
     };
-
     const handleCloseCreatePopUp = () => {
       setShowCreatePopUp(!showCreatePopUp);
     };
-
     return (
       <div className="calendar">
         <Calendar
@@ -237,7 +222,6 @@ const Schedule = inject(
             },
           ]}
         />
-
         {showUpdatePopUp ? (
           <AdminPopUp
             handleCloseModal={handleCloseModal}
@@ -252,7 +236,6 @@ const Schedule = inject(
             scheduleInfo={selectedDate}
           ></CreateSchedulePopUp>
         ) : null}
-
         {clickedOnSchedule ? (
           <UserPopUp scheduleInfo={userSelctedDate}></UserPopUp>
         ) : null}

@@ -13,7 +13,14 @@ class LogInStore {
       updateAdminState: action,
       computeIsSign: computed,
       computeIsAdmin: computed,
+      computeId: computed,
     });
+  }
+  get computeId() {
+    let userId = sessionStorage.getItem("Id");
+    this.userId = userId;
+    return this.userId;
+    // sessionStorage.getItem("isSign");
   }
   get computeIsSign() {
     let sign = sessionStorage.getItem("isSign");
@@ -33,6 +40,7 @@ class LogInStore {
   };
   updateId = (userId) => {
     this.userId = userId;
+    sessionStorage.setItem("Id", userId);
   };
   updateAdminState = (state) => {
     this.isAdmin = state;

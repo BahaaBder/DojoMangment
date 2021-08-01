@@ -5,7 +5,7 @@ class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId = 2;
+    this.userId = 1;
     this.isHaveACource = false;
     this.arrayOfUserDepartment = [];
     this.listDepartments = [];
@@ -94,7 +94,7 @@ class ScheduleInventory {
     const tempList = [];
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
 
-    let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
+    let departmentArray = this.getUserDepartments(getMyUser.data, parseInt(sessionStorage.getItem("Id")));
     list.forEach((s) => {
       if (departmentArray.includes(s.department_id)) {
         const object2 = Object.assign({}, s, {
@@ -139,7 +139,7 @@ class ScheduleInventory {
   };
   JoinToCourse = async (data) => {
     try {
-      debugger;
+      
       let departmentPromise = await axios.get(
         `${serverApi}/departmentOfSchedule/${data.scheduleId}`
       );
