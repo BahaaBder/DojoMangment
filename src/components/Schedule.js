@@ -194,16 +194,12 @@ const Schedule = inject(
             ref={calendarRef}
             height="900px"
             theme={themeConfig}
-            
-            calendars={calendarsArray}
-            scheduleDetailPopup={true}
             calendars={calendarsArray}
             disableDblClick={true}
             disableClick={false}
             isReadOnly={false}
             useDetailPopup={true}
             useCreationPopup={true}
-
             Z
             month={{
               startDayOfWeek: 0,
@@ -214,6 +210,23 @@ const Schedule = inject(
                 displayLabel: 'GMT+09:00',
                 tooltip: 'Seoul'
               }]}
+              
+          />
+        ) : (
+          <Calendar
+            ref={calendarRef}
+            height="900px"
+            theme={themeConfig}
+            calendars={calendarsArray}
+            disableDblClick={true}
+            disableClick={false}
+            isReadOnly={false}
+            useDetailPopup={false}
+            useCreationPopup={false}
+            Z
+            month={{
+              startDayOfWeek: 0,
+            }}
             schedules={props.ScheduleStore.computedList}
             scheduleView
             taskView

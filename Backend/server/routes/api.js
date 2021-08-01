@@ -733,6 +733,21 @@ router.put("/schedulesNewDate", async function (req, res) {
        res.send("finished")
     });
 })
+
+router.get("/departmentInSchedules", async function (req, res) {
+  try{
+    dataQuery = `SELECT department.name as department,department.id, COUNT(schedule.department_id) AS cnt 
+     FROM schedule, department
+    WHERE   schedule.department_id=department.id GROUP BY schedule.department_id `;   
+    let usersPerDepartment = await sequelize.query(dataQuery);
+  
+    // usersPerDepartment[0];
+    res.send(usersPerDepartment[0]);
+  }    
+  catch(error){
+    res.status(401).send(error.message);
+}
+});
 module.exports = router;
 
 

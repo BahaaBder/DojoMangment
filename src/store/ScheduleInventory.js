@@ -148,13 +148,14 @@ class ScheduleInventory {
 
   //Tawfiq
   exitFromCource = async (data) => {
-    let departmentPromise = await axios.get(
-      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
-    );
-    const dep_id = departmentPromise.data[0].department_id;
-    console.log("Join $ :", dep_id);
+
 
     try {
+      let departmentPromise = await axios.get(`${serverApi}/departmentOfSchedule/${data.scheduleId}`
+      );
+      const dep_id = departmentPromise.data[0].department_id;
+      console.log("Join $ :", dep_id);
+      
       let res = await axios.delete(`${serverApi}/userDepartment`, {
         data: { department_id: dep_id, user_id: data.userId },
       });
