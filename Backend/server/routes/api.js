@@ -561,6 +561,7 @@ router.post("/userDepartment", function (req, res) {
 //     res.status(400).send(error.message);
 //   }
 // });
+
 router.delete("/userDepartment", function (req, res) {
   const user_department = req.body;
   try {

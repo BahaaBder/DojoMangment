@@ -11,11 +11,15 @@ const UserPopUp = inject("ScheduleStore")(
     const handleClose = () => setshow(false);
     const [haveACource, sethaveACource] = useState(false);
 
-    useEffect(async () => {
-      const IsExist = await props.ScheduleStore.checkIfAlreadyJoin(
-        props.scheduleInfo
-      );
-      sethaveACource(IsExist);
+    useEffect( () => {
+
+      // const IsExist = await props.ScheduleStore.checkIfAlreadyJoin(
+      //   props.scheduleInfo
+      // );
+
+      // sethaveACource(IsExist);
+
+      
     }, []);
 
     const handleJoin = () => {
@@ -31,7 +35,7 @@ const UserPopUp = inject("ScheduleStore")(
     };
 
     return (
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={props.ScheduleStore.showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{props.scheduleInfo.title}</Modal.Title>
         </Modal.Header>

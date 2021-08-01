@@ -45,9 +45,9 @@ class ScheduleInventory {
     return toJS(this.listDepartments);
   }
 
-  updateId= (userId) => {
+  updateId = (userId) => {
     this.userId = userId;
- };
+  };
 
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
@@ -78,9 +78,14 @@ class ScheduleInventory {
     });
   };
 
+  getAllDepartment = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data
+  }
   mapScheduleToStr = async (list) => {
     const tempList = [];
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
+
     let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
     list.forEach((s) => {
       if (departmentArray.includes(s.department_id)) {
@@ -155,7 +160,7 @@ class ScheduleInventory {
       );
       const dep_id = departmentPromise.data[0].department_id;
       console.log("Join $ :", dep_id);
-      
+
       let res = await axios.delete(`${serverApi}/userDepartment`, {
         data: { department_id: dep_id, user_id: data.userId },
       });
@@ -205,7 +210,7 @@ class ScheduleInventory {
     axios.get(`${serverApi}/userInSchedule`).then((response) => {
       let usersInSchedule = response.data;
       let isExist = false;
-      schedule.forEach((s) => {});
+      schedule.forEach((s) => { });
       Object.assign(this.listSchedule, temp);
     });
   };
