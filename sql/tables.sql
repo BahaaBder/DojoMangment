@@ -101,12 +101,12 @@ use dojo;
 INSERT INTO dojoTable VALUES(null,"dojo1")
 --
 use dojo;
-INSERT INTO profile VALUES (null,"Tranee","t@gmail.com","123","somthing","0566",25);--trainee
-INSERT INTO profile VALUES (null,"admin","a@gmail.com","123","somthing","0566",25);--admin
+INSERT INTO profile VALUES (null,"Tranee","t@gmail.com","123","somthing","0566",25);
+INSERT INTO profile VALUES (null,"admin","a@gmail.com","123","somthing","0566",25);
 --
 use dojo;
-INSERT INTO user VALUES (1,1,1); --trainee
-INSERT INTO user VALUES (2,2,1); --admin/coach
+INSERT INTO user VALUES (1,1,1); 
+INSERT INTO user VALUES (2,2,1); 
 --
 use dojo;
 insert into user_department VALUES(1,1);

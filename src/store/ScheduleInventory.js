@@ -32,6 +32,7 @@ class ScheduleInventory {
       checkPermission: action,
       getDepartments: action,
       updateId: action,
+      getAllDepartment: action,
     });
   }
 
@@ -45,6 +46,10 @@ class ScheduleInventory {
     return toJS(this.listDepartments);
   }
 
+  getAllDepartment = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data
+  } 
   updateId= (userId) => {
     this.userId = userId;
  };
