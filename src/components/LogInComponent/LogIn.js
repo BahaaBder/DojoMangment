@@ -5,7 +5,7 @@ import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 const axios = require("axios");
-const LogIn = inject("LogInStore")(
+const LogIn = inject("LogInStore","ScheduleStore")(
   observer((props) => {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -42,6 +42,7 @@ const LogIn = inject("LogInStore")(
             setshow(false);
             // let userId =  await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
             props.LogInStore.updateId(userIdExist.id);
+            props.ScheduleStore.updateId(userIdExist.id);
             props.LogInStore.updateSign(true);
           } else {
             console.log("not found");

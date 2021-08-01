@@ -17,12 +17,13 @@ class ScheduleInventory {
       getSchedule: observable,
       userId: observable,
       isAdmin: observable,
+      userId: observable,
       handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
       computedListDepartment: computed,
-      listDepartments: observable,
+      computedIsAdmin: computed,
       createNewSchedule: action,
       haveACourse: action,
       JoinToCourse: action,
@@ -30,6 +31,7 @@ class ScheduleInventory {
       checkIfAlreadyJoin: action,
       checkPermission: action,
       getDepartments: action,
+      updateId: action,
     });
   }
 
@@ -42,6 +44,11 @@ class ScheduleInventory {
   get computedListDepartment() {
     return toJS(this.listDepartments);
   }
+
+  updateId = (userId) => {
+    this.userId = userId;
+  };
+
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
   };
@@ -140,13 +147,13 @@ class ScheduleInventory {
 
   //Tawfiq
   exitFromCource = async (data) => {
-    let departmentPromise = await axios.get(
-      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
-    );
-    const dep_id = departmentPromise.data[0].department_id;
-    console.log("Join $ :", dep_id);
-
     try {
+      let departmentPromise = await axios.get(
+        `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+      );
+      const dep_id = departmentPromise.data[0].department_id;
+      console.log("Join $ :", dep_id);
+
       let res = await axios.delete(`${serverApi}/userDepartment`, {
         data: { department_id: dep_id, user_id: data.userId },
       });
