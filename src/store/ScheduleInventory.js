@@ -9,16 +9,20 @@ class ScheduleInventory {
     this.isHaveACource = false;
     this.arrayOfUserDepartment = [];
     this.listDepartments = [];
+    this.isAdmin = false;
     makeObservable(this, {
       showModal: observable,
       listSchedule: observable,
       isHaveACource: observable,
       getSchedule: observable,
+      isAdmin: observable,
+      userId: observable,
       handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
       computedListDepartment: computed,
+      computedIsAdmin: computed,
 
       createNewSchedule: action,
       haveACourse: action,
@@ -27,15 +31,24 @@ class ScheduleInventory {
       checkIfAlreadyJoin: action,
       checkPermission: action,
       getDepartments: action,
+      updateId: action,
     });
   }
 
   get computedList() {
     return toJS(this.listSchedule);
   }
+  get computedIsAdmin() {
+    return this.isAdmin;
+  }
   get computedListDepartment() {
     return toJS(this.listDepartments);
   }
+
+  updateId= (userId) => {
+    this.userId = userId;
+ };
+
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
   };
@@ -210,8 +223,10 @@ class ScheduleInventory {
     let is_admin = await axios.get(
       `${serverApi}/permissions/?type=${type}&user_id=${this.userId}`
     );
+    const result = is_admin.data[0][type] == 1;
     console.log(is_admin.data[0][type] == 1);
-    return is_admin.data[0][type] == 1;
+    this.isAdmin = result;
+    return result;
   };
   updateSchedule = (schedule) => {
     axios.put(`${serverApi}/updateSchedule`, schedule).then(() => {
@@ -223,4 +238,4 @@ class ScheduleInventory {
     return departments.data;
   };
 }
-export default ScheduleInventory;
+export default ScheduleInventory

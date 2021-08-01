@@ -56,23 +56,27 @@ class Coachs extends Component {
   // ]}
   // }
 
-  componentDidMount = () => {
-    this.props.CoachStore.getAllCoachs();
-  };
-  render() {
-    let coachs = this.props.CoachStore.coachs;
-    return (
-      <div className="allCoaches">
-        {coachs.map((coach, ind) => {
-          return (
-            <span className="coach-item">
-              <Coach key={ind} coach={coach} />
-            </span>
-          );
-        })}
-      </div>
-    );
-  }
+    componentDidMount = () =>{
+ 
+      this.props.CoachStore.getAllCoachs()
+    }
+    render(){
+      let coachs = this.props.CoachStore.coachs
+      return (
+        <div className="allCoaches">
+            {coachs.map((coach,ind) => {
+              return (
+                <span key={ind} className="coach-item">
+                  <Coach key={ind}
+                    coach={coach}
+                    showDetails={true}
+                  />
+                </span>
+              );
+            })}
+        </div>
+      );
+    }
 }
 
 export default inject("CoachStore")(observer(Coachs));

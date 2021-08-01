@@ -8,6 +8,9 @@ import { observer, inject } from "mobx-react";
 import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";
 import axios from "axios";
+import "./../App.css";
+
+const themeConfig = require("./ThemConfig");
 
 const calendarRef = createRef();
 let scheduleInfo = {};
@@ -20,20 +23,28 @@ const Schedule = inject(
   "LogInStore"
 )(
   observer((props) => {
+    // const [showModal, setShowModal] = useState(false);
+    // const [event, setEvent] = useState(null);
+    // const [list, setList] = useState([]);
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
     const [calendarsArray, setCalendarsArray] = useState([]);
 
-    useEffect(async () => {
-      let has_permissoin = await props.ScheduleStore.checkPermission("admin");
-      setIsAdmin(has_permissoin);
-      await props.ScheduleStore.getSchedule();
-      let departments = await props.ScheduleStore.getDepartments();
-      setCalendarsArray(getCalenders(departments, has_permissoin));
-     
+    useEffect(() => {
+      console.log("******** USE EFFECT *********");
 
+      async function fecthMyApi() {
+        let has_permissoin = await props.ScheduleStore.checkPermission("admin");
+        await props.ScheduleStore.getSchedule();
+        let departments = await props.ScheduleStore.getDepartments();
+        setCalendarsArray(getCalenders(departments, has_permissoin));
+
+        setIsAdmin(has_permissoin);
+      }
+      fecthMyApi();
+      // handleHide()
     }, []);
-    
+    useEffect(() => {}, [isAdmin]);
 
     const handleClickDayname = (ev) => {
       console.log("************Click Day name***************");
@@ -57,7 +68,7 @@ const Schedule = inject(
         title: ev.schedule.title,
       };
       console.log("%%%", scheduleInfo);
-      if (isAdmin) {
+      if (props.ScheduleStore.computedIsAdmin) {
         console.log(" admin clicled schedule ===> ");
       } else {
         console.log(" trainee clicled schedule ===> ");
@@ -79,9 +90,7 @@ const Schedule = inject(
         schedule_id: ev.schedule.id,
       });
     };
-    const handleafterRenderSchedule = (ev) => {
-      console.log("************After Render***************", ev);
-    };
+    const handleafterRenderSchedule = (ev) => {};
     const handlebeforeUpdateSchedule = (ev) => {
       console.log("************BEFORE UPDATE***************");
       console.log("$ BF : ", ev);
@@ -123,6 +132,9 @@ const Schedule = inject(
         var triggerEventName = event.triggerEventName;
         console.log(startTime, endTime, isAllDay);
         console.log("---startTime--<<<<<", event);
+        if (event.title === undefined) {
+          return;
+        }
         const newSchedule = {
           id: null,
           title: event.title,
@@ -133,6 +145,8 @@ const Schedule = inject(
           department_id: parseInt(event.calendarId),
         };
         props.ScheduleStore.createNewSchedule(newSchedule);
+      } else {
+        alert(" user has no  premisssion ");
       }
     };
 
@@ -141,9 +155,14 @@ const Schedule = inject(
     //             bgColor: "#40dfa0",
     //             borderColor: "#303030",
 
+    const isGuest = () =>{
+        let isGuest = props.LogInStore.isSign;
+        return !isGuest;
+    }
     const getCalenders = (departments, has_permissoin) => {
       let calendarsArray = [];
       const userCalender = {
+        isAllDay:false,
         id: "0",
         name: "user",
         bgColor: "#d1d8e0",
@@ -154,9 +173,11 @@ const Schedule = inject(
       }
 
       departments.forEach((d) => {
+        
         const calendar = {};
         calendar.id = d.id.toString();
         calendar.name = d.name;
+        calendar.isAllDay = false;
         calendar.bgColor =
           "#" + Math.floor(Math.random() * 16777215).toString(16);
         calendar.borderColor = "#2c3e50";
@@ -165,20 +186,24 @@ const Schedule = inject(
 
       return calendarsArray;
     };
-
+    console.log("----", isAdmin);
+    
     return (
-      <div>
-        {
+      <div className="calendar">
           <Calendar
             ref={calendarRef}
             height="900px"
+            theme={themeConfig}
+            
+            calendars={calendarsArray}
+            scheduleDetailPopup={true}
             calendars={calendarsArray}
             disableDblClick={true}
             disableClick={false}
             isReadOnly={false}
-            taskView={false}
-            useDetailPopup={isAdmin}
-            useCreationPopup={isAdmin}
+            useDetailPopup={true}
+            useCreationPopup={true}
+
             Z
             month={{
               startDayOfWeek: 0,
@@ -200,16 +225,22 @@ const Schedule = inject(
             onAfterRenderSchedule={handleafterRenderSchedule}
             onBeforeUpdateSchedule={handlebeforeUpdateSchedule}
             onBeforeCreateSchedule={handlebeforeCreateSchedule}
-          
-            view={"week"} // You can also set the `defaultView` option.
+            views={['week', 'day']}
             week={{
               showTimezoneCollapseButton: true,
               timezonesCollapsed: true,
             }}
+            timezones={[
+              {
+                timezoneOffset:'UTC +3',
+                displayLabel: 'GMT+09:00',
+                tooltip: 'Seoul'
+              }]}
+              
           />
-        }
+        ) 
         {clickedOnSchedule ? (
-          <UserPopUp scheduleInfo={scheduleInfo}></UserPopUp>
+          <UserPopUp scheduleInfo={scheduleInfo} ></UserPopUp>
         ) : null}
         <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>
