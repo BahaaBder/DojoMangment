@@ -5,10 +5,7 @@ import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 const axios = require("axios");
-const LogIn = inject(
-  "LogInStore",
-  "ScheduleStore"
-)(
+const LogIn = inject("LogInStore", "ScheduleStore")(
   observer((props) => {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -39,18 +36,16 @@ const LogIn = inject(
           let userIdExist = await axios.get(
             `http://localhost:8080/users?email=${email}&password=${password}`
           );
-          console.info("in here");
           userIdExist = userIdExist.data;
           if (userIdExist.id) {
-            console.info("found in here");
+            console.log("found");
             setshow(false);
             // let userId =  await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
-            console.info(userIdExist.id);
             props.LogInStore.updateId(userIdExist.id);
             props.ScheduleStore.updateId(userIdExist.id);
-
             props.LogInStore.updateSign(true);
-            console.info(props.LogInStore);
+            let isAdmin = await props.ScheduleStore.checkPermission("admin");
+            props.LogInStore.updateAdminState(isAdmin);
           } else {
             console.log("not found");
             props.LogInStore.updateSign(false);
@@ -105,9 +100,11 @@ const LogIn = inject(
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button className="btn" variant="secondary" onClick={sign}>
-            sign in
-          </Button>
+          <Link to="signIn">
+            <Button className="btn" variant="secondary" onClick={sign}>
+              sign in
+            </Button>
+          </Link>
           {/* <Link  to="/Register">
             <Button className="btn" variant="secondary" onClick={handleClose}>
                 register

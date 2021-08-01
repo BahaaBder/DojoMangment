@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("mysql://root@localhost/dojo");
+const sequelize = new Sequelize("mysql://root:@localhost/dojo");
 sequelize
   .authenticate()
   .then(() => {
@@ -492,7 +492,7 @@ router.post("/schedules", (req, res) => {
       .then(function ([results, metadata]) {
         res.send("added ok ");
       });
-  } catch (error) {}
+  } catch (error) { }
 });
 router.delete("/schedules", function (req, res) {
   console.log("--->>>", req.body);
@@ -508,7 +508,7 @@ router.delete("/schedules", function (req, res) {
       .then(function ([results, metadata]) {
         res.send("Deleting Schedule Success ");
       });
-  } catch (error) {}
+  } catch (error) { }
 });
 // router.get("/coachs", function (req, res) {
 //   try {
@@ -599,27 +599,8 @@ router.post("/userDepartment", function (req, res) {
     res.status(400).send(error.message);
   }
 });
-// router.post("/userSchedule", function (req, res) {
-//   const user_schedule = req.body;
-//   console.log("==userSchedule post ==", user_schedule);
-//   try {
-//     sequelize
-//       .query(
-//         `
-//         INSERT INTO user_schedule
-//          VALUES(
-//              ${user_schedule.userId},
-//              ${user_schedule.scheduleId}
-//             )
-//         `
-//       )
-//       .then(function ([results, metadata]) {
-//         res.send("added ok ");
-//       });
-//   } catch (error) {
-//     res.status(400).send(error.message);
-//   }
-// });
+
+
 router.delete("/userDepartment", function (req, res) {
   const user_department = req.body;
   try {
@@ -647,9 +628,22 @@ router.delete("/userDepartment", function (req, res) {
 //     res.send(results);
 //   })
 // })
+
+router.get('/departmentOfSchedule/:schedule_id', function (req, res) {
+  const schedule_id = req.params.schedule_id
+  sequelize.query(`
+  SELECT department_id
+  from schedules as s
+  where s.id=${schedule_id}
+  `).then(function ([results, metadata]) {
+    res.send(results);
+  })
+
+})
 router.put("/updateSchedule", function (req, res) {
   let updatedSchedule = req.body;
   try {
+
     sequelize
       .query(
         `
@@ -701,7 +695,7 @@ router.put("/schedulesNewDate", async function (req, res) {
          )
          `
           )
-          .then(function ([schedules, metadata]) {});
+          .then(function ([schedules, metadata]) { });
       });
       res.send("finished");
     });
