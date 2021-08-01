@@ -236,5 +236,9 @@ class ScheduleInventory {
     let departments = await axios.get(`${serverApi}/departments`);
     return departments.data;
   };
+  getAllDepartment = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data;
+  };
 }
 export default ScheduleInventory;

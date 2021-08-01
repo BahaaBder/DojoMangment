@@ -9,9 +9,8 @@ import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";
 import axios from "axios";
 import "./../App.css";
-
+import AdminPopUp from "./AdminPopUp";
 const themeConfig = require("./ThemConfig");
-
 const calendarRef = createRef();
 let scheduleInfo = {};
 //ScheduleStore
@@ -29,16 +28,17 @@ const Schedule = inject(
     const [clickedOnSchedule, setClickedOnSchedule] = useState(false);
     const [isAdmin, setIsAdmin] = useState(true);
     const [calendarsArray, setCalendarsArray] = useState([]);
+    const [isSignin, setSignin] = useState(false);
+    const [createSchedule, setCreateSchedule] = useState(false);
 
     useEffect(() => {
       console.log("******** USE EFFECT *********");
-
       async function fecthMyApi() {
         let has_permissoin = await props.ScheduleStore.checkPermission("admin");
         await props.ScheduleStore.getSchedule();
         let departments = await props.ScheduleStore.getDepartments();
         setCalendarsArray(getCalenders(departments, has_permissoin));
-
+        setSignin(props.LogInStore.isSign);
         setIsAdmin(has_permissoin);
       }
       fecthMyApi();
@@ -56,23 +56,25 @@ const Schedule = inject(
 
     const handleClickSchedule = (ev) => {
       console.log("************Click Schedule****************");
-      scheduleInfo = {
-        userId: props.LogInStore.userId,
-        scheduleId: ev.schedule.id,
-        start: dayjs(ev.schedule.start._date.toString()).format(
-          "dddd, MMMM D, YYYY h:mm A"
-        ),
-        end: dayjs(ev.schedule.end._date.toString()).format(
-          "dddd, MMMM D, YYYY h:mm A"
-        ),
-        title: ev.schedule.title,
-      };
-      console.log("%%%", scheduleInfo);
-      if (props.ScheduleStore.computedIsAdmin) {
-        console.log(" admin clicled schedule ===> ");
-      } else {
-        console.log(" trainee clicled schedule ===> ");
-        setClickedOnSchedule(!clickedOnSchedule);
+      if (isSignin) {
+        scheduleInfo = {
+          userId: props.LogInStore.userId,
+          scheduleId: ev.schedule.id,
+          start: dayjs(ev.schedule.start._date.toString()).format(
+            "dddd, MMMM D, YYYY h:mm A"
+          ),
+          end: dayjs(ev.schedule.end._date.toString()).format(
+            "dddd, MMMM D, YYYY h:mm A"
+          ),
+          title: ev.schedule.title,
+        };
+        console.log("%%%", scheduleInfo);
+        if (props.ScheduleStore.computedIsAdmin) {
+          console.log(" admin clicled schedule ===> ");
+        } else {
+          console.log(" trainee clicled schedule ===> ");
+          setClickedOnSchedule(!clickedOnSchedule);
+        }
       }
     };
 
@@ -132,9 +134,6 @@ const Schedule = inject(
         var triggerEventName = event.triggerEventName;
         console.log(startTime, endTime, isAllDay, guide, triggerEventName);
         console.log("---startTime--<<<<<", event);
-        if (event.title === undefined) {
-          return;
-        }
         const newSchedule = {
           id: null,
           title: event.title,
@@ -144,21 +143,16 @@ const Schedule = inject(
           end: new Date(endTime._date).toISOString(),
           department_id: parseInt(event.calendarId),
         };
+        console.log("+++", newSchedule);
+        if (event.title === undefined) {
+          return;
+        }
         props.ScheduleStore.createNewSchedule(newSchedule);
       } else {
         alert(" user has no  premisssion ");
       }
     };
 
-    // id: "1",
-    //             name: "MMA Mixed Martil art",
-    //             bgColor: "#40dfa0",
-    //             borderColor: "#303030",
-
-    const isGuest = () => {
-      let isGuest = props.LogInStore.isSign;
-      return !isGuest;
-    };
     const getCalenders = (departments, has_permissoin) => {
       let calendarsArray = [];
       const userCalender = {
@@ -197,7 +191,7 @@ const Schedule = inject(
             calendars={calendarsArray}
             disableDblClick={true}
             disableClick={false}
-            isReadOnly={false}
+            isReadOnly={!isSignin}
             useDetailPopup={true}
             useCreationPopup={true}
             Z
@@ -236,7 +230,7 @@ const Schedule = inject(
             calendars={calendarsArray}
             disableDblClick={true}
             disableClick={false}
-            isReadOnly={false}
+            isReadOnly={!isSignin}
             useDetailPopup={false}
             useCreationPopup={false}
             Z
@@ -271,6 +265,7 @@ const Schedule = inject(
         {clickedOnSchedule ? (
           <UserPopUp scheduleInfo={scheduleInfo}></UserPopUp>
         ) : null}
+
         <button onClick={handleCreateSchedule}>create schedule</button>
         <button onClick={handleClickNextButton}>Go next!</button>
         <button onClick={handleClickPrevButton}>Go Prev!</button>

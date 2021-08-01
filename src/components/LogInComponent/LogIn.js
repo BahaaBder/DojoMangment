@@ -5,7 +5,10 @@ import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 const axios = require("axios");
-const LogIn = inject("LogInStore","ScheduleStore")(
+const LogIn = inject(
+  "LogInStore",
+  "ScheduleStore"
+)(
   observer((props) => {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -36,14 +39,18 @@ const LogIn = inject("LogInStore","ScheduleStore")(
           let userIdExist = await axios.get(
             `http://localhost:8080/users?email=${email}&password=${password}`
           );
+          console.info("in here");
           userIdExist = userIdExist.data;
           if (userIdExist.id) {
-            console.log("found");
+            console.info("found in here");
             setshow(false);
             // let userId =  await axios.get(`http://localhost:8080/users?email=${email}&password=${password}`);
+            console.info(userIdExist.id);
             props.LogInStore.updateId(userIdExist.id);
             props.ScheduleStore.updateId(userIdExist.id);
+
             props.LogInStore.updateSign(true);
+            console.info(props.LogInStore);
           } else {
             console.log("not found");
             props.LogInStore.updateSign(false);
