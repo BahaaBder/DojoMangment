@@ -73,6 +73,7 @@ CREATE TABLE user_department(
     FOREIGN KEY(department_id) REFERENCES department(id)
 );
 --/////////////////////////////////////////////////////
+use dojo;
 Create TABLE coach(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(40),
@@ -123,7 +124,7 @@ INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T21:30:0
 INSERT INTO schedule VALUES (null,"Japan","time","",'2021-07-29T21:30:00+01:00','2021-07-29T23:30:00+01:00',4);
 INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00+01:00','2021-07-30T20:00:00+01:00',3);
    
---use dojo;
+-- use dojo;
 -- CREATE TABLE DepartmentDetails (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     department_name TEXT,
@@ -131,7 +132,7 @@ INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00+01:
 -- );
 
 
---use dojo;
+-- use dojo;
 -- CREATE TABLE About
 --  (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -144,7 +145,7 @@ INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00+01:
 -- );
 
 
---use dojo;
+-- use dojo;
 -- INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
 -- INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
 

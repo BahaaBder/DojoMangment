@@ -36,12 +36,20 @@
     transform: rotate(360deg);
   }
 } */
-.link{
+.link {
   font-size: 26px;
   color: antiquewhite;
   /* border: 1px rgb(73, 70, 70) solid; */
   padding: 12px;
   background-color: black;
-  margin: 10px ;
+  margin: 10px;
   padding: 8px;
+}
+
+.tui-view-679 {
+  overflow: hidden;
+}
+.tui-full-calendar-timegrid-container .tui-view-683 {
+  overflow: hidden;
+  background-color: blanchedalmond;
 }

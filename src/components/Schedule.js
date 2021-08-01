@@ -8,7 +8,7 @@ import { observer, inject } from "mobx-react";
 import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";
 import axios from "axios";
-
+import "../App.css";
 const calendarRef = createRef();
 let scheduleInfo = {};
 //ScheduleStore
