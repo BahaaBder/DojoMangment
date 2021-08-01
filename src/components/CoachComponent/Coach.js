@@ -138,8 +138,7 @@ class Coach extends Component {
               <span>short description: </span>
               <textarea className="text" id="descShort-input"
                 label="short description"
-                multiline
-                maxRows={7}
+                multiline="7"
                 value={this.state.descShort}
                 onChange={this.change}
               />

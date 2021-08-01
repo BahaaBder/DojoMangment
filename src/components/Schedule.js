@@ -1,7 +1,7 @@
 import React, { useEffect, createRef } from "react";
 import Calendar from "@toast-ui/react-calendar";
 import "tui-calendar/dist/tui-calendar.css";
-import { useState, useRef } from "react";
+import { useState} from "react";
 import { observer, inject } from "mobx-react";
 import UserPopUp from "./UserPopUp";
 import dayjs from "dayjs";

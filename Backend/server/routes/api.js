@@ -538,8 +538,8 @@ router.post("/coachs", function (req, res) {
          VALUES(
              ${null},
             '${coach.name}',
-            '${coach.type}',
-             ${coach.year},
+             ${coach.department_id},
+             ${coach.age},
             '${coach.img}',
             '${coach.descShort}',
              ${coach.dojo_id}

@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import './style/Coach.css'
 import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
+var validUrl = require('valid-url');
 const serverApi = "http://localhost:8080";
 
 class AddCoach extends Component {
@@ -37,7 +38,10 @@ class AddCoach extends Component {
 
   AddCoach = () => {
     if (this.state.name === "" || this.state.department === "" ||
-      this.state.age === "" || this.state.img === "" || this.state.descShort === "") {
+      this.state.age === "" || this.state.descShort === "") {
+      this.setState({ showError: true, showSuccess: false })
+    }
+    if(this.state.img.length>0 && !this.checkURLValid(this.state.img)){
       this.setState({ showError: true, showSuccess: false })
     }
     else {
@@ -45,7 +49,7 @@ class AddCoach extends Component {
         name: this.state.name,
         department_id: parseInt(this.state.department),
         age: parseInt(this.state.age),
-        img: this.state.img,
+        img: this.state.img ? this.state.img : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         descShort: this.state.descShort,
         dojo_id: 1
       }
@@ -54,6 +58,15 @@ class AddCoach extends Component {
       this.setState({ name: "", department: "", age: "", img: "", descShort: "" });
     }
   };
+
+  checkURLValid = (url) => {
+    if (validUrl.isUri(url)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
   componentDidMount = async () => {
     let allDepartments = await axios.get(serverApi + "/alldepartments");
@@ -74,6 +87,7 @@ class AddCoach extends Component {
             value={this.state.name}
             onChange={this.change}
           />
+          <span className="star">*</span>
         </div>
 
         <div className="txtfild">
@@ -84,6 +98,7 @@ class AddCoach extends Component {
               return (<option key={ind} value={department.id}>{department.name}</option>)
             })}
           </select>
+          <span className="star">*</span>
         </div>
 
         <div className="txtfild">
@@ -91,6 +106,7 @@ class AddCoach extends Component {
           <TextField className="text" id="age-input"
             value={this.state.age}
             onChange={this.change} />
+          <span className="star">*</span>
         </div>
 
         <div className="txtfild">
@@ -110,11 +126,11 @@ class AddCoach extends Component {
           <span>short description: </span>
           <textarea className="text" id="descShort-input"
             label="short description"
-            multiline
-            maxRows={7}
+            multiline="7"
             value={this.state.descShort}
             onChange={this.change}
           />
+          <span className="star">*</span>
         </div>
 
         <Button className="btn" onClick={this.AddCoach}>
