@@ -16,13 +16,22 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
-const AdminPopUp = inject("ScheduleStore")(
+
+const CreateSchedule = inject("ScheduleStore")(
   observer((props) => {
     const classes = useStyles();
-    const [schedule, setSchedule] = useState({});
     const [departments, setDepartments] = useState([{}]);
+    const [schedule, setSchedule] = useState({
+      title: "",
+      category: "",
+      dueDateClass: "",
+      start: "",
+      end: "",
+      department_name: "",
+      department_id: 0,
+    });
+
     useEffect(() => {
-      setSchedule(props.scheduleInfo);
       const apiCall = async () => {
         const res = await props.ScheduleStore.getAllDepartment();
         setDepartments(res);
@@ -52,7 +61,7 @@ const AdminPopUp = inject("ScheduleStore")(
         [e.target.name]: e.target.value,
       }));
     };
-    const handleSubmit = () => {
+    const handleCreate = () => {
       console.log(schedule);
     };
     return (
@@ -69,11 +78,25 @@ const AdminPopUp = inject("ScheduleStore")(
               <span>Title</span>
               <input
                 name="title"
-                value={schedule.title || ""}
+                value={schedule.title}
                 onChange={handleChange}
               />
-              <br></br>
-              <br></br>
+              <br />
+              Category
+              <input
+                name="category"
+                value={schedule.category}
+                onChange={handleChange}
+              />
+              <br />
+              dueDateClass
+              <input
+                name="dueDateClass"
+                value={schedule.dueDateClass}
+                onChange={handleChange}
+              />
+              <br />
+              <br />
               <span>Department</span>
               <div>
                 <select
@@ -120,8 +143,8 @@ const AdminPopUp = inject("ScheduleStore")(
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleSubmit}>
-              update
+            <Button variant="primary" onClick={handleCreate}>
+              Create Schedule
             </Button>
             <Button
               variant="primary"
@@ -135,4 +158,4 @@ const AdminPopUp = inject("ScheduleStore")(
     );
   })
 );
-export default AdminPopUp;
+export default CreateSchedule;

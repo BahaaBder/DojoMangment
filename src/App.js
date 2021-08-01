@@ -14,22 +14,24 @@ import AdminPopUp from "./components/AdminPopUp";
 // import AddCoach from "./components/CoachComponent/AddCoach";
 // import LogIn from "./components/LogInComponent/LogIn";
 // import Register from "./components/LogInComponent/Register";
-
+import dayjs from "dayjs";
+import CreateSchedule from "./components/CreateSchedule";
 function App() {
   const info = {
-    id: 1,
     title: "MMA Mixed Martil art ",
     category: "time",
     duDateClass: "",
-    start: "2021-07-25T12:00:00.000Z",
+    start: dayjs("2021-07-25T12:00:00.000Z").format("YYYY-MM-DDTHH:mm"),
     //2017-05-24T10:30
-    end: "2021-07-25T14:30:00.000Z",
+    end: dayjs("2021-07-25T14:30:00.000Z").format("YYYY-MM-DDTHH:mm"),
+    department_name: "MMA",
     department_id: 1,
   };
   return (
     <div>
       {/* <NavBar></NavBar> */}
-      <AdminPopUp show={true} scheduleInfo={info}></AdminPopUp>
+      {/* <AdminPopUp show={true} scheduleInfo={info}></AdminPopUp> */}
+      <CreateSchedule show={true} scheduleInfo={info} />
     </div>
   );
 }
