@@ -17,7 +17,6 @@ class ScheduleInventory {
       getSchedule: observable,
       userId: observable,
       isAdmin: observable,
-      userId: observable,
       handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
@@ -114,7 +113,7 @@ class ScheduleInventory {
   getUserDepartments = (users_departments, user_id) => {
     let departmentForUser = [];
     users_departments.forEach((user_department) => {
-      if (user_department.user_id == user_id) {
+      if (user_department.user_id === user_id) {
         departmentForUser.push(user_department.department_id);
       }
     });
@@ -147,7 +146,7 @@ class ScheduleInventory {
       const dep_id = departmentPromise.data[0].department_id;
       console.log("Join $ :", dep_id);
 
-      let res = await axios.post(`${serverApi}/userDepartment`, {
+      await axios.post(`${serverApi}/userDepartment`, {
         userId: data.userId,
         departmentId: dep_id,
       });
@@ -218,8 +217,6 @@ class ScheduleInventory {
     let temp = [];
     let schedule = toJS(this.listSchedule);
     axios.get(`${serverApi}/userInSchedule`).then((response) => {
-      let usersInSchedule = response.data;
-      let isExist = false;
       schedule.forEach((s) => {});
       Object.assign(this.listSchedule, temp);
     });
@@ -239,8 +236,8 @@ class ScheduleInventory {
     let is_admin = await axios.get(
       `${serverApi}/permissions/?type=${type}&user_id=${this.userId}`
     );
-    const result = is_admin.data[0][type] == 1;
-    console.log(is_admin.data[0][type] == 1);
+    const result = is_admin.data[0][type] === 1;
+    console.log(is_admin.data[0][type] === 1);
     this.isAdmin = result;
     return result;
   };

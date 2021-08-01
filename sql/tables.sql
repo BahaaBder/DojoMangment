@@ -76,6 +76,7 @@ CREATE TABLE user_department(
 --/////////////////////////////////////////////////////
 drop table coach;
 use dojo;
+drop table coach;
 Create TABLE coach(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(40),
@@ -103,12 +104,12 @@ use dojo;
 INSERT INTO dojoTable VALUES(null,"dojo1")
 --
 use dojo;
-INSERT INTO profile VALUES (null,"Tranee","t@gmail.com","123","somthing","0566",25);--trainee
-INSERT INTO profile VALUES (null,"admin","a@gmail.com","123","somthing","0566",25);--admin
+INSERT INTO profile VALUES (null,"Tranee","t@gmail.com","123","somthing","0566",25);
+INSERT INTO profile VALUES (null,"admin","a@gmail.com","123","somthing","0566",25);
 --
 use dojo;
-INSERT INTO user VALUES (1,1,1); --trainee
-INSERT INTO user VALUES (2,2,1); --admin/coach
+INSERT INTO user VALUES (1,1,1); 
+INSERT INTO user VALUES (2,2,1); 
 --
 use dojo;
 insert into user_department VALUES(1,1);
@@ -127,7 +128,9 @@ CREATE TABLE schedule(
     department_id INT,
     FOREIGN KEY(department_id) REFERENCES department(id)
 );
+
 drop table schedule;
+
 INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-25T12:00:00','2021-07-25T14:30:00',1);
 INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-27T14:30:00','2021-07-27T16:30:00',1);
 INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-29T12:30:00','2021-07-29T14:30:00',1);

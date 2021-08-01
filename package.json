@@ -30,6 +30,7 @@
     "recharts": "^2.0.10",
     "sequelize": "^6.6.5",
     "tui-calendar": "^1.13.1",
+    "valid-url": "^1.0.9",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

@@ -5,7 +5,10 @@ import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 const axios = require("axios");
-const LogIn = inject("LogInStore", "ScheduleStore")(
+const LogIn = inject(
+  "LogInStore",
+  "ScheduleStore"
+)(
   observer((props) => {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -60,7 +63,7 @@ const LogIn = inject("LogInStore", "ScheduleStore")(
         setshow(true);
       }
     };
-    const handleShow = () => setshow(true);
+    // const handleShow = () => setshow(true);
     const forgetPass = () => setpassforget(true);
     return (
       <Modal className="modal" show={show} onHide={handleClose}>
@@ -73,6 +76,7 @@ const LogIn = inject("LogInStore", "ScheduleStore")(
             </Link>
           </Modal.Title>
         </Modal.Header>
+
         <Modal.Body className="bodyModal">
           <div className="txtfild">
             <div>Email: </div>
@@ -83,6 +87,7 @@ const LogIn = inject("LogInStore", "ScheduleStore")(
               onChange={change}
             />
           </div>
+
           <div className="txtfild">
             <div>
               Passwors:{" "}
@@ -90,6 +95,7 @@ const LogIn = inject("LogInStore", "ScheduleStore")(
                 Forget Password
               </span>{" "}
             </div>
+
             <TextField
               className="text"
               id="pass-input"
@@ -99,20 +105,18 @@ const LogIn = inject("LogInStore", "ScheduleStore")(
             />
           </div>
         </Modal.Body>
+
         <Modal.Footer>
           <Link to="signIn">
             <Button className="btn" variant="secondary" onClick={sign}>
               sign in
             </Button>
           </Link>
-          {/* <Link  to="/Register">
-            <Button className="btn" variant="secondary" onClick={handleClose}>
-                register
-            </Button>
-          </Link> */}
+
           <Alert variant="danger" show={error}>
             Check Your Inputs Again !
           </Alert>
+
           <Alert variant="success" show={passforget}>
             Relax and try to remember you'r password
           </Alert>

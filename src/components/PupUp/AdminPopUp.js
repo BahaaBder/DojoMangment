@@ -25,7 +25,6 @@ const AdminPopUp = inject("ScheduleStore")(
       setSchedule(props.scheduleInfo);
       const apiCall = async () => {
         const res = await props.ScheduleStore.getAllDepartment();
-
         setDepartments(res);
       };
       apiCall();
@@ -34,11 +33,12 @@ const AdminPopUp = inject("ScheduleStore")(
     useEffect(() => {
       console.log(departments);
     }, [departments]);
+
     function convertDate(date) {
       return dayjs(date).format("YYYY-MM-DDThh:mm");
     }
     const handleDepartmentChange = async (e) => {
-      let department = departments.find((d) => d.name == e.target.value);
+      let department = departments.find((d) => d.name === e.target.value);
       setSchedule((prevState) => ({
         ...prevState,
         department_name: department.name,
@@ -46,7 +46,7 @@ const AdminPopUp = inject("ScheduleStore")(
       }));
     };
     const handleChange = (e) => {
-      if (e.target.name == "end" || e.target.name == "start") {
+      if (e.target.name === "end" || e.target.name === "start") {
         setSchedule((prevState) => ({
           ...prevState,
           [e.target.name]: dayjs(e.target.value).format("YYYY-MM-DDThh:mm"),
