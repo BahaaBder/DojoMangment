@@ -74,8 +74,8 @@ CREATE TABLE user_department(
     FOREIGN KEY(department_id) REFERENCES department(id)
 );
 --/////////////////////////////////////////////////////
-use dojo;
 drop table coach;
+use dojo;
 Create TABLE coach(
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(40),

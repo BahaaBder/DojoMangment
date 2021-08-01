@@ -32,7 +32,7 @@ class ScheduleInventory {
       checkPermission: action,
       getDepartments: action,
       updateId: action,
-      getScheduleDepartment:action
+      getScheduleDepartment: action,
     });
   }
 
@@ -54,7 +54,6 @@ class ScheduleInventory {
     this.showModal = !this.showModal;
   };
   createNewSchedule = async (schedule) => {
-    
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };
@@ -81,16 +80,17 @@ class ScheduleInventory {
 
   getAllDepartment = async () => {
     let departments = await axios.get(`${serverApi}/departments`);
-    return departments.data
-  }
+    return departments.data;
+  };
 
   getScheduleDepartment = async (schedule_id) => {
-    const department_id = await axios.get(`${serverApi}/departmentOfSchedule/${schedule_id}`)
+    const department_id = await axios.get(
+      `${serverApi}/departmentOfSchedule/${schedule_id}`
+    );
 
-    console.log(department_id.data[0].department_id)
-    return department_id.data[0].department_id
-
-  }
+    console.log(department_id.data[0].department_id);
+    return department_id.data[0].department_id;
+  };
   mapScheduleToStr = async (list) => {
     const tempList = [];
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
@@ -135,10 +135,12 @@ class ScheduleInventory {
       `${serverApi}/departmentOfSchedule/${data.scheduleId}`
     );
     const dep_id = departmentPromise.data[0].department_id;
+    debugger;
     return this.arrayOfUserDepartment.includes(dep_id);
   };
   JoinToCourse = async (data) => {
     try {
+      debugger;
       let departmentPromise = await axios.get(
         `${serverApi}/departmentOfSchedule/${data.scheduleId}`
       );
@@ -218,7 +220,7 @@ class ScheduleInventory {
     axios.get(`${serverApi}/userInSchedule`).then((response) => {
       let usersInSchedule = response.data;
       let isExist = false;
-      schedule.forEach((s) => { });
+      schedule.forEach((s) => {});
       Object.assign(this.listSchedule, temp);
     });
   };

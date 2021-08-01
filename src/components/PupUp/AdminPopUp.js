@@ -22,7 +22,6 @@ const AdminPopUp = inject("ScheduleStore")(
     const [schedule, setSchedule] = useState({});
     const [departments, setDepartments] = useState([{}]);
     useEffect(() => {
-      debugger;
       setSchedule(props.scheduleInfo);
       const apiCall = async () => {
         const res = await props.ScheduleStore.getAllDepartment();
