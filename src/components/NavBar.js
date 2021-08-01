@@ -15,25 +15,6 @@ import DashBoard from './Admin/DashBoard';
 // let adminLog = false;
 const NavBar = inject("LogInStore","ScheduleStore")(
     observer((props) => {
-        // const [isSign, setisSign] = useState(false);
-        // const [isAdmin, setisAdmin] = useState(false)
-        // useEffect(() => {
-        //     // sessionStorage.setItem("isSign",props.LogInStore.computeIsSign)
-        //     // sessionStorage.setItem("isAdmin",props.LogInStore.computeIsAdmin)
-        //     setisSign(props.LogInStore.computeIsSign === "false");
-        //     setisAdmin( props.LogInStore.computeIsAdmin==="true");
-        // })
-        // useEffect(() => {
-
-        //     setisSign(sessionStorage.getItem("isSign")==="false");
-        //     setisAdmin(sessionStorage.getItem("isAdmin")==="true");
-        // }, [])
-        
-        // useEffect(() => {
-        //     sessionStorage.setItem("isSign",false);
-        //     sessionStorage.setItem("isAdmin",false);
-        //   }, [])
-
         return (
             <Router>
                 <nav className="navbar navbar-dark bg-dark">
