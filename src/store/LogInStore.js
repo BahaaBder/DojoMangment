@@ -1,8 +1,6 @@
-import { observable, action, makeObservable, computed, toJS } from "mobx";
-
+import { observable, action, makeObservable, computed } from "mobx";
 class LogInStore {
   constructor() {
-
     this.isSign = false;
     this.isAdmin = false
     this.userId = 0;
@@ -17,7 +15,6 @@ class LogInStore {
       computeIsAdmin: computed,
     });
   }
-
   get computeIsSign() {
     let sign = sessionStorage.getItem("isSign");
     this.isSign=sign
@@ -42,5 +39,4 @@ class LogInStore {
     sessionStorage.setItem("isAdmin",this.isAdmin);
   };
 }
-
 export default LogInStore;

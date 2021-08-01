@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import { TextField } from "@material-ui/core";
-// import Button f
 import './style/Coach.css'
 import { Button, Alert } from "react-bootstrap";
 import axios from "axios";
@@ -37,7 +36,6 @@ class AddCoach extends Component {
   }
 
   AddCoach = () => {
-    //TODO : alert in matreail ui
     if (this.state.name === "" || this.state.department === "" ||
       this.state.age === "" || this.state.img === "" || this.state.descShort === "") {
       this.setState({ showError: true, showSuccess: false })
@@ -64,7 +62,9 @@ class AddCoach extends Component {
 
   render() {
     return (
+
       <div className="AddCoach">
+
         <h4>ADD Coach</h4>
         <div className="txtfild">
           <span>Name: </span>
@@ -75,6 +75,7 @@ class AddCoach extends Component {
             onChange={this.change}
           />
         </div>
+
         <div className="txtfild">
           <span>department: </span>
 
@@ -84,12 +85,14 @@ class AddCoach extends Component {
             })}
           </select>
         </div>
+
         <div className="txtfild">
           <span>age: </span>
           <TextField className="text" id="age-input"
             value={this.state.age}
             onChange={this.change} />
         </div>
+
         <div className="txtfild">
           <span>img: </span>
           <TextField
@@ -102,6 +105,7 @@ class AddCoach extends Component {
             onChange={this.change}
           />
         </div>
+
         <div className="txtfild">
           <span>short description: </span>
           <textarea className="text" id="descShort-input"
@@ -112,12 +116,15 @@ class AddCoach extends Component {
             onChange={this.change}
           />
         </div>
+
         <Button className="btn" onClick={this.AddCoach}>
           Add New Coach
         </Button>
+
         <Alert variant="danger" show={this.state.showError}>
           Check Your Inputs Again !
         </Alert>
+
         <Alert show={this.state.showSuccess} variant="success">
           <p>We've added you to the site.</p>
         </Alert>

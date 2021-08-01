@@ -35,27 +35,21 @@ const AdminPopUp = inject("ScheduleStore")(
             setDepartmentName(props.scheduleInfo.title)
             const apiCall = async () => {
                 const res = await props.ScheduleStore.getAllDepartment()
-                // debugger;
                 setDepartment(res)
             }
             apiCall()
             setSchedule(props.scheduleInfo)
             setStartDate(dayjs(props.scheduleInfo.start).format('YYYY-MM-DDTHH:mm'))
             console.info(dayjs(props.scheduleInfo.start).format('YYYY-MM-DDTHH:mm'))
-            // setShowModal()
-            // setSelectedCustomer(props.customer)
-            // console.log(selectedCustomer)
         }, []);
-        // useEffect(() => {
-        //   console.log(department)
-        // }, [department])
+
         function convertDate(date) {
             return dayjs(date).format("YYYY-MM-DDThh:mm");
         }
         console.log(convertDate());
         const handleDepartmentChange = (e) => {
             setDepartmentName(e.target.value)
-            const department_id = department.find((d) => d.id == parseInt(e.target.value))
+            const department_id = department.find((d) => d.id === parseInt(e.target.value))
             console.log(e.target.value)
             const newIndex = parseInt(e.target.value - 1)
             console.log("%%%%", department[newIndex].id)
@@ -75,7 +69,7 @@ const AdminPopUp = inject("ScheduleStore")(
             console.log("name", e.target.name, "value", e.target.value)
             console.log(schedule)
             console.log("++++++++++++++++++++++")
-            // console.info(e.target.name)
+
         }
         const handleSubmit = () => {
             // this should call handle update in our store

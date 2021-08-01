@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Button, Modal, Alert } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import "./style/Coach.css"
 import { TextField } from "@material-ui/core";
 import { observer, inject } from 'mobx-react';
@@ -48,8 +47,6 @@ class Coach extends Component {
     }
     this.props.CoachStore.UpdateCoach(coachData)
     this.setState({ name: "", department: "", age: "", img: "", descShort: "" ,show:false});
-    // this.setState({show:false})
-
   }
 
   componentDidMount = async () => {
