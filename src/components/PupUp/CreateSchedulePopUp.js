@@ -16,20 +16,34 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
-const AdminPopUp = inject("ScheduleStore")(
+const CreateSchedule = inject("ScheduleStore")(
   observer((props) => {
     const classes = useStyles();
-    const [schedule, setSchedule] = useState({});
     const [departments, setDepartments] = useState([{}]);
+    const [schedule, setSchedule] = useState({
+        id:null,
+      title: "",
+      category: "time",
+      dueDateClass: "",
+      start: "",
+      end: "",
+      department_name: "",
+      department_id: 1,
+    });
     useEffect(() => {
-      debugger;
-      setSchedule(props.scheduleInfo);
       const apiCall = async () => {
         const res = await props.ScheduleStore.getAllDepartment();
-
         setDepartments(res);
       };
       apiCall();
+      setSchedule((prevState) => ({
+        ...prevState,
+        start: props.scheduleInfo.start,
+        end: props.scheduleInfo.end,
+      }));
+
+
+
     }, []);
     useEffect(() => {
       console.log(departments);
@@ -46,36 +60,19 @@ const AdminPopUp = inject("ScheduleStore")(
       }));
     };
     const handleChange = (e) => {
-if(e.target.name=="end"||e.target.name=="start"){
-  setSchedule((prevState) => ({
-    ...prevState,
-    [e.target.name]: dayjs(e.target.value).format("YYYY-MM-DDThh:mm"),
-  }));
-}
-else{
-  setSchedule((prevState) => ({
-    ...prevState,
-    [e.target.name]: e.target.value,
-  }));
-}
-
+      setSchedule((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value,
+      }));
     };
-    const handleUpdate = () => {
-      props.ScheduleStore.updateSchedule(schedule);
-      debugger;
+    const handleCreate =async  () => {
+      console.log(schedule);
+      await props.ScheduleStore.createNewSchedule(schedule);
+
       handleClose()
-
-    
     };
-    const handleDelete=()=>{
-      props.ScheduleStore.deleteSchedule(schedule);
-      props.handleCloseModal()
-
-
-    }
-
     const handleClose=()=>{
-      props.handleCloseModal()
+       props.handleCloseModal()
     }
     return (
       <div>
@@ -84,18 +81,30 @@ else{
           onHide={props.ScheduleStore.handleAlertModalChange}
         >
           <Modal.Header>
-            <Modal.Title>{"your selected schedule"} </Modal.Title>
+            <Modal.Title>{"create  new  schedule"} </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>
               <span>Title</span>
               <input
                 name="title"
-                value={schedule.title || ""}
+                value={schedule.title}
                 onChange={handleChange}
               />
-              <br></br>
-              <br></br>
+              <br />
+             
+              <br />
+             { 
+               
+            //      dueDateClass
+            //   <input
+            //     name="dueDateClass"
+            //     value={schedule.dueDateClass}
+            //     onChange={handleChange}
+            //  />
+            }
+              <br />
+              <br />
               <span>Department</span>
               <div>
                 <select
@@ -142,13 +151,9 @@ else{
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleUpdate}>
-              update
+            <Button variant="primary" onClick={handleCreate}>
+              Create Schedule
             </Button>
-            <Button variant="primary" onClick={handleDelete}>
-            Delete
-          </Button>
-            
             <Button
               variant="primary"
               onClick={handleClose}
@@ -161,4 +166,4 @@ else{
     );
   })
 );
-export default AdminPopUp;
+export default CreateSchedule;

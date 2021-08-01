@@ -11,28 +11,14 @@ import About from './about/About';
 import { observer, inject } from 'mobx-react';
 import Admin from './Admin/Admin';
 import DashBoard from './Admin/DashBoard';
-
 // let adminLog = false;
 const NavBar = inject("LogInStore","ScheduleStore")(
     observer((props) => {
-        const [isAdmin, setIsAdmin] = useState(false)
-        useEffect(() => {
-
-            isAdminFunc();
-        })
-        // adminLog = false;
-        const isAdminFunc = async function (){
-            let isAdmin = await props.ScheduleStore.checkPermission("admin");
-            setIsAdmin(isAdmin);
-            // adminLog = adminLog
-            console.log(isAdmin);
-            return isAdmin;
-       }
         return (
             <Router>
                 <nav className="navbar navbar-dark bg-dark">
                     <Container fluid="md">
-                        {!props.LogInStore.isSign ?
+                        {((props.LogInStore.computeIsSign === "false")||!props.LogInStore.computeIsSign)?
                             <Row className="justify-content-md-center">
                                 <Col>
                                     <Link to="/about">
@@ -57,11 +43,9 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                                         LogIn
                                     </Link>
                                 </Col>
-
                             </Row>
-
                             :
-                            isAdmin ?
+                            props.LogInStore.computeIsAdmin==="true" ?
                                 <Row>
                                     {/* <Col>
                                         <Link to="/Admin">
@@ -78,12 +62,16 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                                             Coach
                                         </Link>
                                     </Col>
-
                                     <Col>
                                         <Link to="dashBoard">DashBoard</Link>
                                     </Col>
                                     <Col>
-                                        <Link to="/" onClick={() => { props.LogInStore.updateSign(false) }}>
+                                        <Link to="/" 
+                                            onClick={() => { 
+                                                props.LogInStore.updateSign(false);
+                                                sessionStorage.setItem("isSign",false);
+                                                sessionStorage.setItem("isAdmin",false);
+                                                }}>
                                             Exit
                                         </Link>
                                     </Col>
@@ -101,31 +89,27 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                                     </Link>
                                 </Col> */}
                                     <Col>
-                                        <Link to="/" onClick={() => { props.LogInStore.updateSign(false)
-                                                 }}>
+                                        <Link to="/" 
+                                            onClick={() => { 
+                                                props.LogInStore.updateSign(false);
+                                                sessionStorage.setItem("isSign",false);
+                                                sessionStorage.setItem("isAdmin",false);
+                                            }}>
                                             Exit
                                         </Link>
                                     </Col>
-
                                 </Row>
-
-
                         }
-
                     </Container>
                 </nav>
-
                 <Route path="/schedules" exact
                     component={Schedule}
                 />
                 <Route path="/register" exact
                     component={Register}
-
                 />
-
                 <Route path="/about" exact
                     component={About}
-
                 />
                 <Route
                     path="/coachs"
@@ -155,15 +139,10 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                 {
                     //  <Route path="/coaches" exact
                     //  component={Coaches}
-
                     //  /> 
                 }
-
-
-
         {/* <Route path="/schedules" exact component={Schedule} />
         <Route path="/register" exact component={Register} />
-
         <Route path="/about" exact component={About} />
         <Route path="/coachs" exact render={() => <Coachs />} />
         <Route path="/addCoachs" exact render={() => <AddCoach />} />
@@ -177,5 +156,4 @@ const NavBar = inject("LogInStore","ScheduleStore")(
     );
   })
 );
-
 export default NavBar;

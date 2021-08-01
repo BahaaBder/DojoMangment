@@ -15,6 +15,7 @@ class ScheduleInventory {
       listSchedule: observable,
       isHaveACource: observable,
       getSchedule: observable,
+      userId: observable,
       isAdmin: observable,
       userId: observable,
       handleAlertModalChange: action,
@@ -23,7 +24,6 @@ class ScheduleInventory {
       computedList: computed,
       computedListDepartment: computed,
       computedIsAdmin: computed,
-
       createNewSchedule: action,
       haveACourse: action,
       JoinToCourse: action,
@@ -32,6 +32,7 @@ class ScheduleInventory {
       checkPermission: action,
       getDepartments: action,
       updateId: action,
+      getScheduleDepartment:action
     });
   }
 
@@ -53,7 +54,7 @@ class ScheduleInventory {
     this.showModal = !this.showModal;
   };
   createNewSchedule = async (schedule) => {
-    debugger;
+    
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };
@@ -81,6 +82,14 @@ class ScheduleInventory {
   getAllDepartment = async () => {
     let departments = await axios.get(`${serverApi}/departments`);
     return departments.data
+  }
+
+  getScheduleDepartment = async (schedule_id) => {
+    const department_id = await axios.get(`${serverApi}/departmentOfSchedule/${schedule_id}`)
+
+    console.log(department_id.data[0].department_id)
+    return department_id.data[0].department_id
+
   }
   mapScheduleToStr = async (list) => {
     const tempList = [];
@@ -153,10 +162,9 @@ class ScheduleInventory {
 
   //Tawfiq
   exitFromCource = async (data) => {
-
-
     try {
-      let departmentPromise = await axios.get(`${serverApi}/departmentOfSchedule/${data.scheduleId}`
+      let departmentPromise = await axios.get(
+        `${serverApi}/departmentOfSchedule/${data.scheduleId}`
       );
       const dep_id = departmentPromise.data[0].department_id;
       console.log("Join $ :", dep_id);
@@ -243,5 +251,9 @@ class ScheduleInventory {
     let departments = await axios.get(`${serverApi}/departments`);
     return departments.data;
   };
+  getAllDepartment = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data;
+  };
 }
-export default ScheduleInventory
+export default ScheduleInventory;

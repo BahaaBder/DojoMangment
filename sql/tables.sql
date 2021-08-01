@@ -135,10 +135,10 @@ INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-25T19:30:0
 INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-26T19:30:00','2021-07-26T20:30:00',2);
 INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T19:30:00','2021-07-28T20:30:00',2);
 INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T16:30:00','2021-07-28T18:30:00',2);
-INSERT INTO schedule VALUES (null,"Japan","time","",'2021-07-29T19:30:00','2021-07-29T20:30:00',4);
+INSERT INTO schedule VALUES (null,"Japan","time","",'2021-08-1T19:30:00','2021-08-1T20:30:00',4);
 INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00','2021-07-30T20:00:00',3);
    
---use dojo;
+-- use dojo;
 -- CREATE TABLE DepartmentDetails (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 --     department_name TEXT,
@@ -146,7 +146,7 @@ INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00','2
 -- );
 
 
---use dojo;
+-- use dojo;
 -- CREATE TABLE About
 --  (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -159,7 +159,7 @@ INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00','2
 -- );
 
 
---use dojo;
+-- use dojo;
 -- INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
 -- INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
 

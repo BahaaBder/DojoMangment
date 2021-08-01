@@ -6,7 +6,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //CustomerStore
 import NavBar from "./components/NavBar";
 import React from "react";
-import AdminPopUp from "./components/PupUp/AdminPopUp"
+import AdminPopUp from "./components/PupUp/AdminPopUp";
+
 // import Schedule from "./components/Schedule";
 // import Coachs from "./components/CoachComponent/Coachs";
 // import AddCoach from "./components/CoachComponent/AddCoach";
@@ -24,20 +25,22 @@ const info={
   "department_id": 1
 }
 function App() {
-
-  
+  const info = {
+    id: 1,
+    title: "MMA Mixed Martil art ",
+    category: "time",
+    duDateClass: "",
+    start: "2021-07-25T12:00:00.000Z",
+    //2017-05-24T10:30
+    end: "2021-07-25T14:30:00.000Z",
+    department_id: 1,
+  };
   return (
     <div>
-
-       {
-        <AdminPopUp show={true} scheduleInfo={info}></AdminPopUp>
-         
-       
-      
-      }
+      <NavBar></NavBar> 
 
     </div>
   );
 }
 
-export default App
+export default App;

@@ -36,16 +36,16 @@
     transform: rotate(360deg);
   }
 } */
-.link{
+.link {
   font-size: 26px;
   color: antiquewhite;
   /* border: 1px rgb(73, 70, 70) solid; */
   padding: 12px;
   background-color: black;
-  margin: 10px ;
+  margin: 10px;
   padding: 8px;
 }
-.calendar{
+.calendar {
   margin: 10px;
   max-height: max-content;
   border: 1px solid black;
@@ -54,23 +54,24 @@
   min-height: 0px;
 }
 .tui-full-calendar-weekday-schedules {
-border: 10px solid green;
+  border: 10px solid green;
 }
 .rbc-time-view .rbc-row div:nth-child(1) {
   height: 0px !important;
 }
 .fc-list-item-time {
-  display:none;
+  display: none;
 }
-.tui-view-428{
+.tui-view-428 {
   background-color: aqua;
   display: none;
 }
-.tui-full-calendar-vlayout-area .tui-view-426 .tui-full-calendar-vlayout-container{
-background-color: green;
+.tui-full-calendar-vlayout-area
+  .tui-view-426
+  .tui-full-calendar-vlayout-container {
+  background-color: green;
 }
-.tui-full-calendar-layout{
- 
+.tui-full-calendar-layout {
 }
 /* .tui-view-430{
   background-color: white;
