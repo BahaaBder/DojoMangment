@@ -5,7 +5,7 @@ class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId = 2;
+    this.userId = 1;
     this.isHaveACource = false;
     this.arrayOfUserDepartment = [];
     this.listDepartments = [];
@@ -31,7 +31,7 @@ class ScheduleInventory {
       checkPermission: action,
       getDepartments: action,
       updateId: action,
-      getScheduleDepartment:action
+      getScheduleDepartment: action,
     });
   }
 
@@ -53,14 +53,12 @@ class ScheduleInventory {
     this.showModal = !this.showModal;
   };
   createNewSchedule = async (schedule) => {
-    
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };
-  deleteSchedule = (schedule) => {
-    axios.delete(serverApi + "/schedules", { data: schedule }).then(() => {
-      this.getSchedule();
-    });
+  deleteSchedule = async (schedule) => {
+    await axios.delete(serverApi + "/schedules", { data: schedule });
+    this.getSchedule();
   };
 
   filterDepartmentForUser = (departmentOfUser) => {
@@ -80,21 +78,22 @@ class ScheduleInventory {
 
   getAllDepartment = async () => {
     let departments = await axios.get(`${serverApi}/departments`);
-    return departments.data
-  }
+    return departments.data;
+  };
 
   getScheduleDepartment = async (schedule_id) => {
-    const department_id = await axios.get(`${serverApi}/departmentOfSchedule/${schedule_id}`)
+    const department_id = await axios.get(
+      `${serverApi}/departmentOfSchedule/${schedule_id}`
+    );
 
-    console.log(department_id.data[0].department_id)
-    return department_id.data[0].department_id
-
-  }
+    console.log(department_id.data[0].department_id);
+    return department_id.data[0].department_id;
+  };
   mapScheduleToStr = async (list) => {
     const tempList = [];
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
 
-    let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
+    let departmentArray = this.getUserDepartments(getMyUser.data, parseInt(sessionStorage.getItem("Id")));
     list.forEach((s) => {
       if (departmentArray.includes(s.department_id)) {
         const object2 = Object.assign({}, s, {
@@ -138,6 +137,7 @@ class ScheduleInventory {
   };
   JoinToCourse = async (data) => {
     try {
+      
       let departmentPromise = await axios.get(
         `${serverApi}/departmentOfSchedule/${data.scheduleId}`
       );
@@ -214,8 +214,8 @@ class ScheduleInventory {
   changeScheduleColor = () => {
     let temp = [];
     let schedule = toJS(this.listSchedule);
-    axios.get(`${serverApi}/userInSchedule`).then((response) => { 
-      schedule.forEach((s) => { });
+    axios.get(`${serverApi}/userInSchedule`).then((response) => {
+      schedule.forEach((s) => {});
       Object.assign(this.listSchedule, temp);
     });
   };

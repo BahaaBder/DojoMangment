@@ -5,6 +5,7 @@ import { observer, inject } from "mobx-react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import dayjs from "dayjs";
+import Swal from 'sweetalert2'
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -22,16 +23,13 @@ const AdminPopUp = inject("ScheduleStore")(
     const [schedule, setSchedule] = useState({});
     const [departments, setDepartments] = useState([{}]);
     useEffect(() => {
-      debugger;
       setSchedule(props.scheduleInfo);
       const apiCall = async () => {
         const res = await props.ScheduleStore.getAllDepartment();
-
         setDepartments(res);
       };
       apiCall();
     }, []);
-    
     useEffect(() => {
       console.log(departments);
     }, [departments]);
@@ -48,37 +46,48 @@ const AdminPopUp = inject("ScheduleStore")(
       }));
     };
     const handleChange = (e) => {
-if(e.target.name==="end"||e.target.name==="start"){
-  setSchedule((prevState) => ({
-    ...prevState,
-    [e.target.name]: dayjs(e.target.value).format("YYYY-MM-DDThh:mm"),
-  }));
-}
-else{
-  setSchedule((prevState) => ({
-    ...prevState,
-    [e.target.name]: e.target.value,
-  }));
-}
-
+      if (e.target.name === "end" || e.target.name === "start") {
+        setSchedule((prevState) => ({
+          ...prevState,
+          [e.target.name]: dayjs(e.target.value).format("YYYY-MM-DDThh:mm"),
+        }));
+      } else {
+        setSchedule((prevState) => ({
+          ...prevState,
+          [e.target.name]: e.target.value,
+        }));
+      }
     };
     const handleUpdate = () => {
       props.ScheduleStore.updateSchedule(schedule);
       debugger;
-      handleClose()
-
-    
+      handleClose();
     };
+
     const handleDelete=()=>{
-      props.ScheduleStore.deleteSchedule(schedule);
-      props.handleCloseModal()
-
-
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+          await props.ScheduleStore.deleteSchedule(schedule);
+            Swal.fire(
+                'Deleted!',
+                `The data has been deleted. 😔`,
+                'success'
+            )}
+            props.handleCloseModal()
+          })
     }
 
-    const handleClose=()=>{
-      props.handleCloseModal()
-    }
+    const handleClose = () => {
+      props.handleCloseModal();
+    };
     return (
       <div>
         <Modal
@@ -148,13 +157,10 @@ else{
               update
             </Button>
             <Button variant="primary" onClick={handleDelete}>
-            Delete
-          </Button>
-            
-            <Button
-              variant="primary"
-              onClick={handleClose}
-            >
+              Delete
+            </Button>
+
+            <Button variant="primary" onClick={handleClose}>
               cancel
             </Button>
           </Modal.Footer>

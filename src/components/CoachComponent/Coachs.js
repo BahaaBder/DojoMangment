@@ -26,7 +26,7 @@ class Coachs extends Component {
             </p>
             <Row>{
                   this.state.coachs.map((coach,ind) => {
-                    return ( <Coach key={ind} coach={coach} showDetails={false}/> )
+                    return ( <Coach key={ind} coach={coach} showDetails={true}/> )
                   })
                   }
             </Row>

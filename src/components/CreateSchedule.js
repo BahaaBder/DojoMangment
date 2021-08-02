@@ -16,40 +16,39 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
   },
 }));
+
 const CreateSchedule = inject("ScheduleStore")(
   observer((props) => {
     const classes = useStyles();
     const [departments, setDepartments] = useState([{}]);
     const [schedule, setSchedule] = useState({
-      id: null,
       title: "",
-      category: "time",
+      category: "",
       dueDateClass: "",
       start: "",
       end: "",
       department_name: "",
-      department_id: 1,
+      department_id: 0,
     });
+
     useEffect(() => {
       const apiCall = async () => {
         const res = await props.ScheduleStore.getAllDepartment();
         setDepartments(res);
       };
       apiCall();
-      setSchedule((prevState) => ({
-        ...prevState,
-        start: props.scheduleInfo.start,
-        end: props.scheduleInfo.end,
-      }));
     }, []);
+
     useEffect(() => {
       console.log(departments);
     }, [departments]);
+
     function convertDate(date) {
       return dayjs(date).format("YYYY-MM-DDThh:mm");
     }
+
     const handleDepartmentChange = async (e) => {
-      let department = departments.find((d) => d.name === e.target.value);
+      let department = departments.find((d) => d.name == e.target.value);
       setSchedule((prevState) => ({
         ...prevState,
         department_name: department.name,
@@ -62,14 +61,8 @@ const CreateSchedule = inject("ScheduleStore")(
         [e.target.name]: e.target.value,
       }));
     };
-    const handleCreate = async () => {
+    const handleCreate = () => {
       console.log(schedule);
-      await props.ScheduleStore.createNewSchedule(schedule);
-
-      handleClose();
-    };
-    const handleClose = () => {
-      props.handleCloseModal();
     };
     return (
       <div>
@@ -78,7 +71,7 @@ const CreateSchedule = inject("ScheduleStore")(
           onHide={props.ScheduleStore.handleAlertModalChange}
         >
           <Modal.Header>
-            <Modal.Title>{"create  new  schedule"} </Modal.Title>
+            <Modal.Title>{"your selected schedule"} </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>
@@ -89,7 +82,19 @@ const CreateSchedule = inject("ScheduleStore")(
                 onChange={handleChange}
               />
               <br />
+              Category
+              <input
+                name="category"
+                value={schedule.category}
+                onChange={handleChange}
+              />
               <br />
+              dueDateClass
+              <input
+                name="dueDateClass"
+                value={schedule.dueDateClass}
+                onChange={handleChange}
+              />
               <br />
               <br />
               <span>Department</span>
@@ -141,7 +146,10 @@ const CreateSchedule = inject("ScheduleStore")(
             <Button variant="primary" onClick={handleCreate}>
               Create Schedule
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            <Button
+              variant="primary"
+              onClick={props.ScheduleStore.handleAlertModalChange}
+            >
               cancel
             </Button>
           </Modal.Footer>
