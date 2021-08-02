@@ -5,7 +5,7 @@ class ScheduleInventory {
   constructor() {
     this.showModal = false;
     this.listSchedule = [];
-    this.userId = 1;
+    this.userId = 2;
     this.isHaveACource = false;
     this.arrayOfUserDepartment = [];
     this.listDepartments = [];
@@ -15,15 +15,14 @@ class ScheduleInventory {
       listSchedule: observable,
       isHaveACource: observable,
       getSchedule: observable,
-      isAdmin: observable,
       userId: observable,
+      isAdmin: observable,
       handleAlertModalChange: action,
       mapScheduleToStr: action,
       deleteSchedule: action,
       computedList: computed,
       computedListDepartment: computed,
       computedIsAdmin: computed,
-
       createNewSchedule: action,
       haveACourse: action,
       JoinToCourse: action,
@@ -32,6 +31,7 @@ class ScheduleInventory {
       checkPermission: action,
       getDepartments: action,
       updateId: action,
+      getScheduleDepartment:action
     });
   }
 
@@ -45,14 +45,15 @@ class ScheduleInventory {
     return toJS(this.listDepartments);
   }
 
-  updateId= (userId) => {
+  updateId = (userId) => {
     this.userId = userId;
- };
+  };
 
   handleAlertModalChange = () => {
     this.showModal = !this.showModal;
   };
   createNewSchedule = async (schedule) => {
+    
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };
@@ -77,9 +78,22 @@ class ScheduleInventory {
     });
   };
 
+  getAllDepartment = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data
+  }
+
+  getScheduleDepartment = async (schedule_id) => {
+    const department_id = await axios.get(`${serverApi}/departmentOfSchedule/${schedule_id}`)
+
+    console.log(department_id.data[0].department_id)
+    return department_id.data[0].department_id
+
+  }
   mapScheduleToStr = async (list) => {
     const tempList = [];
     let getMyUser = await axios.get(`${serverApi}/userDepartment`);
+
     let departmentArray = this.getUserDepartments(getMyUser.data, this.userId);
     list.forEach((s) => {
       if (departmentArray.includes(s.department_id)) {
@@ -99,7 +113,7 @@ class ScheduleInventory {
   getUserDepartments = (users_departments, user_id) => {
     let departmentForUser = [];
     users_departments.forEach((user_department) => {
-      if (user_department.user_id == user_id) {
+      if (user_department.user_id === user_id) {
         departmentForUser.push(user_department.department_id);
       }
     });
@@ -130,7 +144,7 @@ class ScheduleInventory {
       const dep_id = departmentPromise.data[0].department_id;
       console.log("Join $ :", dep_id);
 
-      let res = await axios.post(`${serverApi}/userDepartment`, {
+      await axios.post(`${serverApi}/userDepartment`, {
         userId: data.userId,
         departmentId: dep_id,
       });
@@ -147,13 +161,13 @@ class ScheduleInventory {
 
   //Tawfiq
   exitFromCource = async (data) => {
-    let departmentPromise = await axios.get(
-      `${serverApi}/departmentOfSchedule/${data.scheduleId}`
-    );
-    const dep_id = departmentPromise.data[0].department_id;
-    console.log("Join $ :", dep_id);
-
     try {
+      let departmentPromise = await axios.get(
+        `${serverApi}/departmentOfSchedule/${data.scheduleId}`
+      );
+      const dep_id = departmentPromise.data[0].department_id;
+      console.log("Join $ :", dep_id);
+
       let res = await axios.delete(`${serverApi}/userDepartment`, {
         data: { department_id: dep_id, user_id: data.userId },
       });
@@ -200,10 +214,8 @@ class ScheduleInventory {
   changeScheduleColor = () => {
     let temp = [];
     let schedule = toJS(this.listSchedule);
-    axios.get(`${serverApi}/userInSchedule`).then((response) => {
-      let usersInSchedule = response.data;
-      let isExist = false;
-      schedule.forEach((s) => {});
+    axios.get(`${serverApi}/userInSchedule`).then((response) => { 
+      schedule.forEach((s) => { });
       Object.assign(this.listSchedule, temp);
     });
   };
@@ -222,8 +234,8 @@ class ScheduleInventory {
     let is_admin = await axios.get(
       `${serverApi}/permissions/?type=${type}&user_id=${this.userId}`
     );
-    const result = is_admin.data[0][type] == 1;
-    console.log(is_admin.data[0][type] == 1);
+    const result = is_admin.data[0][type] === 1;
+    console.log(is_admin.data[0][type] === 1);
     this.isAdmin = result;
     return result;
   };
@@ -236,5 +248,9 @@ class ScheduleInventory {
     let departments = await axios.get(`${serverApi}/departments`);
     return departments.data;
   };
+  getAllDepartment = async () => {
+    let departments = await axios.get(`${serverApi}/departments`);
+    return departments.data;
+  };
 }
-export default ScheduleInventory
+export default ScheduleInventory;

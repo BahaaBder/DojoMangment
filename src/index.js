@@ -20,7 +20,8 @@ const store = {
 };
 ReactDOM.render(
   <Provider {...store}>
+    {" "}
     <App />
   </Provider>,
   document.getElementById("root")
-);
+)

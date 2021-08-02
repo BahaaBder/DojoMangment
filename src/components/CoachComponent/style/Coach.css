@@ -49,7 +49,7 @@
     margin: 12px;
 }
 .btn{
-    background-color: rgb(241, 106, 57);
+    /* background-color: rgb(241, 106, 57); */
     margin: 17px;
     height: 40px;
 }
@@ -65,4 +65,8 @@ span{
 }
 .AddCoach{
     padding: 18px;
+}
+.star{
+    color: red;
+    font-size: 30px;
 }

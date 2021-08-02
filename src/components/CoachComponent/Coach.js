@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-// import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Col, Image, Modal, Button } from 'react-bootstrap'
+import { Button, Modal, Col, Image } from 'react-bootstrap';
 import "./style/Coach.css"
 import { TextField } from "@material-ui/core";
 import { observer, inject } from 'mobx-react';
@@ -10,10 +9,13 @@ const serverApi = "http://localhost:8080";
 class Coach extends Component {
   constructor() {
     super();
-    this.state = { show: false,name: "", age: "", department: "", img: "", descShort: "", allDepartments: [] }
+    this.state = { show: false, name: "", age: "", department: "", img: "", descShort: "", allDepartments: [] }
   }
-  handleClose = () => { this.setState({ show: false }) };
-  handleShow = () => { this.setState({ show: true }) };
+
+  toggleShow = () => {
+    if(this.props.showDetails)
+      this.setState({show : !this.state.show})
+  }
 
   change = (e) => {
     let id = e.target.id;
@@ -48,8 +50,6 @@ class Coach extends Component {
     }
     this.props.CoachStore.UpdateCoach(coachData)
     this.setState({ name: "", department: "", age: "", img: "", descShort: "" ,show:false});
-    // this.setState({show:false})
-
   }
 
   componentDidMount = async () => {
@@ -57,15 +57,65 @@ class Coach extends Component {
     this.setState({ allDepartments: allDepartments.data })
   }
 
-  render() {
+  render = () => {
     let coach = this.props.coach
     return (
-          <Col xxl={4} xl={4} md={6} sm={12} xs={12} className="mb-5 text-center">
+          <Col xxl={6} xl={6} md={6} sm={12} xs={12} className="mb-5 text-center" onClick={this.toggleShow}>
             <Image src={coach.img} className="w-50 h-50" />
             <h1 className="font-weight-bold mb-3">{coach.name}</h1>
             <h4 className="font-weight-bold grey-text mb-3">{coach.departmentName}</h4>
             <h3 className="grey-text">{coach.name} - {coach.type} ({coach.age})</h3>
             <p className="grey-text">{coach.descrShort}</p>
+
+        <Modal className="modal" show={this.state.show} onHide={this.toggleShow}>
+          <Modal.Header closeButton></Modal.Header>
+          <Modal.Body className="bodyModal">
+            <h4>Update Coach</h4>
+            <div className="txtfild">
+              <span>Name: </span>
+              <TextField className="text" id="name-input"
+                value={this.state.name}
+                onChange={this.change} />
+            </div>
+            <div className="txtfild">
+              <span>department: </span>
+
+              <select className="text" id="department-input" value={this.state.department} onChange={this.change}>
+                {this.state.allDepartments.map((department, ind) => {
+                  return (<option key={ind} value={department.id}>{department.name}</option>)
+                })}
+              </select>
+            </div>
+            <div className="txtfild">
+              <span>age: </span>
+              <TextField className="text" id="age-input"
+                value={this.state.age}
+                onChange={this.change} />
+            </div>
+            <div className="txtfild">
+              <span>img: </span>
+              <TextField className="text" id="img-input"
+                label="img url"
+                multiline
+                maxRows={4}
+                value={this.state.img}
+                onChange={this.change}
+              />
+            </div>
+            <div className="txtfild">
+              <span>short description: </span>
+              <textarea className="text" id="descShort-input"
+                label="short description"
+                multiline="7"
+                value={this.state.descShort}
+                onChange={this.change}
+              />
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className="btn" onClick={this.UpdateCoach}>save Changes</Button>
+          </Modal.Footer>
+        </Modal>
           </Col>
     )
   }

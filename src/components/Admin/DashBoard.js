@@ -1,12 +1,7 @@
 import { React, useState, useEffect } from "react";
-import { TextField } from "@material-ui/core";
-import { Button, Modal, Alert } from "react-bootstrap";
 import { observer, inject } from "mobx-react";
 import axios from "axios";
-import AddCoach from "../CoachComponent/AddCoach";
-import { Container, Row, Col } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { BarChart, CartesianGrid, Bar, XAxis,YAxis, ResponsiveContainer, Line, Tooltip } from 'recharts'
+import { BarChart, CartesianGrid, Bar, XAxis,YAxis,  Tooltip } from 'recharts'
 
 const serverApi = "http://localhost:8080";
 
@@ -14,27 +9,32 @@ const DashBoard = inject("ScheduleStore")(
     observer((props) => {
         const [users, setUsers] = useState([])
         const [userPerDepartment, setuserPerDepartment] = useState([])
+        const [departmentsInCalendar, setDepartmentsInCalendar] = useState([])
 
-        useEffect(async () => {
-            let allUsers = await axios.get(serverApi + "/allUsers");
-            setUsers(allUsers.data);
-            let userPerDepartment = await axios.get(serverApi+"/userPerDepartment");
-            setuserPerDepartment(userPerDepartment.data);
+        useEffect(() => {
+            async function fetchData() {
+                let allUsers = await axios.get(serverApi + "/allUsers");
+                setUsers(allUsers.data);
+                let userPerDepartment = await axios.get(serverApi+"/userPerDepartment");
+                setuserPerDepartment(userPerDepartment.data);
+                let departmentInCalendar = await axios.get(serverApi+"/departmentInSchedules");
+                setDepartmentsInCalendar(departmentInCalendar.data);
+            }
+            fetchData();
         }, [])
 
 
         return (
             <div>
                 <span>
-                    <img src="https://img.icons8.com/ios-filled/50/000000/ratings.png" />
+                    <img src="https://img.icons8.com/ios-filled/50/000000/ratings.png" alt="" />
                     <span className="spanClass">{users.length}</span>
                     <div className="divClass" >User In System</div>
                 </span>
 
-                <h4>Users per Department</h4>
-
+                <h4>Participants per Department</h4>
               <BarChart
-                  width={500}
+                  width={700}
                   height={500}
                   data={userPerDepartment}
                   maxBarSize={20}
@@ -45,24 +45,20 @@ const DashBoard = inject("ScheduleStore")(
                 <XAxis  dataKey="department"  />
                 <Bar  dataKey="cnt" fill={"rgba(120,99,132,1)"} />
               </BarChart>
-                {/* <Link to="/UpdateHomePage">
-                    <span class="material-icons-outlined">
-                        home_work
-                    </span>
-                </Link> */}
-                {/* <Router>
-                    <Container fluid="md">
-                        <Row className="justify-content-md-center">
-  
-                        </Row>
 
-                    </Container>
-
-                </Router> */}
-
-
-
-
+              <h4> Department lessons in week</h4>
+              <BarChart
+                  width={700}
+                  height={500}
+                  data={departmentsInCalendar}
+                  maxBarSize={20}
+                >
+                <CartesianGrid strokeDasharray="3 3" />
+                <YAxis  dataKey="cnt" />
+                <Tooltip/>
+                <XAxis  dataKey="department"  />
+                <Bar  dataKey="cnt" fill={"rgba(120,99,132,1)"} />
+              </BarChart>
             </div>
         );
     }));
