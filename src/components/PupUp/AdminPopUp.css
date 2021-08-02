@@ -1,0 +1,29 @@
+.button-update {
+  background-color: #17a2b8;
+}
+.button-update:hover {
+  background-color: #1f8999;
+}
+.button-delete {
+  background-color: #d4293b;
+}
+.button-delete:hover {
+  background-color: #a0333e;
+}
+
+.button-cancel-update {
+  background-color: #dfb332;
+}
+.button-cancel-update:hover {
+  background-color: #bb972a;
+}
+.button-delete-DIV {
+  margin-right: 200px;
+}
+.update-title {
+  margin-left: 65px;
+}
+.title-input {
+  margin-left: -34px;
+  margin-bottom: 22px;
+}

@@ -5,6 +5,7 @@ import { observer, inject } from "mobx-react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import dayjs from "dayjs";
+import "./CreateSchedule.css";
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -78,42 +79,45 @@ const CreateSchedule = inject("ScheduleStore")(
           onHide={props.ScheduleStore.handleAlertModalChange}
         >
           <Modal.Header>
-            <Modal.Title>{"create  new  schedule"} </Modal.Title>
+            <Modal.Title>
+              <div className="modal-title">Create New Schedule</div>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>
-              <span>Title</span>
-              <input
-                name="title"
-                value={schedule.title}
-                onChange={handleChange}
-              />
-              <br />
-              <br />
-              <br />
-              <br />
-              <span>Department</span>
-              <div>
-                <select
-                  className="selectUpdate"
-                  onChange={handleDepartmentChange}
-                  value={schedule.department_name}
-                >
-                  {departments.map((d, index) => {
-                    return (
-                      <option key={index} value={d.name}>
-                        {d.name}
-                      </option>
-                    );
-                  })}
-                </select>
+              <div className="input-title">
+                <span>Title</span>
+                <input
+                  name="title"
+                  value={schedule.title}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="departments-selector">
+                <span>Department</span>
+                <div>
+                  <select
+                    className="selectUpdate"
+                    onChange={handleDepartmentChange}
+                    value={schedule.department_name}
+                  >
+                    {departments.map((d, index) => {
+                      return (
+                        <option key={index} value={d.name}>
+                          {d.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
               </div>
               <br></br>
             </div>
             <form className={classes.container} noValidate>
               <TextField
                 id="datetime-local"
-                label="startDate"
+                label="start Date"
                 type="datetime-local"
                 defaultValue={convertDate(props.scheduleInfo.start)}
                 className={classes.textField}
@@ -125,7 +129,7 @@ const CreateSchedule = inject("ScheduleStore")(
               />
               <TextField
                 id="datetime-local"
-                label="endDate"
+                label="end Date"
                 type="datetime-local"
                 defaultValue={convertDate(props.scheduleInfo.end)}
                 className={classes.textField}
@@ -138,10 +142,10 @@ const CreateSchedule = inject("ScheduleStore")(
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleCreate}>
+            <Button className="button-create-schedule" onClick={handleCreate}>
               Create Schedule
             </Button>
-            <Button variant="primary" onClick={handleClose}>
+            <Button className="button-cancel" onClick={handleClose}>
               cancel
             </Button>
           </Modal.Footer>

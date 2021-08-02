@@ -225,7 +225,6 @@ const Schedule = inject(
               //   // e.g. +09:00 => -540, -04:00 => 240
               //   return moment.tz.zone(timezoneName).utcOffset(timestamp);
               // },
-          
             },
           ]}
         />

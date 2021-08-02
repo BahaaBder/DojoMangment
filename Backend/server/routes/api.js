@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 const Sequelize = require("sequelize");
@@ -78,6 +79,13 @@ router.get("/userPerDepartment", async function (req, res) {
   }
 });
 
+
+//////////////////////////////////////////////////////////////
+
+router.post("/registrations", async function (req, res) {
+  await addToContacts(req.body);
+  res.send("adding successfuly !");
+});
 router.get("/test", function (req, res) {
   res.send("test ok ");
 });
@@ -553,6 +561,24 @@ router.post("/coachs", function (req, res) {
     res.status(400).send(error.message);
   }
 });
+
+router.delete("/coachs", function (req, res) {
+  let userId = req.body.coachId;
+  try {
+    sequelize
+      .query(
+        `
+         DELETE FROM coach
+         WHERE id=${userId}
+        `
+      )
+      .then(function ([results, metadata]) {
+        res.send(true);
+      });
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+})
 // router.get("/about", function (req, res) {
 //   sequelize
 //     .query(

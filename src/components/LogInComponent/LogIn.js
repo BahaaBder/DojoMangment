@@ -68,55 +68,52 @@ const LogIn = inject(
     return (
       <Modal className="modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="coach-info">Welcome to our set</Modal.Title>
-          <Modal.Title className="coach-info">
-            new here?{" "}
-            <Link className="pass" to="/Register">
-              Create Acount
-            </Link>
+          <Modal.Title>
+            <div className="sign-in-title">Welcome to our set</div>
           </Modal.Title>
         </Modal.Header>
-
-        <Modal.Body className="bodyModal">
+        <Modal.Body>
           <div className="txtfild">
-            <div>Email: </div>
             <TextField
               className="text"
               id="email-input"
               value={email}
               onChange={change}
+              placeholder="type Email..."
             />
           </div>
-
           <div className="txtfild">
-            <div>
-              Passwors:{" "}
-              <span className="pass" onClick={forgetPass}>
-                Forget Password
-              </span>{" "}
-            </div>
-
             <TextField
               className="text"
               id="pass-input"
               type="password"
               value={password}
               onChange={change}
+              placeholder="type Password..."
             />
+            <div className="forget-password">
+              <span className="pass" onClick={forgetPass}>
+                Forget Password
+              </span>
+            </div>
           </div>
         </Modal.Body>
-
         <Modal.Footer>
+          <Link className="pass" to="/Register">
+            Create Acount
+          </Link>
           <Link to="signIn">
-            <Button className="btn" variant="secondary" onClick={sign}>
+            <Button
+              className="button-sign-in"
+              variant="secondary"
+              onClick={sign}
+            >
               sign in
             </Button>
           </Link>
-
           <Alert variant="danger" show={error}>
             Check Your Inputs Again !
           </Alert>
-
           <Alert variant="success" show={passforget}>
             Relax and try to remember you'r password
           </Alert>

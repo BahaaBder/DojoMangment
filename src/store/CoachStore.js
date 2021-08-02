@@ -4,15 +4,22 @@ import axios from "axios";
 const serverApi = "http://localhost:8080";
 class CoachStore {
   constructor() {
-    this.coachs = [];
+    this.coachs = axios.get(`${serverApi}/coachs`)
+    
     makeObservable(this, {
       coachs: observable,
       getAllCoachs: action,
       saveCoach: action,
       UpdateCoach: action ,
+      DeleteCoach: action,
     });
   }
 
+
+  // getAllCoachs = async () => {
+  //   let coachsData = await axios.get(`${serverApi}/coachs`);
+  //   this.coachs = coachsData.data;
+  // };
   getAllCoachs = async () => {
     let coachsData = await axios.get(`${serverApi}/coachs`);
     this.coachs = coachsData.data;
@@ -26,6 +33,10 @@ class CoachStore {
   UpdateCoach = async (coachData) => {
     let req = await axios.put(`${serverApi}/coachs`,{data: coachData})
     console.log(req);
+  }
+  DeleteCoach = async (coachId) => {
+    let req = await axios.delete(`${serverApi}/coachs`,{data: {coachId}})
+    return req.data;
   }
 }
 

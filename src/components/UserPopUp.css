@@ -1,0 +1,13 @@
+.button-join {
+    background-color: #17a2b8;
+  }
+  .button-join:hover {
+    background-color: #1f8999;
+  }
+  ​
+  .button-leave {
+    background-color: #d4293b;
+  }
+  .button-leave:hover {
+    background-color: #a0333e;
+  }

@@ -2,7 +2,6 @@
   background-color: #ededed;
   position: relative;
 }
-
 .form-sheet {
   width: 400px;
   background-color: #f5f6fa;
@@ -16,6 +15,7 @@
 }
 .user-input {
   margin-bottom: 15px;
+  width: 45%;
 }
 .select {
   margin-left: 10px;
@@ -55,17 +55,35 @@
   text-align: center;
   margin-top: 23px;
 }
-
-.txtfild{
-  margin: 15px;
+.txtfild {
+  margin-bottom: 25px;
 }
-span{
+span {
   padding: 5px;
 }
-.text{
+.text {
   left: 10px;
 }
-.pass{
+.pass {
   color: rgb(89, 189, 89);
   cursor: pointer;
+}
+.button-sign-in {
+  background-color: #17a2b8;
+}
+.button-sign-in:hover {
+  background-color: #1f8999;
+}
+.sign-in-title {
+  margin-left: 65px;
+}
+.email-text {
+  margin-top: 0px;
+}
+.forget-password {
+  margin-top: 23px;
+  margin-left: 106px;
+}
+.registerForms{
+  display: inline-block;
 }

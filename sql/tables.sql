@@ -166,17 +166,53 @@ INSERT INTO schedule VALUES (null,"Kids MMA Mixed Martil art ","time","",'2021-0
 -- INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
 -- INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
 
--- INSERT INTO About VALUES(null, "motivation1", "overview1", null, 1);
--- INSERT INTO About VALUES(null, "motivation2", "overview2", null, 2);
+INSERT INTO user VALUES (1,1,1);
+INSERT INTO user VALUES (2,2,1);
+
+insert into user_department VALUES(1,1);
+insert into user_department VALUES(2,1);
+insert into user_department VALUES(1,2);
+insert into user_department VALUES(1,3);
+
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-25T12:00:00','2021-07-25T14:30:00',1);
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-27T14:30:00','2021-07-27T16:30:00',1);
+INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-29T12:30:00','2021-07-29T14:30:00',1);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-25T19:30:00','2021-07-25T20:30:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-26T19:30:00','2021-07-26T20:30:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T19:30:00','2021-07-28T20:30:00',2);
+INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T16:30:00','2021-07-28T18:30:00',2);
+INSERT INTO schedule VALUES (null,"Japan","time","",'2021-07-29T19:30:00','2021-07-29T20:30:00',4);
+INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00','2021-07-30T20:00:00',3);
+   
+CREATE TABLE DepartmentDetails (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    department_name TEXT,
+    descreption TEXT
+);
+
+CREATE TABLE About
+ (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    motivations TEXT,
+    overview TEXT,
+    dojo_id int,
+    dep_details_id int,
+    FOREIGN KEY(dojo_id) REFERENCES dojoTable(id),
+    FOREIGN KEY(dep_details_id) REFERENCES DepartmentDetails(id)
+);
+
+INSERT INTO DepartmentDetails VALUES(null, "Karate", "karate descreption");
+INSERT INTO DepartmentDetails VALUES(null, "Tai Chi", "Tai Chi descreption");
+
+INSERT INTO About VALUES(null, "motivation1", "overview1", null, 1);
+INSERT INTO About VALUES(null, "motivation2", "overview2", null, 2);
 
 
-​USE dojo;
 INSERT INTO coach
  VALUES (null,"Wolf",1,1998,
             "https://i.pinimg.com/originals/2f/52/22/2f5222ae1b29f92873e17c8753bda5fe.jpg", 
             "Wolf is a proffessional Boxing fighter, he start traing befor 5 years, his first professional boxing fight was before 2 years",1);
-
-INSERT INTO coach VALUES (null,"Tiger",1,1994,
+INSERT INTO coach VALUES (2,"Tiger",1,1994,
             "https://st2.depositphotos.com/4265001/9912/v/950/depositphotos_99122894-stock-illustration-tiger-dressed-up-in-boxing.jpg",
             "Tiger is a proffessional Boxing fighter, he start traing befor 5 years, his first professional boxing fight was before 2 years",1);
             

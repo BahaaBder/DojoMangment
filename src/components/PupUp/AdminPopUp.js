@@ -5,7 +5,7 @@ import { observer, inject } from "mobx-react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import dayjs from "dayjs";
-import Swal from 'sweetalert2'
+import "./AdminPopUp.css";
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -64,27 +64,10 @@ const AdminPopUp = inject("ScheduleStore")(
       debugger;
       handleClose();
     };
-
-    const handleDelete=()=>{
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then(async (result) => {
-        if (result.isConfirmed) {
-          await props.ScheduleStore.deleteSchedule(schedule);
-            Swal.fire(
-                'Deleted!',
-                `The data has been deleted. 😔`,
-                'success'
-            )}
-            props.handleCloseModal()
-          })
-    }
+    const handleDelete = () => {
+      props.ScheduleStore.deleteSchedule(schedule);
+      props.handleCloseModal();
+    };
 
     const handleClose = () => {
       props.handleCloseModal();
@@ -96,18 +79,21 @@ const AdminPopUp = inject("ScheduleStore")(
           onHide={props.ScheduleStore.handleAlertModalChange}
         >
           <Modal.Header>
-            <Modal.Title>{"your selected schedule"} </Modal.Title>
+            <Modal.Title>
+              <div className="update-title">Update Scheduel</div>
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>
-              <span>Title</span>
-              <input
-                name="title"
-                value={schedule.title || ""}
-                onChange={handleChange}
-              />
-              <br></br>
-              <br></br>
+              <div className="title-input">
+                <span>Title</span>
+                <input
+                  name="title"
+                  value={schedule.title || ""}
+                  onChange={handleChange}
+                />
+              </div>
+
               <span>Department</span>
               <div>
                 <select
@@ -129,7 +115,7 @@ const AdminPopUp = inject("ScheduleStore")(
             <form className={classes.container} noValidate>
               <TextField
                 id="datetime-local"
-                label="startDate"
+                label="start Date"
                 type="datetime-local"
                 defaultValue={convertDate(props.scheduleInfo.start)}
                 className={classes.textField}
@@ -141,7 +127,7 @@ const AdminPopUp = inject("ScheduleStore")(
               />
               <TextField
                 id="datetime-local"
-                label="endDate"
+                label="end Date"
                 type="datetime-local"
                 defaultValue={convertDate(props.scheduleInfo.end)}
                 className={classes.textField}
@@ -154,15 +140,17 @@ const AdminPopUp = inject("ScheduleStore")(
             </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={handleUpdate}>
-              update
-            </Button>
-            <Button variant="primary" onClick={handleDelete}>
-              Delete
+            <div className="button-delete-DIV">
+              <Button className="button-delete" onClick={handleDelete}>
+                Delete
+              </Button>
+            </div>
+            <Button className="button-cancel-update" onClick={handleClose}>
+              cancel
             </Button>
 
-            <Button variant="primary" onClick={handleClose}>
-              cancel
+            <Button className="button-update" onClick={handleUpdate}>
+              update
             </Button>
           </Modal.Footer>
         </Modal>

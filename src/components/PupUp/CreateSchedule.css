@@ -1,0 +1,22 @@
+.button-create-schedule {
+  background-color: #17a2b8;
+}
+.button-create-schedule:hover {
+  background-color: #1f8999;
+}
+.button-cancel {
+  background-color: #d4293b;
+}
+.button-cancel:hover {
+  background-color: #a0333e;
+}
+.departments-selector {
+  margin-top: 4px;
+}
+.input-title {
+  margin-left: -40px;
+}
+.modal-title {
+  margin-left: 65px;
+  margin-bottom: 5px;
+}

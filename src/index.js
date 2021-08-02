@@ -1,8 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { Provider } from "mobx-react";
 import ScheduleInventory from "./store/ScheduleInventory";
 import aboutStore from './store/aboutStore'
@@ -26,7 +24,4 @@ ReactDOM.render(
     <App />
   </Provider>,
   document.getElementById("root")
-);
-
-
-reportWebVitals();
+)

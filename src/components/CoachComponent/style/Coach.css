@@ -1,72 +1,87 @@
-.coachImg{
+.coachImg {
     width: 250px;
     height: 200px;
-}
-.allCoaches{
+    border: 1px black solid;
+  }
+  .allCoaches {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(3, 1fr);
     margin: 10px;
     background-color: rgb(7, 7, 7);
-}
-.coachMain{
+  }
+  .coachMain {
     box-shadow: 4px 3px 4px rgb(196, 192, 192);
     background-color: rgb(133, 130, 131);
     margin: 20px;
     display: flex;
     /* justify-content: center; */
-}
-
-.modal{
-    width: 500px;
-    max-height: 1000px;
+  }
+  .modal {
     display: flex;
+    width: 500px;
+    max-height: 900px;
     justify-content: center;
     text-align: center;
     left: 26%;
-    
-}
-.onlyImg{
+  }
+  .onlyImg {
     background-color: rgb(237, 245, 245);
-}
-.bodyModal{
-   background-color: rgb(210, 231, 231); 
-}
-.coach-info{
+  }
+ 
+  .coach-info {
     color: rgb(189, 52, 52);
     text-decoration: none;
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-}
-.info{
-    color: rgb(152, 72, 177);
+  }
+  .info {
+    /* color: rgb(177, 72, 124); */
     padding: 9px;
     text-decoration: none;
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-}
-.displayName{
+  }
+  .displayName {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 12px;
-}
-.btn{
-    background-color: rgb(241, 106, 57);
-    margin: 17px;
-    height: 40px;
-}
-
-.txtfild{
+  }
+  .txtfild {
     margin: 15px;
-}
-span{
+  }
+  span {
     padding: 5px;
-}
-.text{
+  }
+  .text {
     left: 10px;
-}
-.AddCoach{
+  }
+  .AddCoach {
     padding: 18px;
-}
-.star{
+  }
+  .star {
     color: red;
     font-size: 30px;
-}
+  }
+  .coachImgCard{
+      border: 1px black solid;
+      border-radius: 4px 4px 4px 4px;
+      width: 70%;
+      margin: 10px;
+      align-items: center;
+      justify-content: center;
+  }
+  .user-input {
+    margin-bottom: 15px;
+    width: 30%;
+  }
+ 
+  .sign-in-title {
+    /* margin-left: 65px; */
+    text-align: center;
+  }
+
+  .button-close {
+    background-color: #17a2b8;
+  }
+  .button-close:hover {
+    background-color: #1f8999;
+  }

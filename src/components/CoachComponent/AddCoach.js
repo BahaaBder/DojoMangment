@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import { TextField } from "@material-ui/core";
 import './style/Coach.css'
-import { Button, Alert } from "react-bootstrap";
+import { Button, Alert, Form } from "react-bootstrap";
 import axios from "axios";
 var validUrl = require('valid-url');
 const serverApi = "http://localhost:8080";
@@ -41,7 +41,7 @@ class AddCoach extends Component {
       this.state.age === "" || this.state.descShort === "") {
       this.setState({ showError: true, showSuccess: false })
     }
-    if(this.state.img.length>0 && !this.checkURLValid(this.state.img)){
+    else if(this.state.img.length>0 && !this.checkURLValid(this.state.img)){
       this.setState({ showError: true, showSuccess: false })
     }
     else {
@@ -66,6 +66,11 @@ class AddCoach extends Component {
     else {
       return false;
     }
+  };
+
+  componentDidMount = async () => {
+    let allDepartments = await axios.get(serverApi + "/alldepartments");
+    this.setState({ allDepartments: allDepartments.data })
   }
 
   componentDidMount = async () => {
@@ -73,65 +78,30 @@ class AddCoach extends Component {
     this.setState({ allDepartments: allDepartments.data })
   }
 
-  render() {
+  render = () => {
     return (
+      
+      <Form className="AddCoach">
+         <Form.Group className="mb-3">
+        <Form.Label><div className="sign-in-title">ADD Coach</div></Form.Label>
+        <Form.Control id="name-input" value={this.state.name} className="user-input" type="text" placeholder="Enter Name" onChange={this.change}/>
+        <br></br>
 
-      <div className="AddCoach">
-
-        <h4>ADD Coach</h4>
-        <div className="txtfild">
-          <span>Name: </span>
-          <TextField
-            className="text"
-            id="name-input"
-            value={this.state.name}
-            onChange={this.change}
-          />
-          <span className="star">*</span>
-        </div>
-
-        <div className="txtfild">
-          <span>department: </span>
-
-          <select className="text" id="department-input" value={this.state.department} onChange={this.change}>
-            {this.state.allDepartments.map((department, ind) => {
-              return (<option key={ind} value={department.id}>{department.name}</option>)
-            })}
-          </select>
-          <span className="star">*</span>
-        </div>
-
-        <div className="txtfild">
-          <span>age: </span>
-          <TextField className="text" id="age-input"
-            value={this.state.age}
-            onChange={this.change} />
-          <span className="star">*</span>
-        </div>
-
-        <div className="txtfild">
-          <span>img: </span>
-          <TextField
-            className="text"
-            id="img-input"
-            label="img url"
-            multiline
-            maxRows={4}
-            value={this.state.img}
-            onChange={this.change}
-          />
-        </div>
-
-        <div className="txtfild">
-          <span>short description: </span>
-          <textarea className="text" id="descShort-input"
-            label="short description"
-            multiline="7"
-            value={this.state.descShort}
-            onChange={this.change}
-          />
-          <span className="star">*</span>
-        </div>
+        <Form.Label>Department : </Form.Label>
+        <Form.Select id="department-input" className="user-input" value={this.state.department} onChange={this.change}>
+        <option></option>
+          {
+            this.state.allDepartments.map((department, ind) => {
+            return (<option key={ind} value={department.id}>{department.name}</option>)
+          })
+          }
+        </Form.Select>
+        <br></br>
+        <Form.Control id="age-input" className="user-input" value={this.state.age} type="text" placeholder="Enter age" onChange={this.change} />
+        <br></br>
+        <Form.Control id="img-input" className="user-input" value={this.state.img} type="text" placeholder="Enter Image URL" onChange={this.change} />
+        <br></br>
+        <Form.Control id="descShort-input" className="user-input" value={this.state.descShort} as="textarea" rows={7} placeholder="Short Description" onChange={this.change} />
 
         <Button className="btn" onClick={this.AddCoach}>
           Add New Coach
@@ -144,7 +114,8 @@ class AddCoach extends Component {
         <Alert show={this.state.showSuccess} variant="success">
           <p>We've added you to the site.</p>
         </Alert>
-      </div>
+        </Form.Group>
+      </Form>
     );
   }
 }

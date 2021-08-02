@@ -4,6 +4,7 @@ import { Button, Modal, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import axios from "axios";
+import "./UserPopUp.css";
 const UserPopUp = inject("ScheduleStore")(
   observer((props) => {
     const [show, setshow] = useState(true);
@@ -42,11 +43,11 @@ const UserPopUp = inject("ScheduleStore")(
         </Modal.Body>
         <Modal.Footer>
           {!haveACource ? (
-            <Button variant="secondary" onClick={handleJoin}>
+            <Button className="button-join" onClick={handleJoin}>
               Join
             </Button>
           ) : (
-            <Button variant="secondary" onClick={handleLeave}>
+            <Button className="button-leave" onClick={handleLeave}>
               Leave
             </Button>
           )}
