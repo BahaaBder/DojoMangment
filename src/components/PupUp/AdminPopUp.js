@@ -5,6 +5,7 @@ import { observer, inject } from "mobx-react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import dayjs from "dayjs";
+import Swal from 'sweetalert2'
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -63,10 +64,27 @@ const AdminPopUp = inject("ScheduleStore")(
       debugger;
       handleClose();
     };
-    const handleDelete = () => {
-      props.ScheduleStore.deleteSchedule(schedule);
-      props.handleCloseModal();
-    };
+
+    const handleDelete=()=>{
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+          await props.ScheduleStore.deleteSchedule(schedule);
+            Swal.fire(
+                'Deleted!',
+                `The data has been deleted. 😔`,
+                'success'
+            )}
+            props.handleCloseModal()
+          })
+    }
 
     const handleClose = () => {
       props.handleCloseModal();

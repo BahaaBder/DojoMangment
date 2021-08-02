@@ -50,7 +50,7 @@ const NavBar = inject(
                   <Link to="/schedules">schedules</Link>
                 </Col>
                 <Col>
-                  <Link to="/coach">Coach</Link>
+                  <Link to="/coach">Coachs</Link>
                 </Col>
                 <Col>
                   <Link to="dashBoard">DashBoard</Link>

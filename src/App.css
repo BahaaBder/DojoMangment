@@ -50,9 +50,12 @@
   max-height: max-content;
   border: 1px solid black;
 }
+
+
 .rbc-time-view .rbc-row {
   min-height: 0px;
 }
+
 .tui-full-calendar-weekday-schedules {
   border: 10px solid green;
 }
@@ -71,8 +74,7 @@
   .tui-full-calendar-vlayout-container {
   background-color: green;
 }
-.tui-full-calendar-layout {
-}
+
 /* .tui-view-430{
   background-color: white;
   height: 2000px;

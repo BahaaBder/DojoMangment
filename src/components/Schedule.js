@@ -152,8 +152,8 @@ const Schedule = inject(
           start: dayjs(event.start._date.toString()).format("YYYY-MM-DDThh:mm"),
           end: dayjs(event.end._date.toString()).format("YYYY-MM-DDThh:mm"),
         };
-        setShowCreatePopUp(!showCreatePopUp);
         setSelectedDate(scheduleInfo);
+        setShowCreatePopUp(!showCreatePopUp);
       } else {
         alert(" user has no  premisssion ");
       }
@@ -194,6 +194,7 @@ const Schedule = inject(
           calendars={calendarsArray}
           disableDblClick={true}
           disableClick={false}
+          allDay={false}
           isReadOnly={!isSignin}
           Z
           month={{
@@ -216,9 +217,15 @@ const Schedule = inject(
           }}
           timezones={[
             {
-              timezoneOffset: "UTC +3",
+              timezoneOffset: "UTC+02:00",
               displayLabel: "GMT+09:00",
               tooltip: "Seoul",
+              // offsetCalculator: function(timezoneName, timestamp){
+              //   // matches 'getTimezoneOffset()' of Date API
+              //   // e.g. +09:00 => -540, -04:00 => 240
+              //   return moment.tz.zone(timezoneName).utcOffset(timestamp);
+              // },
+          
             },
           ]}
         />

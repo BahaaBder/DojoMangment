@@ -56,10 +56,9 @@ class ScheduleInventory {
     await axios.post(serverApi + "/schedules", schedule);
     this.getSchedule();
   };
-  deleteSchedule = (schedule) => {
-    axios.delete(serverApi + "/schedules", { data: schedule }).then(() => {
-      this.getSchedule();
-    });
+  deleteSchedule = async (schedule) => {
+    await axios.delete(serverApi + "/schedules", { data: schedule });
+    this.getSchedule();
   };
 
   filterDepartmentForUser = (departmentOfUser) => {

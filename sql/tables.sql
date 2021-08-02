@@ -131,16 +131,16 @@ CREATE TABLE schedule(
 
 drop table schedule;
 
-INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-25T12:00:00','2021-07-25T14:30:00',1);
-INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-27T14:30:00','2021-07-27T16:30:00',1);
-INSERT INTO schedule VALUES (null,"MMA Mixed Martil art ","time","",'2021-07-29T12:30:00','2021-07-29T14:30:00',1);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-25T19:30:00','2021-07-25T20:30:00',2);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-26T19:30:00','2021-07-26T20:30:00',2);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T19:30:00','2021-07-28T20:30:00',2);
-INSERT INTO schedule VALUES (null,"Classic boxing","time","",'2021-07-28T16:30:00','2021-07-28T18:30:00',2);
-INSERT INTO schedule VALUES (null,"Japan","time","",'2021-08-1T19:30:00','2021-08-1T20:30:00',4);
-INSERT INTO schedule VALUES (null,"Mosa grid","time","",'2021-07-30T16:00:00','2021-07-30T20:00:00',3);
-   
+use dojo;
+INSERT INTO schedule VALUES (null,"Adult MMA Mixed Martil art ","time","",'2021-08-1T10:00:00','2021-08-1T12:00:00',1);
+INSERT INTO schedule VALUES (null,"Adult MMA Mixed Martil art ","time","",'2021-08-3T22:00:00','2021-08-3T23:00:00',1);
+INSERT INTO schedule VALUES (null,"Adult MMA Mixed Martil art ","time","",'2021-08-5T22:00:00','2021-08-5T23:00:00',1);
+INSERT INTO schedule VALUES (null,"Teen MMA Mixed Martil art ","time","",'2021-08-1T21:00:00','2021-08-1T22:00:00',1);
+INSERT INTO schedule VALUES (null,"Teen MMA Mixed Martil art ","time","",'2021-08-3T21:00:00','2021-08-3T22:00:00',1);
+INSERT INTO schedule VALUES (null,"Teen MMA Mixed Martil art ","time","",'2021-08-5T21:00:00','2021-08-5T22:00:00',1);
+INSERT INTO schedule VALUES (null,"Kids MMA Mixed Martil art ","time","",'2021-08-1T20:00:00','2021-08-1T21:00:00',1);
+INSERT INTO schedule VALUES (null,"Kids MMA Mixed Martil art ","time","",'2021-08-3T20:00:00','2021-08-3T21:00:00',1);
+INSERT INTO schedule VALUES (null,"Kids MMA Mixed Martil art ","time","",'2021-08-5T20:00:00','2021-08-5T21:00:00',1);
 -- use dojo;
 -- CREATE TABLE DepartmentDetails (
 --     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
