@@ -30,6 +30,12 @@
   margin: 15px;
   padding: 15px;
 }
+.navBar-flex{
+
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
 
 /* .rbc-time-view .rbc-row {
   min-height: 0px;

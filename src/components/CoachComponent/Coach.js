@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Button, Modal, Col, Image, Container } from 'react-bootstrap';
+import { Button, Modal, Col, Image, Container, Form } from 'react-bootstrap';
 import "./style/Coach.css"
 import { TextField } from "@material-ui/core";
 import { observer, inject } from 'mobx-react';
 import axios from "axios";
+import Swal from 'sweetalert2'
 const serverApi = "http://localhost:8080";
 class Coach extends Component {
   constructor() {
@@ -38,7 +39,7 @@ class Coach extends Component {
       this.setState({ descShort: inputVal })
     }
   }
-  UpdateCoach = () => {
+  UpdateCoach = async () => {
     let coachData = {
       id: this.props.coach.id,
       name: this.state.name ? this.state.name : this.props.coach.name,
@@ -48,18 +49,36 @@ class Coach extends Component {
       descShort: this.state.descShort ? this.state.descShort : this.props.coach.descrShort,
       dojo_id: 1
     }
-    this.props.CoachStore.UpdateCoach(coachData);
+    await this.props.CoachStore.UpdateCoach(coachData);
+    let temp = await this.props.CoachStore.coachs
+    this.props.updateCoachs(temp.data);
+    await this.props.CoachStore.getAllCoachs();
     this.setState({ name: "", department: "", age: "", img: "", descShort: "", show: false });
   }
 
-  DeleteCoach = () => {
-    let isDelete = this.props.CoachStore.DeleteCoach(this.props.coach.id);
-    if (isDelete) {
-      this.handleClose()
-    }
-    else {
-      alert("somthing gone wrong")
-    }
+  DeleteCoach = async () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+  }).then(async (result) => {
+      if (result.isConfirmed) {
+        let isDelete = await this.props.CoachStore.DeleteCoach(this.props.coach.id);
+        
+          Swal.fire(
+              'Deleted!',
+              `The data has been deleted. 😔`,
+              'success'
+          )}
+          this.handleClose()
+          await this.props.CoachStore.getAllCoachs();
+          this.setState({ name: "", department: "", age: "", img: "", descShort: "", show: false });
+        })
+
 
   }
 
@@ -81,7 +100,7 @@ class Coach extends Component {
         <Container>
           <Modal className="modal" show={this.state.show && this.props.showDetails} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title className="coach-info"><div className="sign-in-title">about {coach.name}</div></Modal.Title>
+              <Modal.Title className="coach-info"><div className="sign-in-titleCoach">about {coach.name}</div></Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div>
@@ -105,54 +124,33 @@ class Coach extends Component {
 
           <Modal className="modal" show={this.state.show && !this.props.showDetails} onHide={this.handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title className="coach-info"><div className="sign-in-title">about {coach.name}</div></Modal.Title>
+              <Modal.Title className="coach-info"><div className="sign-in-titleCoach">About {coach.name}</div></Modal.Title>
             </Modal.Header>
-            <Modal.Body >
-              <h4>Update Coach</h4>
-              <div className="txtfild">
-                <span>Name: </span>
-                <TextField className="text" id="name-input"
-                  value={this.state.name}
-                  onChange={this.change} />
-              </div>
-              <div className="txtfild">
-                <span>department: </span>
-                <select className="text" id="department-input" value={this.state.department} onChange={this.change}>
-                  {this.state.allDepartments.map((department, ind) => {
-                    return (<option key={ind} value={department.id}>{department.name}</option>)
-                  })}
-                </select>
-              </div>
-              <div className="txtfild">
-                <span>age: </span>
-                <TextField className="text" id="age-input"
-                  value={this.state.age}
-                  onChange={this.change} />
-              </div>
-              <div className="txtfild">
-                <span>img: </span>
-                <TextField className="text" id="img-input"
-                  label="img url"
-                  multiline
-                  maxRows={4}
-                  value={this.state.img}
-                  onChange={this.change}
-                />
-              </div>
-              <div className="txtfild">
-                <span>short description: </span>
-                <textarea className="text" id="descShort-input"
-                  label="short description"
-                  multiline="7"
-                  value={this.state.descShort}
-                  onChange={this.change}
-                />
-              </div>
+            <Modal.Body className="bodyModle">
+              <Form >
+                <Form.Group className="mb-3">
+                  <Form.Control id="name-input" value={this.state.name} className="user-input-coach" type="text" placeholder="Enter Name" onChange={this.change} />
+
+                  <Form.Label>Department : </Form.Label>
+                  <Form.Select id="department-input" className="user-input-coach" value={this.state.department} onChange={this.change}>
+                    <option></option>
+                    {
+                      this.state.allDepartments.map((department, ind) => {
+                        return (<option key={ind} value={department.id}>{department.name}</option>)
+                      })
+                    }
+                  </Form.Select>
+                  <Form.Control id="age-input" className="user-input-coach" value={this.state.age} type="text" placeholder="Enter age" onChange={this.change} />
+                  <Form.Control id="img-input" className="user-input-coach" value={this.state.img} type="text" placeholder="Enter Image URL" onChange={this.change} />
+                  <Form.Control id="descShort-input" className="user-input-coach" value={this.state.descShort} as="textarea" rows={7} placeholder="Short Description" onChange={this.change} />
+                </Form.Group>
+              </Form>
+
             </Modal.Body>
             <Modal.Footer>
-              <Button className="btn" onClick={this.UpdateCoach}>Save Changes</Button>
+              <Button className="btn btn-save-changes" onClick={this.UpdateCoach}>Save Changes</Button>
             </Modal.Footer>
-            <Button className="btn" onClick={this.DeleteCoach}>Delete Coach</Button>
+            <Button className="btn btn-delete-coach" onClick={this.DeleteCoach}>Delete Coach</Button>
           </Modal>
         </Container>
       </Col>

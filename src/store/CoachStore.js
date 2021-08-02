@@ -1,10 +1,11 @@
-import { observable, action, makeObservable} from "mobx";
+import { observable, action, makeObservable, computed} from "mobx";
 import axios from "axios";
+
 
 const serverApi = "http://localhost:8080";
 class CoachStore {
   constructor() {
-    this.coachs = axios.get(`${serverApi}/coachs`)
+    this.coachs = []
     
     makeObservable(this, {
       coachs: observable,
@@ -12,10 +13,14 @@ class CoachStore {
       saveCoach: action,
       UpdateCoach: action ,
       DeleteCoach: action,
+      getCoachs: computed,
     });
   }
 
 
+  get getCoachs() {
+    return this.coachs;
+  }
   // getAllCoachs = async () => {
   //   let coachsData = await axios.get(`${serverApi}/coachs`);
   //   this.coachs = coachsData.data;

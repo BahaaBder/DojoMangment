@@ -41,7 +41,7 @@ class AddCoach extends Component {
       this.state.age === "" || this.state.descShort === "") {
       this.setState({ showError: true, showSuccess: false })
     }
-    else if(this.state.img.length>0 && !this.checkURLValid(this.state.img)){
+    else if (this.state.img.length > 0 && !this.checkURLValid(this.state.img)) {
       this.setState({ showError: true, showSuccess: false })
     }
     else {
@@ -80,42 +80,42 @@ class AddCoach extends Component {
 
   render = () => {
     return (
-      
-      <Form className="AddCoach">
-         <Form.Group className="mb-3">
-        <Form.Label><div className="sign-in-title">ADD Coach</div></Form.Label>
-        <Form.Control id="name-input" value={this.state.name} className="user-input" type="text" placeholder="Enter Name" onChange={this.change}/>
-        <br></br>
+      <div className="bodyModle back-ground-img">
+        <Form className="AddCoach model-border">
+          <Form.Group className="mb-3">
+            <Form.Control id="name-input" value={this.state.name} className="user-input-coach" type="text" placeholder="Enter Name" onChange={this.change} />
+            <br></br>
 
-        <Form.Label>Department : </Form.Label>
-        <Form.Select id="department-input" className="user-input" value={this.state.department} onChange={this.change}>
-        <option></option>
-          {
-            this.state.allDepartments.map((department, ind) => {
-            return (<option key={ind} value={department.id}>{department.name}</option>)
-          })
-          }
-        </Form.Select>
-        <br></br>
-        <Form.Control id="age-input" className="user-input" value={this.state.age} type="text" placeholder="Enter age" onChange={this.change} />
-        <br></br>
-        <Form.Control id="img-input" className="user-input" value={this.state.img} type="text" placeholder="Enter Image URL" onChange={this.change} />
-        <br></br>
-        <Form.Control id="descShort-input" className="user-input" value={this.state.descShort} as="textarea" rows={7} placeholder="Short Description" onChange={this.change} />
+            <Form.Label>Department : </Form.Label>
+            <Form.Select id="department-input" className="user-input-coach" value={this.state.department} onChange={this.change}>
+              <option></option>
+              {
+                this.state.allDepartments.map((department, ind) => {
+                  return (<option key={ind} value={department.id}>{department.name}</option>)
+                })
+              }
+            </Form.Select>
+            <br></br>
+            <Form.Control id="age-input" className="user-input-coach" value={this.state.age} type="text" placeholder="Enter age" onChange={this.change} />
+            <br></br>
+            <Form.Control id="img-input" className="user-input-coach" value={this.state.img} type="text" placeholder="Enter Image URL" onChange={this.change} />
+            <br></br>
+            <Form.Control id="descShort-input" className="user-input-coach" value={this.state.descShort} as="textarea" rows={7} placeholder="Short Description" onChange={this.change} />
 
-        <Button className="btn" onClick={this.AddCoach}>
-          Add New Coach
-        </Button>
+            <Button className="btn-addCoach btn-save-changes" onClick={this.AddCoach}>
+              Add New Coach
+            </Button>
 
-        <Alert variant="danger" show={this.state.showError}>
-          Check Your Inputs Again !
-        </Alert>
+            <Alert variant="danger" show={this.state.showError}>
+              Check Your Inputs Again !
+            </Alert>
 
-        <Alert show={this.state.showSuccess} variant="success">
-          <p>We've added you to the site.</p>
-        </Alert>
-        </Form.Group>
-      </Form>
+            <Alert show={this.state.showSuccess} variant="success">
+              <p>We've added you to the site.</p>
+            </Alert>
+          </Form.Group>
+        </Form>
+      </div>
     );
   }
 }

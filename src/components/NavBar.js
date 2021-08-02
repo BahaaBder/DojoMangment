@@ -11,6 +11,7 @@ import Register from "./LogInComponent/Register";
 import About from './about/About';
 import DashBoard from './Admin/DashBoard';
 import CoachDetails from "./Admin/CoachDetils";
+import "./../App.css"
 
 const NavBar = inject("LogInStore","ScheduleStore")(
     observer((props) => {
@@ -27,7 +28,8 @@ const NavBar = inject("LogInStore","ScheduleStore")(
         
         const NotLoggedInNav = () => {
             return (
-                <Navbar collapseOnSelect expand="sm" d-flex="true" bg="dark" variant="dark">
+                <div className="navBar-flex">
+                <Navbar  collapseOnSelect expand="sm" d-flex="true" bg="dark" variant="dark">
                     <Container fluid>
                         <Navbar.Brand href="/about" className="border border-white rounded">Dojo</Navbar.Brand>
                         <Navbar.Toggle arial-controls="responsive-navbar-nav" />
@@ -45,12 +47,14 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
+                </div>
             )
         }
 
         const AdminNav = () => {
             return (
-                <Navbar collapseOnSelect  expand="sm" bg="dark" variant="dark">
+                <div className="navBar-flex">
+                <Navbar collapseOnSelect  expand="sm" d-flex="true" bg="dark" variant="dark">
                 <Container fluid>
                     <Navbar.Brand href="/about" className="border border-white rounded">Dojo</Navbar.Brand>
                     <Navbar.Toggle arial-controls="responsive-navbar-nav" />
@@ -71,12 +75,14 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                     </Navbar.Collapse>
                 </Container>
                 </Navbar>
+                </div>
             )
         }
 
         const UserNav = () => {
             return (
-                <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
+                <div className="navBar-flex">
+                <Navbar collapseOnSelect expand="sm" d-flex="true" bg="dark" variant="dark">
                 <Container fluid>
                     <Navbar.Brand href="/about" className="border border-white rounded">Dojo</Navbar.Brand>
                     <Navbar.Toggle arial-controls="responsive-navbar-nav" />
@@ -94,6 +100,7 @@ const NavBar = inject("LogInStore","ScheduleStore")(
                     </Navbar.Collapse>
                 </Container>
                 </Navbar>   
+                </div>
             )
         }
 

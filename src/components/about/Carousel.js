@@ -16,7 +16,6 @@ function importAll(r) {
   const images = importAll(require.context('../../dist', false, /\.(png|jpe?g|svg)$/));
   
 function CarouselTemplate() {
-  debugger;
     return (
         <Container>
         

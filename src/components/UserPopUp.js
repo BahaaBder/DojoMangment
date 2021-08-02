@@ -43,11 +43,11 @@ const UserPopUp = inject("ScheduleStore")(
         </Modal.Body>
         <Modal.Footer>
           {!haveACource ? (
-            <Button className="button-join" onClick={handleJoin}>
+            <Button className="button-join1" onClick={handleJoin}>
               Join
             </Button>
           ) : (
-            <Button className="button-leave" onClick={handleLeave}>
+            <Button className="button-leave1 btn-primary1" onClick={handleLeave}>
               Leave
             </Button>
           )}

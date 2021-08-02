@@ -7,11 +7,19 @@ import { Row, Container, Button } from 'react-bootstrap'
 const CoachDetails = inject("CoachStore")(observer((props) => {
     const [coachs, setCoachs] = useState([])
 
-    useEffect( async() => {
-        let temp = await props.CoachStore.coachs
-       setCoachs(temp.data)
-    })
+    useEffect( () => {
+        const fetch = async () =>{
+             await props.CoachStore.getAllCoachs();
+             let temp = await props.CoachStore.getCoachs;
+            // updateCoachs(temp.data)
+            setCoachs(temp)
+        }
+        fetch();
+    },[])
 
+    const updateCoachs = (temp) =>{
+        setCoachs(temp)
+    }
     return (
         <Container fluid>
             <Container fluid className="d-flex align-items-end flex-column">
@@ -19,8 +27,8 @@ const CoachDetails = inject("CoachStore")(observer((props) => {
             </Container>
             <Row>
             {
-            coachs.map((coach, ind) => {
-                return ( <Coach key={ind} coach={coach} showDetails={false}/> )})
+            props.CoachStore.getCoachs.map((coach, ind) => {
+                return ( <Coach key={ind} updateCoachs={updateCoachs} coach={coach} showDetails={false}/> )})
                 }
             </Row>
         </Container>

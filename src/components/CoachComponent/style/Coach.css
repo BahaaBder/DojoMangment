@@ -23,13 +23,14 @@
     justify-content: center;
     text-align: center;
     left: 26%;
+    overflow-y: hidden;
   }
   .onlyImg {
     background-color: rgb(237, 245, 245);
   }
  
   .coach-info {
-    color: rgb(189, 52, 52);
+    color: rgb(0, 0, 0);
     text-decoration: none;
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   }
@@ -69,19 +70,62 @@
       align-items: center;
       justify-content: center;
   }
-  .user-input {
+  .user-input-coach {
     margin-bottom: 15px;
-    width: 30%;
+    width: 300px;
   }
  
-  .sign-in-title {
-    /* margin-left: 65px; */
-    text-align: center;
+  .sign-in-titleCoach {
+    margin-left: 112px;
+    /* text-align: center; */
   }
 
-  .button-close {
+  .btn-save-changes {
     background-color: #17a2b8;
   }
-  .button-close:hover {
+  .btn-save-changes:hover {
     background-color: #1f8999;
   }
+  .btn-delete-coach{
+    background-color: #d4293b;
+  }
+  .btn-delete-coach:hover{
+    background-color: #a0333e;
+  }
+  .bodyModle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+ #descShort-input{
+  margin-bottom: -19px;
+  height: 74px;
+ }
+ .btn-addCoach{
+  margin: 35px;
+ }
+ .model-border{
+   border: 1px black solid;
+   margin-top: 15px;
+   background-color: #ffff;
+ }
+ .back-ground-img{
+  /* background-image: url('https://cdnb.artstation.com/p/assets/images/images/036/897/309/large/timur-tagirov-dojo-2-scene-3.jpg?1618930582'); */
+
+  /* background: url("https://cdnb.artstation.com/p/assets/images/images/036/897/309/large/timur-tagirov-dojo-2-scene-3.jpg?1618930582"); */
+  /* height: 100vh; */
+  position: relative;
+  padding: 15px;
+  height: 100vh;
+ }
+ .back-ground-img::before{
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: .5; 
+  background-image: url("https://cdnb.artstation.com/p/assets/images/images/036/897/309/large/timur-tagirov-dojo-2-scene-3.jpg?1618930582");
+ }
